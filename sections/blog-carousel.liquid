@@ -1,0 +1,184 @@
+{% comment %} Section: Right Talk Blog Carousel | File: sections/right-talk-blog.liquid {% endcomment %}
+
+{% assign selected_blog = blogs[section.settings.blog] %}
+
+<style>
+.rtb-wrap *, .rtb-wrap *::before, .rtb-wrap *::after { box-sizing: border-box; margin: 0; padding: 0; }
+.rtb-wrap { background: #FCEED9; padding: 100px 40px 48px; }
+.rtb-inner { max-width: 1240px; margin: 0 auto; }
+.rtb-carousel-wrapper { border-radius: 24px; overflow: hidden; box-shadow: 0 8px 32px rgba(0,0,0,.10); }
+.rtb-track { display: flex; transition: transform 0.65s cubic-bezier(.77,0,.175,1); will-change: transform; }
+.rtb-slide { min-width: 100%; display: flex; background: #FFF8EE; border-radius: 24px; overflow: hidden; min-height: 380px; }
+.rtb-track .rtb-slide:first-child .rtb-img-col { background: #8a3b59 !important;  }
+.rtb-img-col { position: relative; overflow: hidden; max-height: 445px;
+    min-width: 598px; background: #f9b188; }
+.rtb-img-col img { width: 100%; height: 100%; object-fit: contain; object-position: top center; display: block; }
+.rtb-body { padding: 33px; max-width: 622px; }
+.rtb-label { font-size: 18px; font-weight: 700; letter-spacing: .12em; color: #000; text-transform: uppercase; }
+.rtb-title { font-size: 45px; line-height: 1.1; color: #2D2119; letter-spacing: .01em;     text-transform: uppercase; }
+.rtb-desc { font-size: 18px; line-height: 1.5; color: #2D2119; margin-top: 15px;  }
+.rtb-dots { display: flex; justify-content: center; gap: 8px; margin-top: 44px; }
+.rtb-dot { width: 11px; height: 11px; border-radius: 50%; background: transparent; border: 1px solid #000; cursor: pointer; padding: 0; transition: background .3s, transform .3s; }
+.rtb-dot.active { background: #1a1a1a; }
+@media (max-width: 768px) {
+  .rtb-wrap { padding: 28px 16px 36px; }
+  .rtb-slide { flex-direction: column; min-height: unset; }
+  .rtb-img-col { width: 100%; height: 260px; }
+  .rtb-body { padding: 26px 22px 30px; gap: 10px; }
+  .rtb-title { font-size: 27px; }
+  .rtb-desc { font-size: 13.5px; }
+}
+</style>
+
+<div class="rtb-wrap">
+  <div class="rtb-inner">
+    <div class="rtb-carousel-wrapper">
+      <div class="rtb-track" id="rtbTrack">
+
+        {% if selected_blog != blank %}
+          {% for article in selected_blog.articles limit: section.settings.post_limit %}
+            <div class="rtb-slide">
+
+              {% comment %} Image column {% endcomment %}
+              <div class="rtb-img-col" >
+                {% if article.image %}
+                  <img
+                    src="{{ article.image | img_url: '700x' }}"
+                    alt="{{ article.image.alt | default: article.title | escape }}"
+                    loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+                  >
+                {% elsif section.settings.fallback_image != blank %}
+                  <img
+                    src="{{ section.settings.fallback_image | img_url: '700x' }}"
+                    alt="{{ article.title | escape }}"
+                    loading="lazy"
+                  >
+                {% endif %}
+              </div>
+
+              {% comment %} Text body {% endcomment %}
+              <div class="rtb-body">
+                <span class="rtb-label">
+                  {% if article.tags.size > 0 %}
+                    {{ article.tags.first }}
+                  {% else %}
+                    {{ section.settings.default_label }}
+                  {% endif %}
+                </span>
+                <h2 class="rtb-title">{{ article.title }}</h2>
+                <p class="rtb-desc">
+                  {% if article.excerpt != blank %}
+                    {{ article.excerpt | strip_html | truncatewords: 45 }}
+                  {% else %}
+                    {{ article.content | strip_html | truncatewords: 45 }}
+                  {% endif %}
+                </p>
+                
+              </div>
+
+            </div>
+          {% endfor %}
+
+        {% else %}
+          {% comment %} Fallback when no blog is selected {% endcomment %}
+          <div class="rtb-slide">
+            <div class="rtb-img-col" style="background:#f0c9a0;"></div>
+            <div class="rtb-body">
+              <span class="rtb-label">BLOG</span>
+              <h2 class="rtb-title">Select a blog in settings</h2>
+              <p class="rtb-desc">Go to section settings and choose a blog from the "Blog" dropdown to display posts here.</p>
+            </div>
+          </div>
+        {% endif %}
+
+      </div>
+    </div>
+    <div class="rtb-dots" id="rtbDots"></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var idx   = 0, timer;
+  var track  = document.getElementById('rtbTrack');
+  var dotsEl = document.getElementById('rtbDots');
+  var slides = track.querySelectorAll('.rtb-slide');
+  var total  = slides.length;
+
+  /* No dots needed for a single slide */
+  if (total <= 1) { return; }
+
+  /* Build pagination dots */
+  slides.forEach(function(_, i){
+    var d = document.createElement('button');
+    d.className = 'rtb-dot' + (i === 0 ? ' active' : '');
+    d.setAttribute('aria-label', 'Slide ' + (i + 1));
+    d.onclick = function(){ go(i); };
+    dotsEl.appendChild(d);
+  });
+
+  /* Navigate to slide i and restart auto-play timer */
+  function go(i){
+    idx = i;
+    track.style.transform = 'translateX(-' + (i * 100) + '%)';
+    document.querySelectorAll('.rtb-dot').forEach(function(d, j){
+      d.classList.toggle('active', j === i);
+    });
+    clearInterval(timer);
+    timer = setInterval(function(){ go((idx + 1) % total); }, 4500);
+  }
+
+  go(0);
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Right Talk Blog Carousel",
+  "settings": [
+    {
+      "type": "blog",
+      "id": "blog",
+      "label": "Blog"
+    },
+    {
+      "type": "range",
+      "id": "post_limit",
+      "label": "Number of Posts",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "text",
+      "id": "default_label",
+      "label": "Default Label (used when article has no tag)",
+      "default": "BLOG"
+    },
+   
+    {
+      "type": "image_picker",
+      "id": "fallback_image",
+      "label": "Fallback Image (used when article has no image)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_read_more",
+      "label": "Show Read More Link",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "read_more_text",
+      "label": "Read More Link Text",
+      "default": "Read More"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Right Talk Blog Carousel"
+    }
+  ]
+}
+{% endschema %}

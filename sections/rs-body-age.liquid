@@ -1,0 +1,602 @@
+<section class="rs-body" id="rs-body-{{ section.id }}">
+  <div class="rs-body__inner">
+
+    <!-- ===== STATS BLOCK ===== -->
+    <h2 class="rs-body__heading">{{ section.settings.heading }}</h2>
+    <p class="rs-body__desc rs-desc-desktop">{{ section.settings.description }}</p>
+    <p class="rs-body__desc rs-desc-mobile">
+      {{ section.settings.description | truncate: 100 }}
+      {% comment %} <a class="rs-body__readmore" onclick="rsBodyToggle(this)" href="javascript:void(0)"> + Read More</a> {% endcomment %}
+    </p>
+
+    <div class="rs-body__stats">
+
+      <div class="rs-body__stat">
+        <div class="rs-body__number-wrap">
+          <div class="rs-body__number">{{ section.settings.stat_number_1 }}<span class="rs-body__pct">%</span></div>
+        </div>
+        <div class="rs-body__stat-text">
+          <h4><span class="rs-body__pill"></span>{{ section.settings.stat_title_1 }}</h4>
+          <p>{{ section.settings.stat_text_1 }}</p>
+        </div>
+      </div>
+
+      <div class="rs-body__stat">
+        <div class="rs-body__number-wrap">
+          <div class="rs-body__number">{{ section.settings.stat_number_2 }}<span class="rs-body__pct">%</span></div>
+        </div>
+        <div class="rs-body__stat-text">
+          <h4><span class="rs-body__pill"></span>{{ section.settings.stat_title_2 }}</h4>
+          <p>{{ section.settings.stat_text_2 }}</p>
+        </div>
+      </div>
+
+      <div class="rs-body__stat">
+        <div class="rs-body__number-wrap">
+          <div class="rs-body__number">{{ section.settings.stat_number_3 }}<span class="rs-body__pct">%</span></div>
+        </div>
+        <div class="rs-body__stat-text">
+          <h4><span class="rs-body__pill"></span>{{ section.settings.stat_title_3 }}</h4>
+          <p>{{ section.settings.stat_text_3 }}</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ===== SHIFT SHOP BLOCK ===== -->
+    <div class="rs-shop">
+      <h2 class="rs-shop__heading">{{ section.settings.shop_heading }}</h2>
+
+      <div class="rs-shop__slider-outer">
+        <div class="rs-shop__track" id="rs-shop-track-{{ section.id }}">
+          {% for block in section.blocks %}
+            {% if block.type == 'shop_item' %}
+            <div class="rs-shop__item" {{ block.shopify_attributes }}>
+              {% if block.settings.image != blank %}
+                <a href="{{ block.settings.link }}">
+                  <img src="{{ block.settings.image | image_url: width: 400 }}" alt="{{ block.settings.image.alt }}" loading="lazy">
+                </a>
+              {% endif %}
+            </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="rs-shop__dots" id="rs-shop-dots-{{ section.id }}"></div>
+    </div>
+
+    <!-- ===== HEALTH GOAL BLOCK ===== -->
+    <div class="rs-goal">
+      <h2 class="rs-goal__heading">{{ section.settings.goal_heading }}</h2>
+      <p class="rs-goal__desc">{{ section.settings.goal_description }}</p>
+
+      <div class="rs-who__slider-outer">
+        <div class="rs-who__cards" id="rs-cards-{{ section.id }}">
+
+          {% for block in section.blocks %}
+            {% if block.type == 'who_item' %}
+            <div class="rs-who__card" {{ block.shopify_attributes }}>
+              {% if block.settings.image != blank %}
+                <img src="{{ block.settings.image | image_url: width: 500 }}" alt="{{ block.settings.label }}" loading="lazy">
+              {% endif %}
+              {% if block.settings.label != blank %}
+              <p class="rs-who__card-label">{{ block.settings.label }}</p>
+              {% endif %}
+            </div>
+            {% endif %}
+          {% endfor %}
+
+        </div>
+
+        <button class="rs-arrow rs-arrow--prev" id="rs-prev-{{ section.id }}" aria-label="Previous">{{ 'icon-chevron-left.svg' | inline_asset_content }}</button>
+        <button class="rs-arrow rs-arrow--next" id="rs-next-{{ section.id }}" aria-label="Next">{{ 'icon-chevron-right.svg' | inline_asset_content }}</button>
+      </div>
+
+      <div class="rs-goal__dots" id="rs-goal-dots-{{ section.id }}"></div>
+
+      {% if section.settings.goal_button_text != blank %}
+      <a class="rs-goal__btn" href="{{ section.settings.goal_button_url }}">{{ section.settings.goal_button_text }}</a>
+      {% endif %}
+    </div>
+
+  </div>
+</section>
+
+<style>
+.rs-body { background: #f8d765; padding: 64px 40px; text-align: center; }
+.rs-body__inner { max-width: 1158px; margin: 0 auto; }
+
+/* ===== SHIFT SHOP ===== */
+.rs-shop { margin-bottom: 64px; padding-top: 80px; }
+.rs-shop__heading {
+  font-size: 45px;
+  color: #2d2119;
+  margin-bottom: 32px;
+}
+.rs-shop__slider-outer {
+  overflow: hidden;
+  width: 100%;
+}
+.rs-shop__track {
+  display: flex;
+  gap: 24px;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.rs-shop__item {
+  width: 250px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.rs-shop__item img {
+  width: 100%;
+  display: block;
+}
+.rs-shop__dots {
+  display: none;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
+}
+.rs-shop__dot {
+  width: 28px;
+  height: 6px;
+  border-radius: 50px;
+  background: rgba(0,0,0,0.2);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.2s;
+}
+.rs-shop__dot.active {
+  background: #2d2119;
+  width: 36px;
+}
+
+/* ===== STATS ===== */
+.rs-body__heading { font-size: 45px; color: #2d2119; margin-bottom: 12px; }
+.rs-body__desc { font-size: 20px; color: #2d2119; line-height: 1.8; max-width: 818px; margin: 0 auto 52px; }
+.rs-desc-mobile { display: none; }
+.rs-body__readmore { color: #1a5c2a; font-weight: 700; text-decoration: none; }
+
+.rs-body__stats { display: flex; justify-content: space-between; gap: 48px; flex-wrap: wrap; }
+.rs-body__stat { width: 260px; text-align: left; }
+
+.rs-body__number-wrap { display: block; }
+.rs-body__number {
+  font-size: 180px;
+  line-height: 1;
+  display: inline-block;
+  position: relative;
+  font-family: "Paytone One", sans-serif;
+  background: url('https://cdn.shopify.com/s/files/1/0817/1264/4332/files/Gemini_Generated_Image_3rlr8t3rlr8t3rlr.png?v=1772483363') center/cover no-repeat;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: #00000054;
+  background-clip: text;
+  color: transparent;
+}
+.rs-body__pct {
+  font-size: 3.4rem;
+  font-family: "Paytone One", sans-serif;
+  font-weight: 900;
+  position: absolute;
+  top: 8px;
+  right: -26px;
+  -webkit-text-fill-color: #37573a;
+  color: #37573a;
+}
+.rs-body__stat-text h4 {
+  position: relative;
+  margin: 0;
+  font-size: 26px;
+  font-family: 'Urbanist', sans-serif;
+  font-weight: 700;
+  color: #2d2119;
+  line-height: 1.35;
+  z-index: 1;
+  margin-top: -27px;
+  max-width: 200px;
+}
+.rs-body__pill {
+  display: block;
+  position: absolute;
+  top: 2px;
+  left: -8px;
+  width: 180px;
+  height: 36px;
+  background: #f8d765;
+  border-radius: 50px;
+  z-index: -1;
+}
+.rs-body__stat-text p {
+  font-size: 18px;
+  color: #2D2119;
+  line-height: 1.5;
+  margin-top: 8px;
+}
+
+/* ===== HEALTH GOAL ===== */
+.rs-goal { margin-top: 164px; text-align: center; }
+.rs-goal__heading { font-size: 45px; color: #2d2119; margin-bottom: 12px; }
+.rs-goal__desc { font-size: 20px; color: #2d2119; line-height: normal; max-width: 850px; margin: 0 auto 36px; }
+.rs-goal__slider-wrap { display: contents; }
+.rs-goal__slider-outer { width: 100%; }
+.rs-goal__items { display: flex; gap: 28px; flex-wrap: wrap; margin-bottom: 36px; justify-content: center; }
+.rs-goal__item { padding: 15px;
+    width: 240px;
+    min-height: 300px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, .13);
+    background: #2D2119;
+    flex-shrink: 0;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+    flex-direction: column;}
+.rs-goal__img-wrap { width: 210px; height: 210px; overflow: hidden; background: #fcf1e4; margin: 0 auto 10px; border-radius: 100%;  }
+.rs-goal__img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.rs-goal__label { font-size: 18px; font-weight: 700; color: #FFF; line-height: 1.4; margin: 0; }
+.rs-goal__dots { display: none; }
+/* Arrows — hidden desktop, shown mobile */
+.rs-goal__arrow {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: #000;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  z-index: 2;
+  transition: background 0.2s;
+  line-height: 1;
+}
+.rs-goal__btn {
+  display: inline-block;
+  background: #2d2119;
+  color: #fff;
+  font-size: 18px;
+  min-width: 250px;
+  font-weight: 700;
+  padding: 14px 40px;
+  border-radius: 50px;
+  text-decoration: none;
+}
+.rs-goal__btn:hover { background: #333; }
+
+/* ===== MOBILE ===== */
+@media (max-width: 749px) {
+  .rs-goal__arrow--prev { rotate: 180deg; }
+  .rs-goal__arrow svg { width: 34px;  height: 34px; }
+  .rs-body { padding: 36px 16px; }
+  .rs-body__heading { font-size: 26px; max-width: 350px; margin: 0 auto; }
+  .rs-desc-desktop { display: none; }
+  .rs-desc-mobile { display: block; font-size: 20px; margin-bottom: 32px; line-height: normal; margin-top: 10px; }
+
+  .rs-body__stats { flex-direction: column; align-items: center; gap: 32px; padding: 0px 40px; }
+  .rs-body__stat { width: 100%; text-align: left; padding: 0 30px; }
+
+  /* Shop slider — mobile */
+  .rs-shop { margin-bottom: 36px; }
+  .rs-shop__heading { font-size: 35px; margin-bottom: 20px; }
+  .rs-shop__slider-outer { overflow: hidden; }
+  .rs-shop__track {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    gap: 12px;
+    cursor: grab;
+  }
+  .rs-shop__track.grabbing { cursor: grabbing; }
+  .rs-shop__item { width: calc(100vw - 32px); }
+  .rs-shop__dots { display: flex; }
+
+  /* Goal section — mobile */
+  .rs-goal { margin-top: 44px; }
+  .rs-goal__heading { font-size: 34px; }
+
+  /* Show arrows on mobile */
+  .rs-goal__slider-wrap { display: flex; align-items: center; position: relative; }
+  .rs-goal__slider-outer { overflow: hidden; width: 0; flex: 1; }
+  .rs-goal__arrow { display: flex; }
+
+  /* Goal slider — mobile only */
+  .rs-goal__items {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    gap: 20px;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: grab;
+    margin-bottom: 16px;
+  }
+  .rs-goal__items.grabbing { cursor: grabbing; }
+  .rs-goal__item {
+    width: calc(70vw - 16px);
+    flex-shrink: 0;
+  }
+  .rs-goal__img-wrap {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+  }
+  .rs-goal__label { font-size: 15px; }
+
+  /* Goal dots — mobile only */
+  .rs-goal__dots {
+    display: none;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 0;
+    margin-bottom: 20px;
+  }
+  .rs-goal__dots button {
+    width: 28px;
+    height: 6px;
+    border-radius: 50px;
+    background: rgba(0,0,0,0.2);
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: background 0.2s;
+  }
+  .rs-goal__dots button.active {
+    background: #2d2119;
+    width: 36px;
+  }
+
+  .rs-goal__btn { min-width: 100px; }
+}
+</style>
+
+<script>
+function rsBodyToggle(el) {
+  var section = el.closest('.rs-body');
+  var full = section.querySelector('.rs-desc-desktop');
+  el.parentElement.textContent = full.textContent;
+}
+
+/* ===== SHOP SLIDER ===== */
+(function() {
+  var sectionId = '{{ section.id }}';
+  var track = document.getElementById('rs-shop-track-' + sectionId);
+  var dotsWrap = document.getElementById('rs-shop-dots-' + sectionId);
+  if (!track) return;
+
+  var items = track.querySelectorAll('.rs-shop__item');
+  var total = items.length;
+  var current = 0;
+  var startX = 0;
+  var isDragging = false;
+  var autoTimer = null;
+
+  function isMobile() { return window.innerWidth <= 749; }
+
+  function buildDots() {
+    dotsWrap.innerHTML = '';
+    for (var i = 0; i < total; i++) {
+      var btn = document.createElement('button');
+      btn.className = 'rs-shop__dot' + (i === 0 ? ' active' : '');
+      btn.setAttribute('aria-label', 'Go to slide ' + (i + 1));
+      btn.addEventListener('click', (function(idx) { return function() { goTo(idx); }; })(i));
+      dotsWrap.appendChild(btn);
+    }
+  }
+
+  function updateDots() {
+    dotsWrap.querySelectorAll('.rs-shop__dot').forEach(function(d, i) {
+      d.classList.toggle('active', i === current);
+    });
+  }
+
+  function getStepWidth() {
+    if (!items[0]) return 0;
+    return items[0].offsetWidth + 12;
+  }
+
+  function goTo(index) {
+    if (!isMobile()) return;
+    current = Math.max(0, Math.min(index, total - 1));
+    track.style.transform = 'translateX(-' + (current * getStepWidth()) + 'px)';
+    updateDots();
+  }
+
+  function startAuto() {
+    stopAuto();
+    autoTimer = setInterval(function() {
+      if (!isMobile()) return;
+      goTo((current + 1) % total);
+    }, 2000);
+  }
+
+  function stopAuto() {
+    if (autoTimer) { clearInterval(autoTimer); autoTimer = null; }
+  }
+
+  function pauseThenResume() {
+    stopAuto();
+    setTimeout(startAuto, 4000);
+  }
+
+  buildDots();
+  startAuto();
+
+  track.addEventListener('touchstart', function(e) {
+    if (!isMobile()) return;
+    startX = e.touches[0].clientX;
+    pauseThenResume();
+  }, { passive: true });
+
+  track.addEventListener('touchend', function(e) {
+    if (!isMobile()) return;
+    var diff = startX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 40) goTo(diff > 0 ? current + 1 : current - 1);
+  });
+
+  track.addEventListener('mousedown', function(e) {
+    if (!isMobile()) return;
+    isDragging = true;
+    startX = e.clientX;
+    track.classList.add('grabbing');
+    pauseThenResume();
+  });
+
+  document.addEventListener('mouseup', function(e) {
+    if (!isDragging) return;
+    isDragging = false;
+    track.classList.remove('grabbing');
+    var diff = startX - e.clientX;
+    if (Math.abs(diff) > 40) goTo(diff > 0 ? current + 1 : current - 1);
+  });
+
+  document.addEventListener('visibilitychange', function() {
+    if (document.hidden) stopAuto(); else startAuto();
+  });
+
+  window.addEventListener('resize', function() {
+    if (!isMobile()) { track.style.transform = ''; stopAuto(); }
+    else { goTo(current); startAuto(); }
+  });
+})();
+
+/* ===== WHO CARDS SLIDER (nai JS) ===== */
+(function() {
+  var sliders = document.querySelectorAll('[id^="rs-cards-"]');
+  sliders.forEach(function(track) {
+    var sectionId = track.id.replace('rs-cards-', '');
+    var prevBtn = document.getElementById('rs-prev-' + sectionId);
+    var nextBtn = document.getElementById('rs-next-' + sectionId);
+    var cards = track.querySelectorAll('.rs-who__card');
+    var current = 0;
+    var total = cards.length;
+    var startX = 0;
+    var isDragging = false;
+
+    function isMobile() { return window.innerWidth <= 749; }
+
+    function updateArrows() {
+      if (!prevBtn || !nextBtn) return;
+      prevBtn.classList.toggle('rs-arrow--hidden', current === 0);
+      nextBtn.classList.toggle('rs-arrow--hidden', current === total - 1);
+    }
+
+    function getStepWidth() {
+      if (!cards[0]) return 0;
+      return cards[0].offsetWidth + 12;
+    }
+
+    function goTo(index) {
+      if (!isMobile()) return;
+      current = Math.max(0, Math.min(index, total - 1));
+      track.style.transform = 'translateX(-' + (current * getStepWidth()) + 'px)';
+      updateArrows();
+    }
+
+    updateArrows();
+
+    if (prevBtn) prevBtn.addEventListener('click', function() { goTo(current - 1); });
+    if (nextBtn) nextBtn.addEventListener('click', function() { goTo(current + 1); });
+
+    track.addEventListener('touchstart', function(e) {
+      if (!isMobile()) return;
+      startX = e.touches[0].clientX;
+    }, { passive: true });
+
+    track.addEventListener('touchend', function(e) {
+      if (!isMobile()) return;
+      var diff = startX - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 40) goTo(diff > 0 ? current + 1 : current - 1);
+    });
+
+    track.addEventListener('mousedown', function(e) {
+      if (!isMobile()) return;
+      isDragging = true;
+      startX = e.clientX;
+      track.classList.add('grabbing');
+    });
+
+    document.addEventListener('mouseup', function(e) {
+      if (!isDragging) return;
+      isDragging = false;
+      track.classList.remove('grabbing');
+      var diff = startX - e.clientX;
+      if (Math.abs(diff) > 40) goTo(diff > 0 ? current + 1 : current - 1);
+    });
+
+    window.addEventListener('resize', function() {
+      if (!isMobile()) track.style.transform = '';
+      else goTo(current);
+    });
+  });
+})();
+</script>
+
+
+{% schema %}
+{
+  "name": "RS - Body As You Age",
+  "settings": [
+    { "type": "header", "content": "Shift Shop" },
+    { "type": "text", "id": "shop_heading", "label": "Shop Heading", "default": "Shift Shop" },
+    { "type": "header", "content": "Stats Section" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "What happens to your body as you age?" },
+    { "type": "textarea", "id": "description", "label": "Description", "default": "As we age, our body gradually undergoes changes in gut health, muscle mass, bones, cognition, and sleep. The following statistics have been put not to scare you but to make you aware of changes one's body goes through with age." },
+    { "type": "header", "content": "Stat 1" },
+    { "type": "text", "id": "stat_number_1", "label": "Number", "default": "10" },
+    { "type": "text", "id": "stat_title_1", "label": "Title", "default": "Bone mineral density decline" },
+    { "type": "textarea", "id": "stat_text_1", "label": "Description", "default": "can happen in individuals every decade after the age of 40, resulting in weakening bones and making them susceptible to fractures.*" },
+    { "type": "header", "content": "Stat 2" },
+    { "type": "text", "id": "stat_number_2", "label": "Number", "default": "40" },
+    { "type": "text", "id": "stat_title_2", "label": "Title", "default": "Loss of muscle mass" },
+    { "type": "textarea", "id": "stat_text_2", "label": "Description", "default": "can happen in individuals after the age of 40, affecting strength.**" },
+    { "type": "header", "content": "Stat 3" },
+    { "type": "text", "id": "stat_number_3", "label": "Number", "default": "40" },
+    { "type": "text", "id": "stat_title_3", "label": "Title", "default": "Adults start experiencing digestive issues" },
+    { "type": "textarea", "id": "stat_text_3", "label": "Description", "default": "like bloating, indigestion, and irregular bowel movements with age.***" },
+    { "type": "header", "content": "Health Goal Block" },
+    { "type": "text", "id": "goal_heading", "label": "Heading", "default": "What's your health goal ?" },
+    { "type": "textarea", "id": "goal_description", "label": "Description", "default": "We understand no two bodies are the same. So, no two paths to fitness can also be the same. Our team of health specialists at Right Shift have curated personalized tools and resources for your body's unique needs, ensuring a specialized approach for optimizing your health." },
+    { "type": "header", "content": "Button" },
+    { "type": "text", "id": "goal_button_text", "label": "Button Text", "default": "Start Now" },
+    { "type": "url", "id": "goal_button_url", "label": "Button URL" }
+  ],
+  "blocks": [
+    {
+      "type": "shop_item",
+      "name": "Shop Item",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Product Image" },
+        { "type": "url", "id": "link", "label": "Link" }
+      ]
+    },
+    {
+      "type": "who_item",
+      "name": "Who Card",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Card Image" },
+        { "type": "text", "id": "label", "label": "Card Label", "default": "Health Goal" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "RS - Body As You Age",
+      "blocks": [
+        { "type": "shop_item" },
+        { "type": "shop_item" },
+        { "type": "shop_item" },
+        { "type": "shop_item" },
+        { "type": "who_item", "settings": { "label": "The Right Food" } },
+        { "type": "who_item", "settings": { "label": "The Right LifeStyle" } },
+        { "type": "who_item", "settings": { "label": "The Right MindSet" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

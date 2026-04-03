@@ -1,0 +1,558 @@
+{% assign custom_footer = section.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .footer-{{ custom_footer }} {
+    background-color: {{ section.settings.background_color }};
+    color: {{ section.settings.text_color }};
+    width: 100%;
+  }
+
+  .footer-container-{{ custom_footer }} {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 70px 40px 0px;
+  }
+
+  /* ── TOP ROW: Logo + Nav Links ── */
+  .footer-top-row-{{ custom_footer }} {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 60px;
+  }
+
+  .footer-logo-wrap-{{ custom_footer }} {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+
+  .footer-logo-img-{{ custom_footer }} {
+    max-width: {{ section.settings.logo_width }}px;
+    height: auto;
+  }
+
+
+  .footer-nav-{{ custom_footer }} {
+    display: flex;
+    align-items: center;
+    gap: 35px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .footer-nav-{{ custom_footer }} a {
+    color: {{ section.settings.link_color }};
+    text-decoration: none;
+    font-size: {{ section.settings.link_size }}px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    font-weight: 400;
+    transition: opacity 0.2s ease;
+  }
+
+  .footer-nav-{{ custom_footer }} a:hover {
+    opacity: 0.7;
+  }
+
+  /* ── MIDDLE ROW: Social Icons + Payment Icons ── */
+  .footer-middle-row-{{ custom_footer }} {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 0;
+    border-bottom: 1px solid {{ section.settings.divider_color }};
+  }
+
+  .footer-social-icons-{{ custom_footer }} {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .footer-social-icon-{{ custom_footer }} {
+ 
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    color: {{ section.settings.social_icon_color }};
+  }
+
+  .footer-social-icon-{{ custom_footer }}:hover {
+    background-color: rgba(255,255,255,0.1);
+  }
+
+  .footer-social-icon-{{ custom_footer }} svg {
+    width: 40px;
+    height: 40px;
+    fill: {{ section.settings.social_icon_color }};
+  }
+
+  .footer-payment-icons-{{ custom_footer }} {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .footer-payment-badge-{{ custom_footer }} {
+    background-color: {{ section.settings.payment_badge_bg }};
+    border-radius: 5px;
+    padding: 5px 10px;
+    font-size: 11px;
+    font-weight: 700;
+    color: {{ section.settings.payment_badge_text }};
+    letter-spacing: 0.3px;
+  }
+
+  .footer-payment-badge-paypal-{{ custom_footer }} {
+    background-color: #003087;
+    color: #fff;
+    font-style: italic;
+  }
+
+  .footer-payment-badge-union-{{ custom_footer }} {
+    background-color: #e31837;
+    color: #fff;
+  }
+
+  .footer-payment-badge-master-{{ custom_footer }} {
+    background-color: #fff;
+    padding: 5px 8px;
+  }
+
+  .footer-payment-badge-opay-{{ custom_footer }} {
+    background-color: #1a1a1a;
+    color: #00d4aa;
+    border: 1px solid #00d4aa;
+  }
+
+  .footer-payment-badge-visa-{{ custom_footer }} {
+    background-color: #1a1a6b;
+    color: #fff;
+    font-style: italic;
+    font-size: 13px;
+    letter-spacing: 1px;
+  }
+
+  /* ── BOTTOM BAR ── */
+  .footer-bottom-bar-{{ custom_footer }} {
+    padding: 14px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    flex-wrap: wrap;
+  }
+
+  .footer-bottom-bar-{{ custom_footer }} span,
+  .footer-bottom-bar-{{ custom_footer }} a {
+    font-size: {{ section.settings.copyright_size }}px;
+    color: {{ section.settings.copyright_color }};
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    font-weight: 400;
+  }
+
+  .footer-bottom-bar-{{ custom_footer }} a:hover {
+    opacity: 0.7;
+  }
+
+  .footer-bottom-sep-{{ custom_footer }} {
+    margin: 0 10px;
+    color: {{ section.settings.copyright_color }};
+    font-size: {{ section.settings.copyright_size }}px;
+  }
+
+  /* ── Responsive ── */
+  @media screen and (max-width: 768px) {
+    .footer-container-{{ custom_footer }} {
+    padding: 40px 20px 0px;
+  }
+    .footer-logo-img-{{ custom_footer }} {
+    width:184px;
+    height:31px;
+  }
+    .footer-top-row-{{ custom_footer }} {
+      flex-direction: column;
+      gap: 35px;
+     align-items: flex-start;
+     padding-bottom: 15px;
+    }
+
+    .footer-nav-{{ custom_footer }} {
+      gap: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .footer-middle-row-{{ custom_footer }} {
+      flex-direction: column;
+      gap: 25px;
+      align-items: flex-start;
+      padding: 25px 0;
+    }
+.footer-social-icon-{{ custom_footer }} svg {
+    width: 20px;
+    height: 19px;
+  }
+    .footer-payment-icons-{{ custom_footer }} {
+      justify-content: center;
+    }
+
+    .footer-bottom-bar-{{ custom_footer }} {
+      /* flex-direction: column; */
+      /* text-align: center; */
+       gap: 6px;
+       font-size:10px;
+       font-weight:400;
+       display:block;
+       padding: 14px 0px;
+    }
+
+    .footer-bottom-sep-{{ custom_footer }} {
+      display: none;
+    }
+}
+{% endstyle %}
+
+<footer class="footer-{{ custom_footer }}" {{ section.shopify_attributes }}>
+  <div class="footer-container-{{ custom_footer }}">
+
+    {%- comment -%} ── TOP ROW: Logo + Nav ── {%- endcomment -%}
+    <div class="footer-top-row-{{ custom_footer }}">
+
+      {%- comment -%} Logo / Brand Name {%- endcomment -%}
+      <a href="/" class="footer-logo-wrap-{{ custom_footer }}">
+        {% if section.settings.logo %}
+          <img
+            src="{{ section.settings.logo | image_url: width: 400 }}"
+            alt="{{ section.settings.brand_name | escape }}"
+            class="footer-logo-img-{{ custom_footer }}"
+            loading="lazy"
+          >
+        {% endif %}
+        {% if section.settings.brand_name != blank %}
+        {% endif %}
+      </a>
+
+      {%- comment -%} Nav Links {%- endcomment -%}
+      {% if section.settings.nav_menu != blank %}
+        <nav>
+          <ul class="footer-nav-{{ custom_footer }}">
+            {% for link in linklists[section.settings.nav_menu].links %}
+              <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+            {% endfor %}
+          </ul>
+        </nav>
+      {% endif %}
+    </div>
+
+    {%- comment -%} ── MIDDLE ROW: Social + Payment ── {%- endcomment -%}
+    <div class="footer-middle-row-{{ custom_footer }}">
+
+      {%- comment -%} Social Icons {%- endcomment -%}
+      <div class="footer-social-icons-{{ custom_footer }}">
+        {% if section.settings.facebook_url != blank %}
+          <a href="{{ section.settings.facebook_url }}" class="footer-social-icon-{{ custom_footer }}" aria-label="Facebook" target="_blank" rel="noopener">
+           {{ 'facebook.svg' | inline_asset_content }}
+          </a>
+        {% endif %}
+        {% if section.settings.instagram_url != blank %}
+          <a href="{{ section.settings.instagram_url }}" class="footer-social-icon-{{ custom_footer }}" aria-label="Instagram" target="_blank" rel="noopener">
+            {{ 'instagram.svg' | inline_asset_content }}
+          </a>
+        {% endif %}
+        {% if section.settings.tiktok_url != blank %}
+          <a href="{{ section.settings.tiktok_url }}" class="footer-social-icon-{{ custom_footer }}" aria-label="TikTok" target="_blank" rel="noopener">
+            {{ 'tik-tok.svg' | inline_asset_content }}
+          </a>
+        {% endif %}
+      </div>
+
+      {%- comment -%} Payment Icons {%- endcomment -%}
+      <div class="footer-payment-icons-{{ custom_footer }}">
+      <span class="footer-payment-icons-{{ custom_footer }}" aria-hidden="true">
+   <img src="{{ 'Payment-Gateaway.svg' | asset_url }}" alt="Payment Methods" loading="lazy" style="width: 415px; height: 65px;">
+     </span>
+        {% comment %} {% if section.settings.show_paypal %}
+          <span class="footer-payment-badge-{{ custom_footer }} footer-payment-badge-paypal-{{ custom_footer }}">PayPal</span>
+        {% endif %}
+        {% if section.settings.show_unionpay %}
+          <span class="footer-payment-badge-{{ custom_footer }} footer-payment-badge-union-{{ custom_footer }}">UnionPay</span>
+        {% endif %}
+        {% if section.settings.show_mastercard %}
+          <span class="footer-payment-badge-{{ custom_footer }} footer-payment-badge-master-{{ custom_footer }}">
+            <svg width="38" height="24" viewBox="0 0 38 24" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="15" cy="12" r="10" fill="#EB001B"/>
+              <circle cx="23" cy="12" r="10" fill="#F79E1B"/>
+              <path d="M19 5.3a10 10 0 0 1 0 13.4A10 10 0 0 1 19 5.3z" fill="#FF5F00"/>
+            </svg>
+          </span>
+        {% endif %}
+        {% if section.settings.show_opay %}
+          <span class="footer-payment-badge-{{ custom_footer }} footer-payment-badge-opay-{{ custom_footer }}">OPay</span>
+        {% endif %}
+        {% if section.settings.show_visa %}
+          <span class="footer-payment-badge-{{ custom_footer }} footer-payment-badge-visa-{{ custom_footer }}">VISA</span>
+        {% endif %} {% endcomment %}
+      </div>
+    </div>
+
+    {%- comment -%} ── BOTTOM BAR ── {%- endcomment -%}
+    <div class="footer-bottom-bar-{{ custom_footer }}">
+      <span>{{ section.settings.copyright_text }}</span>
+      {% if section.settings.privacy_policy_url != blank %}
+        <span class="footer-bottom-sep-{{ custom_footer }}">·</span>
+        <a href="{{ section.settings.privacy_policy_url }}">Privacy Policy</a>
+      {% endif %}
+      {% if section.settings.contact_url != blank %}
+        <span class="footer-bottom-sep-{{ custom_footer }}">·</span>
+        <a href="{{ section.settings.contact_url }}">Contact Information</a>
+      {% endif %}
+      {% if section.settings.refund_url != blank %}
+        <span class="footer-bottom-sep-{{ custom_footer }}">·</span>
+        <a href="{{ section.settings.refund_url }}">Refund Policy</a>
+      {% endif %}
+      {% if section.settings.terms_url != blank %}
+        <span class="footer-bottom-sep-{{ custom_footer }}">·</span>
+        <a href="{{ section.settings.terms_url }}">Terms of Service</a>
+      {% endif %}
+    </div>
+
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Véhvarielle Footer",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Brand"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo"
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "label": "Logo width",
+      "min": 60,
+      "max": 400,
+      "step": 10,
+      "unit": "px",
+      "default": 380
+    },
+    {
+      "type": "text",
+      "id": "brand_name",
+      "label": "Brand name",
+      "default": "véhvarielle"
+    },
+    {
+      "type": "range",
+      "id": "brand_name_size",
+      "label": "Brand name size",
+      "min": 16,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "default": 28
+    },
+    {
+      "type": "color",
+      "id": "brand_name_color",
+      "label": "Brand name color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Navigation"
+    },
+    {
+      "type": "link_list",
+      "id": "nav_menu",
+      "label": "Footer Navigation Menu",
+      "info": "Select a menu — links appear in the top nav row"
+    },
+    {
+      "type": "header",
+      "content": "Social Media"
+    },
+    {
+      "type": "url",
+      "id": "facebook_url",
+      "label": "Facebook URL"
+    },
+    {
+      "type": "url",
+      "id": "instagram_url",
+      "label": "Instagram URL"
+    },
+    {
+      "type": "url",
+      "id": "tiktok_url",
+      "label": "TikTok URL"
+    },
+    {
+      "type": "header",
+      "content": "Payment Icons"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_paypal",
+      "label": "Show PayPal",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_unionpay",
+      "label": "Show UnionPay",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_mastercard",
+      "label": "Show Mastercard",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_opay",
+      "label": "Show OPay",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_visa",
+      "label": "Show Visa",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Bottom Bar Links"
+    },
+    {
+      "type": "text",
+      "id": "copyright_text",
+      "label": "Copyright text",
+      "default": "© 2025, VÉHVARIELLE ALL RIGHTS RESERVED"
+    },
+    {
+      "type": "url",
+      "id": "privacy_policy_url",
+      "label": "Privacy Policy URL"
+    },
+    {
+      "type": "url",
+      "id": "contact_url",
+      "label": "Contact Information URL"
+    },
+    {
+      "type": "url",
+      "id": "refund_url",
+      "label": "Refund Policy URL"
+    },
+    {
+      "type": "url",
+      "id": "terms_url",
+      "label": "Terms of Service URL"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#3d1f0e"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "link_color",
+      "label": "Nav Links",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "divider_color",
+      "label": "Divider",
+      "default": "#5a3020"
+    },
+    {
+      "type": "color",
+      "id": "copyright_color",
+      "label": "Bottom bar text",
+      "default": "#cccccc"
+    },
+    {
+      "type": "range",
+      "id": "link_size",
+      "label": "Nav link size",
+      "min": 10,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "copyright_size",
+      "label": "Bottom bar text size",
+      "min": 9,
+      "max": 14,
+      "step": 1,
+      "unit": "px",
+      "default": 11
+    },
+    {
+      "type": "header",
+      "content": "Social Icon Style"
+    },
+    {
+      "type": "color",
+      "id": "social_icon_color",
+      "label": "Icon color",
+      "default": "#ffffff"
+    },
+   
+    {
+      "type": "header",
+      "content": "Payment Badge Colors"
+    },
+    {
+      "type": "color",
+      "id": "payment_badge_bg",
+      "label": "Default badge background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "payment_badge_text",
+      "label": "Default badge text",
+      "default": "#000000"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Véhvarielle Footer"
+    }
+  ]
+}
+{% endschema %}

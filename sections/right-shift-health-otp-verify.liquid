@@ -1,0 +1,837 @@
+<style>
+/* ── BASE ── */
+#rs-signup-panel-{{ section.id }} input::placeholder { color: #FFF !important; }
+.rs-calc * { box-sizing: border-box; margin: 0; padding: 0; }
+.rs-calc { background: #fceed9; padding: 32px 20px 60px; min-height: 60vh; }
+.rs-calc__wrap { max-width: 1270px; margin: 0 auto; }
+
+/* ── BREADCRUMB ── */
+.rs-calc__bread { font-size: 20px; color: #2d2119; margin-bottom: 24px; }
+.rs-calc__bread a { color: #2d2119; text-decoration: none; }
+.rs-calc__bread a:hover { color: #175c2f; }
+.rs-calc__bread span { margin: 0 6px; }
+
+/* ── STEPPER ── */
+.rs-calc__stepper {  display: flex; align-items: center; justify-content: center; margin-bottom: 36px; gap: 0; display: none; }
+.rs-step { display: flex; flex-direction: column; align-items: center; gap: 6px; position: relative; z-index: 1; }
+.rs-step__circle { width: 44px; height: 44px; border-radius: 50%; background: #2d2119; color: #fff; display: flex; align-items: center; justify-content: center; font-size: .9rem; font-weight: 700; border: 3px solid #2d2119; transition: all .3s; }
+.rs-step.active .rs-step__circle { background: #175c2f; border-color: #175c2f; }
+.rs-step.done .rs-step__circle { background: #175c2f; border-color: #175c2f; }
+.rs-step__label { font-size: 20px; color: #2d2119; white-space: nowrap; }
+.rs-step.active .rs-step__label { color: #175c2f; font-weight: 700; }
+.rs-step__line { flex: 1; height: 3px; background: #2d2119; min-width: 60px; max-width: 120px; margin-bottom: 20px; transition: background .3s; }
+.rs-step__line.done { background: #175c2f; }
+
+/* ── CARD ── */
+.rs-calc__card { background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 16px rgba(0,0,0,.08); }
+.rs-calc__card-header { background: #2d2119; color: #fff; padding: 16px 24px; font-size: 31px; font-family: 'Paytone One'; display: flex; align-items: center; justify-content: space-between; }
+.rs-calc__card-close { background: none; border: none; color: #fff; font-size: 1.3rem; cursor: pointer; width: 30px; height: 30px; border-radius: 50%; border: 2px solid #fff; display: flex; align-items: center; justify-content: center; line-height: 1; }
+.rs-calc__card-header span { line-height: 1; }
+
+/* ── STEP 1 INTRO ── */
+.rs-intro { padding: 36px 40px; text-align: center; }
+.rs-intro h2 { font-size: 45px;  color: #2d2119; font-family: 'Paytone One'; margin-bottom: 16px; }
+.rs-intro p { font-size: 20px; color: #444; line-height: 1.7; max-width: 800px; margin: 0 auto 28px; }
+.rs-intro p a { color: #175c2f; }
+.rs-intro__img-wrap { width: 380px; max-width: 100%; border-radius: 16px; overflow: hidden; margin: 0 auto 24px; position: relative; background: #222; display: none; }
+.rs-intro__img { width: 100%; height: 280px; object-fit: cover; display: block; }
+.rs-intro__img-label { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(30,20,10,.55); color: #fff; text-align: center; padding: 12px; font-size: .95rem; }
+.rs-intro__checkbox { display: flex; align-items: flex-start; gap: 10px; justify-content: center; margin-bottom: 28px; font-size: 16px; color: #2d2119; text-align: left; max-width: 340px; margin-left: auto; margin-right: auto; }
+.rs-intro__checkbox input { margin-top: 3px; width: 16px; height: 16px; flex-shrink: 0; accent-color: #175c2f; }
+.rs-intro__checkbox a { color: #175c2f; }
+
+/* ── CTA BAR ── */
+.rs-calc__cta-bar { font-family: 'Paytone One'; background: #2d2119; color: #fff; text-align: center; padding: 18px 24px; font-size: 31px; cursor: pointer; transition: background .2s; border: none; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; line-height: 0.8; }
+.rs-calc__cta-bar:hover { background: #175c2f; }
+.rs-calc__disclaimer { text-align: center; font-size: .8rem; color: #777; margin-top: 16px; line-height: 1.6; }
+
+/* ── QUESTIONS ── */
+.rs-questions { padding: 28px 32px 8px; }
+.rs-q-item { margin-bottom: 28px; padding-bottom: 8px; }
+.rs-q-item__text { font-size: 21px; font-weight: 700; color: #2d2119; margin-bottom: 6px; line-height: 1.5; }
+.rs-q-item__hint { font-size: .8rem; color: #777; margin-bottom: 14px; }
+.rs-q-item__options { display: flex; flex-wrap: wrap; gap: 10px; }
+.rs-q-btn { font-family: 'Urbanist', sans-serif; padding: 10px 18px; border: 1px solid #2d2119; border-radius: 15px; background: #fff; color: #2d2119; font-size: 18px; font-weight: 500; cursor: pointer; transition: all .2s; display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+.rs-q-btn:hover { border-color: #175c2f; color: #175c2f; }
+.rs-q-btn.selected { background: #175c2f; border-color: #175c2f; color: #fff; }
+
+/* ── NAV ── */
+.rs-calc__nav { background: #2d2119; padding: 0; }
+.rs-calc__nav-btn {     font-family: 'Paytone One'; width: 100%; background: #2d2119; color: #fff; border: none; padding: 18px; font-size: 31px;  cursor: pointer; transition: background .2s; line-height: 1; }
+.rs-calc__nav-btn:hover { background: #175c2f; }
+
+/* ── MODALS ── */
+.rs-modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,.45); z-index: 9000; align-items: center; justify-content: center; padding: 20px; }
+.rs-modal-overlay.open { display: flex; }
+.rs-modal { background: #fff; border-radius: 16px; width: 100%; max-width: 440px; box-shadow: 0 24px 60px rgba(0,0,0,.25); position: relative; overflow: hidden; max-height: 92vh; overflow-y: auto; }
+.rs-modal__close { position: absolute; top: 12px; right: 12px; width: 30px; height: 30px; border-radius: 50%; background: #e53935; border: none; color: #fff; font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: bold; z-index: 10; line-height: 1; }
+.rs-modal__body { padding: 32px 28px 28px; }
+
+/* Score Modal */
+.rs-score-banner { background: #175c2f; padding: 24px 20px 16px; text-align: center; color: #fff; }
+.rs-score-banner p { font-size: .95rem; font-weight: 600; margin-bottom: 6px; }
+.rs-score-banner .rs-score-num { font-size: 2.8rem; font-weight: 900; color: #f5c518; line-height: 1; }
+.rs-score-gauge { margin: 12px auto 0; width: 140px; }
+.rs-score-gauge svg { width: 100%; }
+
+/* Modal common */
+.rs-modal__title { font-size: 1.3rem; font-weight: 900; color: #2d2119; margin-bottom: 4px; }
+.rs-modal__subtitle { font-size: .88rem; color: #FFF; margin-bottom: 18px; line-height: 1.5; }
+.rs-form-group { margin-bottom: 14px; }
+.rs-form-label { font-size: .85rem; color: #444; margin-bottom: 6px; display: block; }
+.rs-form-input { width: 100%; padding: 12px 14px; border: 1.5px solid #ddd; border-radius: 8px; font-size: .95rem; outline: none; color: #2d2119; transition: border .2s; font-family: inherit; }
+.rs-form-input:focus { border-color: #175c2f; box-shadow: 0 0 0 3px rgba(26,92,42,.12); }
+.rs-form-hint { font-size: .78rem; color: #888; margin-top: 5px; }
+.rs-or-divider { display: flex; align-items: center; gap: 10px; margin: 16px 0; color: #aaa; font-size: .85rem; }
+.rs-or-divider::before, .rs-or-divider::after { content: ''; flex: 1; height: 1px; background: #ddd; }
+
+/* Google Button */
+.rs-google-btn { width: 100%; display: flex; align-items: center; justify-content: center; gap: 12px; padding: 13px 20px; border: 1.5px solid #ddd; border-radius: 50px; background: #fff; color: #333; font-size: .95rem; font-weight: 600; cursor: pointer; transition: all .2s; font-family: inherit; margin-bottom: 12px; }
+.rs-google-btn:hover { border-color: #4285f4; background: #f8f9ff; }
+.rs-google-btn svg { flex-shrink: 0; }
+
+/* Phone */
+.rs-phone-wrap { display: flex; gap: 8px; }
+.rs-phone-code { width: 80px; padding: 12px 10px; border: 1.5px solid #ddd; border-radius: 8px; font-size: .95rem; outline: none; color: #2d2119; background: #f9f9f9; font-family: inherit; text-align: center; }
+
+/* Submit */
+.rs-modal__submit { width: 100%; background: #aaa; color: #fff; border: none; border-radius: 50px; padding: 14px; font-size: 1rem; font-weight: 700; cursor: not-allowed; margin-top: 8px; transition: background .2s; font-family: inherit; }
+.rs-modal__submit.active { background: #175c2f; cursor: pointer; }
+.rs-modal__submit.active:hover { background: #145022; }
+
+/* Tabs */
+.rs-auth-tabs { display: flex; margin-bottom: 20px; }
+.rs-auth-tab { flex: 1; padding: 12px; text-align: center; font-weight: 700; font-size: .95rem; color: #888; cursor: pointer;  margin-bottom: -2px; transition: all .2s; }
+.rs-auth-tab.active { color: #FFF; border-bottom-color: #175c2f; border-bottom: 2px solid #fff; }
+
+/* OTP */
+.rs-otp-boxes { display: flex; gap: 12px; margin: 16px 0; justify-content: center; }
+.rs-otp-input { width: 56px; height: 60px; border: 1.5px solid #ccc; border-radius: 8px; text-align: center; font-size: 1.4rem; font-weight: 700; outline: none; transition: border .2s; font-family: inherit; }
+.rs-otp-input:focus { border-color: #175c2f; box-shadow: 0 0 0 3px rgba(26,92,42,.12); }
+.rs-resend { font-size: .85rem; color: #2d2119; margin-bottom: 16px; text-align: center; }
+.rs-resend span { color: #175c2f; font-weight: 700; cursor: pointer; }
+.rs-resend .rs-resend-timer { color: #888; font-weight: normal; cursor: default; }
+
+/* Done Modal */
+.rs-done-body { text-align: center; padding: 48px 28px; }
+.rs-done-icon { font-size: 3.5rem; margin-bottom: 16px; }
+.rs-done-body h3 { font-size: 1.4rem; font-weight: 900; color: #2d2119; margin-bottom: 8px; line-height: 1.4; }
+.rs-done-body p { font-size: .9rem; color: #666; margin-bottom: 28px; }
+.rs-done-btn { background: #175c2f; color: #fff; border: none; border-radius: 50px; padding: 14px 60px; font-size: 1rem; font-weight: 700; cursor: pointer; transition: background .2s; font-family: inherit; }
+.rs-done-btn:hover { background: #145022; }
+
+/* Error */
+.rs-error-msg { color: #e53935; font-size: .82rem; margin-top: 6px; display: none; }
+.rs-error-msg.show { display: block; }
+
+@media (max-width: 600px) {
+  .rs-calc__nav-btn { font-size: 20px; }
+  .rs-calc__cta-bar { font-size: 18px;     padding: 13px 24px; }
+  .rs-intro { padding-bottom: 0px; }
+  .rs-intro__checkbox { margin-bottom: 0px; }
+  .rs-intro p { line-height: normal; }
+  .rs-intro__checkbox {
+  
+    font-size: 12px;
+    
+    max-width: 245px;
+   }
+  .rs-calc__card-header {     padding: 8px 24px;
+    font-size: 20px; }
+    .rs-intro p {
+    font-size: 18px; }
+  .rs-calc { padding: 20px 12px 40px; }
+  .rs-intro { padding: 24px 16px; }
+  .rs-intro h2 { font-size: 28px; }
+  .rs-questions { padding: 20px 16px 8px; }
+  .rs-q-btn { padding: 9px 13px; font-size: .82rem; }
+  .rs-step__circle { width: 36px; height: 36px; font-size: .8rem; }
+  .rs-step__line { min-width: 40px; }
+  .rs-modal__body { padding: 24px 18px 20px; }
+  .rs-otp-input { width: 46px; height: 52px; }
+}
+</style>
+
+{%- assign step1_title = section.settings.step1_title | default: 'Diet plans' -%}
+{%- assign step2_title = section.settings.step2_title | default: 'Energy Levels' -%}
+
+<div class="rs-calc" id="rs-calc-{{ section.id }}">
+  <div class="rs-calc__wrap">
+
+    <div class="rs-calc__bread">
+      <a href="{{ routes.root_url }}">Home</a><span>›</span><span>Calculator</span>
+    </div>
+
+    <div class="rs-calc__stepper" id="rs-stepper-{{ section.id }}">
+      <div class="rs-step active" data-step="1">
+        <div class="rs-step__circle">1</div>
+        <div class="rs-step__label">{{ section.settings.step1_label | default: 'Goal' }}</div>
+      </div>
+      <div class="rs-step__line" id="rs-line1-{{ section.id }}"></div>
+      <div class="rs-step" data-step="2">
+        <div class="rs-step__circle">2</div>
+        <div class="rs-step__label">{{ section.settings.step2_label | default: 'Questionnaire' }}</div>
+      </div>
+      <div class="rs-step__line" id="rs-line2-{{ section.id }}"></div>
+      <div class="rs-step" data-step="3">
+        <div class="rs-step__circle">3</div>
+        <div class="rs-step__label">{{ section.settings.step3_label | default: 'Personal Information' }}</div>
+      </div>
+      <div class="rs-step__line" id="rs-line3-{{ section.id }}"></div>
+      <div class="rs-step" data-step="4">
+        <div class="rs-step__circle">4</div>
+        <div class="rs-step__label">{{ section.settings.step4_label | default: 'Score' }}</div>
+      </div>
+    </div>
+
+    <!-- STEP 1 -->
+    <div id="rs-step1-{{ section.id }}" class="rs-calc__card">
+      <div class="rs-calc__card-header">
+        <span>{{ step1_title }}</span>
+        <button class="rs-calc__card-close" onclick="rsCalcReset('{{ section.id }}')">✕</button>
+      </div>
+      <div class="rs-intro">
+        <h2>{{ section.settings.intro_heading | default: 'Know your health' }}</h2>
+        <p>{{ section.settings.intro_text | default: 'Research shows that eating fruits, exercising regularly, and maintaining a healthy weight boosts your health span. Partnering with <a href="#">TGHC – The Good Health Clinic</a>, we offer an easy-to-use questionnaire to assess well-being.' }}</p>
+        <div class="rs-intro__img-wrap">
+          {% if section.settings.intro_image != blank %}
+            <img src="{{ section.settings.intro_image | image_url: width: 760 }}" alt="{{ section.settings.intro_image_label | default: 'Quality of life' }}" class="rs-intro__img" loading="lazy">
+          {% else %}
+            <div class="rs-intro__img" style="background:linear-gradient(135deg,#2e7d32,#81c784);display:flex;align-items:center;justify-content:center;">
+              <svg width="80" height="80" viewBox="0 0 80 80" fill="none"><circle cx="40" cy="40" r="38" stroke="#fff" stroke-width="3" stroke-dasharray="8 4"/><path d="M25 50 Q40 20 55 50" stroke="#fff" stroke-width="3" fill="none"/><circle cx="40" cy="36" r="8" fill="#fff" fill-opacity=".3"/></svg>
+            </div>
+          {% endif %}
+          <div class="rs-intro__img-label">{{ section.settings.intro_image_label | default: 'Quality of life' }}</div>
+        </div>
+        <div class="rs-intro__checkbox">
+          <input type="checkbox" id="rs-agree-{{ section.id }}" onchange="rsCheckAgree('{{ section.id }}')">
+          <label for="rs-agree-{{ section.id }}">By proceeding, you agree with TGHC's <a href="{{ section.settings.terms_url | default: '#' }}">Terms &amp; Conditions and Privacy Policy</a>.</label>
+        </div>
+      </div>
+      <button class="rs-calc__cta-bar" id="rs-take-test-{{ section.id }}" onclick="rsGoStep2('{{ section.id }}')" disabled style="background:#aaa;cursor:not-allowed;">Take The Test</button>
+    </div>
+
+    <!-- STEP 2a: Q1–Q6 -->
+    <div id="rs-step2a-{{ section.id }}" class="rs-calc__card" style="display:none;">
+      <div class="rs-calc__card-header">
+        <span>{{ step2_title }}</span>
+        <button class="rs-calc__card-close" onclick="rsCalcReset('{{ section.id }}')">✕</button>
+      </div>
+      <div class="rs-questions" id="rs-qa-a-{{ section.id }}">
+        {% assign questions_a = "Q1. Are you nourishing your body with 3-4 servings of fruits and vegetables daily?|Q2. Do you include two or more servings of legumes like beans, lentils, or peas in your daily diet?|Q3. Are you consistent in drinking 6-8 glasses of water daily to maintain proper hydration?|Q4. Is your workout routine fueled by 30 minutes of physical activity five days a week?|Q5. Are you enjoying sound sleep for 6-8 hours every night?|Q6. Are your energy levels high enough to tackle your daily tasks with vigor?" | split: "|" %}
+        {% for question in questions_a %}
+        <div class="rs-q-item">
+          <div class="rs-q-item__text">{{ question }}</div>
+          {% if forloop.index == 1 or forloop.index == 2 %}
+          <div class="rs-q-item__hint">(A serving equals around 100g, like half a cup of fruits such as apples, oranges, melons, berries etc.)</div>
+          {% endif %}
+          <div class="rs-q-item__options" data-q="q{{ forloop.index }}">
+            <button class="rs-q-btn" onclick="rsSelect(this,'{{ section.id }}')">Never</button>
+            <button class="rs-q-btn" onclick="rsSelect(this,'{{ section.id }}')">Rarely</button>
+            <button class="rs-q-btn" onclick="rsSelect(this,'{{ section.id }}')">Sometimes</button>
+            <button class="rs-q-btn" onclick="rsSelect(this,'{{ section.id }}')">Often</button>
+            <button class="rs-q-btn" onclick="rsSelect(this,'{{ section.id }}')">Daily</button>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      <div class="rs-calc__nav">
+        <button class="rs-calc__nav-btn" onclick="rsGoStep2b('{{ section.id }}')">Next →</button>
+      </div>
+    </div>
+
+    <!-- STEP 2b: Q7–Q13 -->
+    <div id="rs-step2b-{{ section.id }}" class="rs-calc__card" style="display:none;">
+      <div class="rs-calc__card-header">
+        <span>{{ step2_title }}</span>
+        <button class="rs-calc__card-close" onclick="rsCalcReset('{{ section.id }}')">✕</button>
+      </div>
+      <div class="rs-questions" id="rs-qa-b-{{ section.id }}">
+        {% assign questions_b = "Q7. Do you find yourself having quality moments with your family and loved ones?|Q8. Do you manage to squeeze in ample time for activities that bring you joy and excitement?|Q9. Can you effortlessly concentrate on one task at a time, steering clear of distractions like a pro?|Q10. Are you able to dedicate sufficient time to things that deeply matter to you?|Q11. Is your coffee or tea consumption crossing the 4-cup mark in a day?|Q12. Do aches and pains distract you daily?|Q13. Have you experienced moments of stress, gloominess, or feelings of worry recently?" | split: "|" %}
+        {% for question in questions_b %}
+        <div class="rs-q-item">
+          <div class="rs-q-item__text">{{ question }}</div>
+          <div class="rs-q-item__options" data-q="q{{ forloop.index | plus: 6 }}">
+            <button class="rs-q-btn" onclick="rsSelect(this,'{{ section.id }}')">Never</button>
+            <button class="rs-q-btn" onclick="rsSelect(this,'{{ section.id }}')">Rarely</button>
+            <button class="rs-q-btn" onclick="rsSelect(this,'{{ section.id }}')">Sometimes</button>
+            <button class="rs-q-btn" onclick="rsSelect(this,'{{ section.id }}')">Often</button>
+            <button class="rs-q-btn" onclick="rsSelect(this,'{{ section.id }}')">Daily</button>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      <div class="rs-calc__nav">
+        <button class="rs-calc__nav-btn" onclick="rsSubmitQuiz('{{ section.id }}')">Submit &amp; See My Score</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- MODAL: Score + Auth -->
+<div class="rs-modal-overlay" id="rs-modal-score-{{ section.id }}">
+  <div class="rs-modal">
+    <button class="rs-modal__close" onclick="rsCloseAll('{{ section.id }}')">✕</button>
+    <div class="rs-score-banner">
+      <p>Your quality of life score is</p>
+      <div><span class="rs-score-num" id="rs-score-display-{{ section.id }}">0</span> / <span>100</span></div>
+    </div>
+    <div class="rs-modal__body">
+      <div class="rs-auth-tabs">
+        <div class="rs-auth-tab active" id="rs-tab-signup-{{ section.id }}" onclick="rsSwitchTab('{{ section.id }}','signup')">Sign Up</div>
+        <div class="rs-auth-tab" id="rs-tab-login-{{ section.id }}" onclick="rsSwitchTab('{{ section.id }}','login')">Login</div>
+      </div>
+      <!-- SIGNUP -->
+      <div id="rs-signup-panel-{{ section.id }}">
+        <div class="rs-modal__subtitle">Create your account to receive the detailed health report</div>
+        <button class="rs-google-btn" onclick="rsGoogleLogin('{{ section.id }}')">
+          <svg width="20" height="20" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.36-8.16 2.36-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+          Continue with Google
+        </button>
+        <div class="rs-or-divider">OR</div>
+        <div class="rs-form-group">
+          <input type="text" class="rs-form-input" placeholder="Full Name" id="rs-name-{{ section.id }}">
+        </div>
+        <div class="rs-form-group">
+          <label class="rs-form-label">Phone Number</label>
+          <div class="rs-phone-wrap">
+            <input type="text" class="rs-phone-code" value="+91" id="rs-phone-code-{{ section.id }}">
+            <input type="tel" class="rs-form-input" placeholder="Enter Phone Number" id="rs-phone-{{ section.id }}" oninput="rsCheckSignupForm('{{ section.id }}')">
+          </div>
+          <div class="rs-form-hint">OTP will be sent via SMS</div>
+        </div>
+        <div class="rs-or-divider">OR use email</div>
+        <div class="rs-form-group">
+          <input type="email" class="rs-form-input" placeholder="Enter Email ID" id="rs-email-signup-{{ section.id }}" oninput="rsCheckSignupForm('{{ section.id }}')">
+          <div class="rs-form-hint">Magic link will be sent to your email</div>
+        </div>
+        <div class="rs-error-msg" id="rs-signup-error-{{ section.id }}"></div>
+        <div id="rs-recaptcha-container-{{ section.id }}"></div>
+        <button class="rs-modal__submit" id="rs-signup-submit-{{ section.id }}" onclick="rsSendOtp('{{ section.id }}','signup')">Send OTP</button>
+      </div>
+      <!-- LOGIN -->
+      <div id="rs-login-panel-{{ section.id }}" style="display:none;">
+        <div class="rs-modal__subtitle">Welcome back! Login to view your scores</div>
+        <button class="rs-google-btn" onclick="rsGoogleLogin('{{ section.id }}')">
+          <svg width="20" height="20" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.36-8.16 2.36-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+          Continue with Google
+        </button>
+        <div class="rs-or-divider">OR</div>
+        <div class="rs-form-group">
+          <label class="rs-form-label">Phone Number</label>
+          <div class="rs-phone-wrap">
+            <input type="text" class="rs-phone-code" value="+91" id="rs-login-phone-code-{{ section.id }}">
+            <input type="tel" class="rs-form-input" placeholder="Enter Phone Number" id="rs-login-phone-{{ section.id }}" oninput="rsCheckLoginForm('{{ section.id }}')">
+          </div>
+        </div>
+        <div class="rs-or-divider">OR use email</div>
+        <div class="rs-form-group">
+          <input type="email" class="rs-form-input" placeholder="Enter Email ID" id="rs-login-email-{{ section.id }}" oninput="rsCheckLoginForm('{{ section.id }}')">
+        </div>
+        <div class="rs-error-msg" id="rs-login-error-{{ section.id }}"></div>
+        <div id="rs-recaptcha-container2-{{ section.id }}"></div>
+        <button class="rs-modal__submit" id="rs-login-submit-{{ section.id }}" onclick="rsSendOtp('{{ section.id }}','login')">Send OTP</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: OTP -->
+<div class="rs-modal-overlay" id="rs-modal-otp-{{ section.id }}">
+  <div class="rs-modal">
+    <button class="rs-modal__close" onclick="rsCloseAll('{{ section.id }}')">✕</button>
+    <div class="rs-modal__body">
+      <div class="rs-modal__title">OTP Verification</div>
+      <div class="rs-modal__subtitle" id="rs-otp-subtitle-{{ section.id }}">Enter the OTP sent to your contact</div>
+      <div class="rs-otp-boxes">
+        <input type="text" maxlength="1" class="rs-otp-input" oninput="rsOtpNext(this,'{{ section.id }}')" onkeydown="rsOtpBack(event,this,'{{ section.id }}')">
+        <input type="text" maxlength="1" class="rs-otp-input" oninput="rsOtpNext(this,'{{ section.id }}')" onkeydown="rsOtpBack(event,this,'{{ section.id }}')">
+        <input type="text" maxlength="1" class="rs-otp-input" oninput="rsOtpNext(this,'{{ section.id }}')" onkeydown="rsOtpBack(event,this,'{{ section.id }}')">
+        <input type="text" maxlength="1" class="rs-otp-input" oninput="rsOtpNext(this,'{{ section.id }}')" onkeydown="rsOtpBack(event,this,'{{ section.id }}')">
+        <input type="text" maxlength="1" class="rs-otp-input" oninput="rsOtpNext(this,'{{ section.id }}')" onkeydown="rsOtpBack(event,this,'{{ section.id }}')">
+        <input type="text" maxlength="1" class="rs-otp-input" oninput="rsOtpNext(this,'{{ section.id }}')" onkeydown="rsOtpBack(event,this,'{{ section.id }}')">
+      </div>
+      <div class="rs-resend">
+        Didn't receive OTP?
+        <span id="rs-resend-btn-{{ section.id }}" onclick="rsResendOtp('{{ section.id }}')" style="display:none;">RESEND</span>
+        <span class="rs-resend-timer" id="rs-resend-timer-{{ section.id }}">Resend in <span id="rs-timer-count-{{ section.id }}">30</span>s</span>
+      </div>
+      <div class="rs-error-msg" id="rs-otp-error-{{ section.id }}"></div>
+      <button class="rs-modal__submit" id="rs-otp-submit-{{ section.id }}" onclick="rsVerifyOtp('{{ section.id }}')">Verify &amp; Get Score</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Done -->
+<div class="rs-modal-overlay" id="rs-modal-done-{{ section.id }}">
+  <div class="rs-modal">
+    <button class="rs-modal__close" onclick="rsCloseAll('{{ section.id }}')">✕</button>
+    <div class="rs-done-body">
+      <div class="rs-done-icon">🎉</div>
+      <h3>Your detailed health report<br>has been sent to your email!</h3>
+      <p id="rs-done-email-{{ section.id }}" style="color:#175c2f;font-weight:700;margin-bottom:8px;"></p>
+      <p style="font-size:.85rem;color:#888;margin-bottom:24px;">Check your dashboard to see your score history</p>
+      <button class="rs-done-btn" onclick="rsCloseAll('{{ section.id }}')">Done</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ FIREBASE + FIRESTORE SCRIPT ═══ -->
+<script type="module">
+  const FIREBASE_CONFIG = {
+    apiKey:            "AIzaSyA-kUPK37duIL2OAE1uojfauxPV7HryTg4",
+    authDomain:        "right-shift-health.firebaseapp.com",
+    projectId:         "right-shift-health",
+    storageBucket:     "right-shift-health.firebasestorage.app",
+    messagingSenderId: "13670469414",
+    appId:             "1:13670469414:web:f0949b066b363de928fbe7"
+  };
+  const SENDGRID_WORKER_URL = "https://rs-email-sender.vishalchouhan-web.workers.dev";
+
+  import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getAuth, GoogleAuthProvider, signInWithPopup,
+           RecaptchaVerifier, signInWithPhoneNumber,
+           sendSignInLinkToEmail, isSignInWithEmailLink,
+           signInWithEmailLink, onAuthStateChanged }
+                                 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+  import { getFirestore, doc, getDoc, setDoc, updateDoc, arrayUnion, serverTimestamp }
+                                 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+  const app = getApps().length ? getApp() : initializeApp(FIREBASE_CONFIG);
+
+  const firebaseAuth   = getAuth(app);
+  const db             = getFirestore(app);
+  const googleProvider = new GoogleAuthProvider();
+
+  let rsState = {
+    confirmationResult: null,
+    otpMode: null,
+    otpTarget: null,
+    userName: '',
+    totalScore: 0,
+    scoreBreakdown: [],
+    timerInterval: null
+  };
+
+  function showError(id, msg) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.textContent = msg; el.classList.add('show');
+    setTimeout(() => el.classList.remove('show'), 6000);
+  }
+  function setBtnLoading(btnId, loading, text) {
+    const btn = document.getElementById(btnId);
+    if (!btn) return;
+    btn.textContent = loading ? '⏳ Please wait...' : text;
+    btn.disabled = loading;
+    btn.classList.toggle('active', !loading);
+  }
+  function startOtpTimer(sid) {
+    clearInterval(rsState.timerInterval);
+    let count = 30;
+    const countEl = document.getElementById('rs-timer-count-' + sid);
+    const timerEl = document.getElementById('rs-resend-timer-' + sid);
+    const resendEl = document.getElementById('rs-resend-btn-' + sid);
+    if (timerEl) timerEl.style.display = 'inline';
+    if (resendEl) resendEl.style.display = 'none';
+    rsState.timerInterval = setInterval(() => {
+      count--;
+      if (countEl) countEl.textContent = count;
+      if (count <= 0) {
+        clearInterval(rsState.timerInterval);
+        if (timerEl) timerEl.style.display = 'none';
+        if (resendEl) resendEl.style.display = 'inline';
+      }
+    }, 1000);
+  }
+
+  async function saveScoreToFirestore(user, score, breakdown) {
+    try {
+      const userRef = doc(db, 'users', user.uid);
+      const snap = await getDoc(userRef);
+      const now = new Date().toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' });
+
+      if (!snap.exists()) {
+        const nameParts = (user.displayName || '').split(' ');
+        await setDoc(userRef, {
+          firstName: nameParts[0] || '',
+          lastName: nameParts.slice(1).join(' ') || '',
+          email: user.email || '',
+          phone: user.phoneNumber || '',
+          photoURL: user.photoURL || '',
+          age: '', gender: '', city: '',
+          scores: [{ score, breakdown, date: serverTimestamp(), takenAt: now }],
+          activity: [
+            { icon: '👋', title: 'Joined Right Shift', sub: now },
+            { icon: '🏆', title: `Health quiz completed — Score: ${score}/100`, sub: now }
+          ],
+          notifications: [
+            { icon: '🎉', title: 'Welcome to Right Shift!', time: now, read: false },
+            { icon: '📊', title: `Your health score: ${score}/100`, time: now, read: false }
+          ],
+          createdAt: serverTimestamp()
+        });
+      } else {
+        await updateDoc(userRef, {
+          scores: arrayUnion({ score, breakdown, date: serverTimestamp(), takenAt: now }),
+          activity: arrayUnion({ icon: '🏆', title: `Health quiz completed — Score: ${score}/100`, sub: now }),
+          notifications: arrayUnion({ icon: '📊', title: `Your new health score: ${score}/100`, time: now, read: false })
+        });
+      }
+    } catch(e) {
+      console.warn('Firestore save error:', e);
+    }
+  }
+
+  async function sendScoreEmail(toEmail, name, score, breakdown) {
+    try {
+      await fetch(SENDGRID_WORKER_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ to: toEmail, name, score, breakdown })
+      });
+    } catch(e) { console.warn('Email send failed:', e); }
+  }
+
+  async function rsAuthSuccess(sid, user) {
+    const email    = user.email || '';
+    const name     = rsState.userName || user.displayName || 'User';
+    const score    = rsState.totalScore;
+    const breakdown = rsState.scoreBreakdown;
+
+    await saveScoreToFirestore(user, score, breakdown);
+
+    ['score','otp'].forEach(m => {
+      const el = document.getElementById('rs-modal-' + m + '-' + sid);
+      if (el) el.classList.remove('open');
+    });
+
+    window.rsSetStep && window.rsSetStep(sid, 4);
+
+    if (email) {
+      await sendScoreEmail(email, name, score, breakdown);
+      const doneEmail = document.getElementById('rs-done-email-' + sid);
+      if (doneEmail) doneEmail.textContent = email;
+    }
+
+    document.getElementById('rs-modal-done-' + sid).classList.add('open');
+  }
+
+  window.rsGoogleLogin = async function(sid) {
+    try {
+      const result = await signInWithPopup(firebaseAuth, googleProvider);
+      await rsAuthSuccess(sid, result.user);
+    } catch(e) {
+      showError('rs-signup-error-' + sid, '❌ Google login failed: ' + e.message);
+    }
+  };
+
+  function setupRecaptcha(containerId) {
+    if (window.rsRecaptchaVerifier) {
+      try { window.rsRecaptchaVerifier.clear(); window.rsRecaptchaVerifier = null; } catch(e) {}
+    }
+    window.rsRecaptchaVerifier = new RecaptchaVerifier(firebaseAuth, containerId, {
+      size: 'invisible', callback: () => {}
+    });
+    return window.rsRecaptchaVerifier;
+  }
+
+  window.rsSendOtp = async function(sid, mode) {
+    const isSignup   = mode === 'signup';
+    const phoneInput = document.getElementById(isSignup ? 'rs-phone-' + sid : 'rs-login-phone-' + sid);
+    const emailInput = document.getElementById(isSignup ? 'rs-email-signup-' + sid : 'rs-login-email-' + sid);
+    const phoneCode  = document.getElementById(isSignup ? 'rs-phone-code-' + sid : 'rs-login-phone-code-' + sid);
+    const errorId    = (isSignup ? 'rs-signup-error-' : 'rs-login-error-') + sid;
+    const btnId      = (isSignup ? 'rs-signup-submit-' : 'rs-login-submit-') + sid;
+    const phone = phoneInput ? phoneInput.value.trim() : '';
+    const email = emailInput ? emailInput.value.trim() : '';
+    const code  = phoneCode  ? phoneCode.value.trim() : '+91';
+    if (isSignup) rsState.userName = (document.getElementById('rs-name-' + sid) || {}).value || '';
+    if (!phone && !email) { showError(errorId, 'Please enter phone or email.'); return; }
+    setBtnLoading(btnId, true, 'Send OTP');
+    try {
+      if (phone) {
+        const fullPhone = code + phone.replace(/^0+/, '');
+        const rcId = isSignup ? 'rs-recaptcha-container-' + sid : 'rs-recaptcha-container2-' + sid;
+        const appVerifier = setupRecaptcha(rcId);
+        const confirmationResult = await signInWithPhoneNumber(firebaseAuth, fullPhone, appVerifier);
+        rsState.confirmationResult = confirmationResult;
+        rsState.otpMode = 'phone'; rsState.otpTarget = fullPhone;
+        document.getElementById('rs-modal-score-' + sid).classList.remove('open');
+        document.getElementById('rs-modal-otp-' + sid).classList.add('open');
+        const sub = document.getElementById('rs-otp-subtitle-' + sid);
+        if (sub) sub.textContent = 'Enter the 6-digit OTP sent to ' + fullPhone;
+        startOtpTimer(sid);
+      } else {
+        await sendSignInLinkToEmail(firebaseAuth, email, { url: window.location.href, handleCodeInApp: true });
+        window.localStorage.setItem('rsEmailForSignIn', email);
+        rsState.otpMode = 'emaillink'; rsState.otpTarget = email;
+        document.getElementById('rs-modal-score-' + sid).classList.remove('open');
+        alert('✅ A sign-in link has been sent to ' + email + '. Check your inbox!');
+      }
+    } catch(e) {
+      showError(errorId, '❌ ' + (e.message || 'Something went wrong.'));
+    } finally { setBtnLoading(btnId, false, 'Send OTP'); }
+  };
+
+  window.rsVerifyOtp = async function(sid) {
+    const inputs = document.querySelectorAll('#rs-modal-otp-' + sid + ' .rs-otp-input');
+    const otp = Array.from(inputs).map(i => i.value).join('');
+    if (otp.length < 6) { showError('rs-otp-error-' + sid, 'Please enter complete 6-digit OTP.'); return; }
+    setBtnLoading('rs-otp-submit-' + sid, true, 'Verify & Get Score');
+    try {
+      if (rsState.otpMode === 'phone' && rsState.confirmationResult) {
+        const result = await rsState.confirmationResult.confirm(otp);
+        await rsAuthSuccess(sid, result.user);
+      }
+    } catch(e) {
+      showError('rs-otp-error-' + sid, '❌ Invalid OTP. Try again.');
+    } finally { setBtnLoading('rs-otp-submit-' + sid, false, 'Verify & Get Score'); }
+  };
+
+  window.rsResendOtp = async function(sid) {
+    if (rsState.otpMode === 'phone' && rsState.otpTarget) {
+      try {
+        const appVerifier = setupRecaptcha('rs-recaptcha-container-' + sid);
+        rsState.confirmationResult = await signInWithPhoneNumber(firebaseAuth, rsState.otpTarget, appVerifier);
+        document.querySelectorAll('#rs-modal-otp-' + sid + ' .rs-otp-input').forEach(i => i.value = '');
+        startOtpTimer(sid);
+      } catch(e) { showError('rs-otp-error-' + sid, '❌ Failed to resend.'); }
+    }
+  };
+
+  if (isSignInWithEmailLink(firebaseAuth, window.location.href)) {
+    let email = window.localStorage.getItem('rsEmailForSignIn');
+    if (!email) email = window.prompt('Please confirm your email:');
+    const sids = Array.from(document.querySelectorAll('[id^="rs-calc-"]')).map(el => el.id.replace('rs-calc-',''));
+    if (sids.length) {
+      try {
+        const result = await signInWithEmailLink(firebaseAuth, email, window.location.href);
+        window.localStorage.removeItem('rsEmailForSignIn');
+        await rsAuthSuccess(sids[0], result.user);
+      } catch(e) { console.error('Email link error:', e); }
+    }
+  }
+
+  window.__rsFirebaseAuth = firebaseAuth;
+
+  document.addEventListener('rs-autosave', async function(e) {
+    const user = e.detail.user || firebaseAuth.currentUser;
+    if (!user) return;
+    const sids = Array.from(document.querySelectorAll('[id^="rs-calc-"]')).map(el => el.id.replace('rs-calc-',''));
+    const sid  = sids[0] || '{{ section.id }}';
+    await rsAuthSuccess(sid, user);
+  });
+
+  document.addEventListener('rs-score-ready', function(e) {
+    rsState.totalScore    = e.detail.total;
+    rsState.scoreBreakdown = e.detail.breakdown;
+  });
+</script>
+
+<!-- Non-module script -->
+<script>
+(function() {
+  var sid = '{{ section.id }}';
+
+  window.rsCheckAgree = function(id) {
+    var cb = document.getElementById('rs-agree-' + id);
+    var btn = document.getElementById('rs-take-test-' + id);
+    if (!cb || !btn) return;
+    btn.disabled = !cb.checked;
+    btn.style.background = cb.checked ? '#2d2119' : '#aaa';
+    btn.style.cursor = cb.checked ? 'pointer' : 'not-allowed';
+  };
+
+  window.rsGoStep2 = function(id) {
+    document.getElementById('rs-step1-' + id).style.display = 'none';
+    document.getElementById('rs-step2a-' + id).style.display = 'block';
+    rsSetStep(id, 2);
+    window.scrollTo({ top: document.getElementById('rs-calc-' + id).offsetTop - 80, behavior: 'smooth' });
+  };
+
+  // Step 2a → 2b: validate first 6 questions answered
+  window.rsGoStep2b = function(id) {
+    var groupsA = document.getElementById('rs-step2a-' + id).querySelectorAll('.rs-q-item__options');
+    var allAnswered = true;
+    groupsA.forEach(function(g) {
+      if (!g.querySelector('.rs-q-btn.selected')) allAnswered = false;
+    });
+    if (!allAnswered) { alert('Please answer all 6 questions before proceeding.'); return; }
+    document.getElementById('rs-step2a-' + id).style.display = 'none';
+    document.getElementById('rs-step2b-' + id).style.display = 'block';
+    window.scrollTo({ top: document.getElementById('rs-calc-' + id).offsetTop - 80, behavior: 'smooth' });
+  };
+
+  window.rsSetStep = function(id, step) {
+    document.querySelectorAll('#rs-calc-' + id + ' .rs-step').forEach(function(s, i) {
+      s.classList.remove('active','done');
+      if (i + 1 < step) s.classList.add('done');
+      if (i + 1 === step) s.classList.add('active');
+    });
+    for (var l = 1; l <= 3; l++) {
+      var line = document.getElementById('rs-line' + l + '-' + id);
+      if (line) line.classList.toggle('done', l < step);
+    }
+  };
+
+  window.rsSelect = function(btn, id) {
+    btn.closest('.rs-q-item__options').querySelectorAll('.rs-q-btn').forEach(function(b){ b.classList.remove('selected'); });
+    btn.classList.add('selected');
+  };
+
+  // Score map: Never=0, Rarely=1, Sometimes=2, Often=3, Daily=4
+  // Raw per question = value * 1 (no ×5), max per question = 4
+  // Total raw max = 13 × 4 = 52
+  // Final score = Math.round(rawTotal / 52 * 100), max = 100
+  var RS_SCORE_MAP = { 'Never': 0, 'Rarely': 1, 'Sometimes': 2, 'Often': 3, 'Daily': 4 };
+
+  var RS_CATEGORIES = [
+    { label: 'Fruits & Vegetables',    qs: [0],      maxRaw: 4 },
+    { label: 'Legumes',                qs: [1],      maxRaw: 4 },
+    { label: 'Hydration',              qs: [2],      maxRaw: 4 },
+    { label: 'Physical Activity',      qs: [3],      maxRaw: 4 },
+    { label: 'Sleep Quality',          qs: [4],      maxRaw: 4 },
+    { label: 'Energy Levels',          qs: [5],      maxRaw: 4 },
+    { label: 'Family & Social',        qs: [6, 7],   maxRaw: 8 },
+    { label: 'Focus & Productivity',   qs: [8, 9],   maxRaw: 8 },
+    { label: 'Lifestyle Habits',       qs: [10, 11], maxRaw: 8 },
+    { label: 'Stress & Mental Health', qs: [12],     maxRaw: 4 }
+  ];
+
+  window.rsSubmitQuiz = function(id) {
+    // Collect from both step 2a and 2b
+    var allGroups = [];
+    document.getElementById('rs-step2a-' + id).querySelectorAll('.rs-q-item__options').forEach(function(g){ allGroups.push(g); });
+    document.getElementById('rs-step2b-' + id).querySelectorAll('.rs-q-item__options').forEach(function(g){ allGroups.push(g); });
+
+    var rawScores = [];
+    var allAnswered = true;
+    allGroups.forEach(function(g) {
+      var sel = g.querySelector('.rs-q-btn.selected');
+      if (sel) rawScores.push(RS_SCORE_MAP[sel.textContent.trim()] || 0);
+      else allAnswered = false;
+    });
+
+    if (!allAnswered) { alert('Please answer all 7 remaining questions.'); return; }
+
+    var rawTotal = rawScores.reduce(function(a, b){ return a + b; }, 0);
+    // Scale to 100: max rawTotal = 13 * 4 = 52
+    var finalScore = Math.round(rawTotal / 52 * 100);
+
+    var breakdown = RS_CATEGORIES.map(function(cat) {
+      var catRaw = cat.qs.reduce(function(s, qi){ return s + (rawScores[qi] || 0); }, 0);
+      // Scale each category score to percentage of its own max, then to 100-scale proportion
+      var catScore = Math.round(catRaw / cat.maxRaw * 100);
+      return { category: cat.label, score: catScore, max: 100 };
+    });
+
+    document.dispatchEvent(new CustomEvent('rs-score-ready', { detail: { total: finalScore, breakdown: breakdown } }));
+    rsSetStep(id, 3);
+    document.getElementById('rs-score-display-' + id).textContent = finalScore;
+
+    var currentUser = window.__rsFirebaseAuth ? window.__rsFirebaseAuth.currentUser : null;
+    if (currentUser) {
+      document.body.style.overflow = '';
+      rsSetStep(id, 4);
+      document.dispatchEvent(new CustomEvent('rs-autosave', { detail: { user: currentUser } }));
+      return;
+    }
+
+    document.getElementById('rs-modal-score-' + id).classList.add('open');
+    document.body.style.overflow = 'hidden';
+  };
+
+  window.rsSwitchTab = function(id, tab) {
+    var isSignup = tab === 'signup';
+    document.getElementById('rs-tab-signup-' + id).classList.toggle('active', isSignup);
+    document.getElementById('rs-tab-login-' + id).classList.toggle('active', !isSignup);
+    document.getElementById('rs-signup-panel-' + id).style.display = isSignup ? '' : 'none';
+    document.getElementById('rs-login-panel-' + id).style.display  = isSignup ? 'none' : '';
+  };
+
+  window.rsCheckSignupForm = function(id) {
+    var phone = document.getElementById('rs-phone-' + id);
+    var email = document.getElementById('rs-email-signup-' + id);
+    var btn   = document.getElementById('rs-signup-submit-' + id);
+    var ok = (phone && phone.value.trim().length >= 8) || (email && email.value.includes('@'));
+    if (btn) btn.classList.toggle('active', ok);
+  };
+
+  window.rsCheckLoginForm = function(id) {
+    var phone = document.getElementById('rs-login-phone-' + id);
+    var email = document.getElementById('rs-login-email-' + id);
+    var btn   = document.getElementById('rs-login-submit-' + id);
+    var ok = (phone && phone.value.trim().length >= 8) || (email && email.value.includes('@'));
+    if (btn) btn.classList.toggle('active', ok);
+  };
+
+  window.rsOtpNext = function(inp, id) {
+    inp.value = inp.value.replace(/[^0-9]/g,'');
+    var inputs = Array.from(document.querySelectorAll('#rs-modal-otp-' + id + ' .rs-otp-input'));
+    var idx = inputs.indexOf(inp);
+    if (inp.value && idx < inputs.length - 1) inputs[idx+1].focus();
+    var filled = inputs.every(function(i){ return i.value !== ''; });
+    var btn = document.getElementById('rs-otp-submit-' + id);
+    if (btn) btn.classList.toggle('active', filled);
+  };
+
+  window.rsOtpBack = function(e, inp, id) {
+    if (e.key === 'Backspace' && !inp.value) {
+      var inputs = Array.from(document.querySelectorAll('#rs-modal-otp-' + id + ' .rs-otp-input'));
+      var idx = inputs.indexOf(inp);
+      if (idx > 0) inputs[idx-1].focus();
+    }
+  };
+
+  window.rsCloseAll = function(id) {
+    ['score','otp','done'].forEach(function(m){
+      var el = document.getElementById('rs-modal-' + m + '-' + id);
+      if (el) el.classList.remove('open');
+    });
+    document.body.style.overflow = '';
+  };
+
+  window.rsCalcReset = function(id) {
+    rsCloseAll(id);
+    document.getElementById('rs-step1-' + id).style.display = 'block';
+    document.getElementById('rs-step2a-' + id).style.display = 'none';
+    document.getElementById('rs-step2b-' + id).style.display = 'none';
+    rsSetStep(id, 1);
+    document.querySelectorAll('#rs-step2a-' + id + ' .rs-q-btn').forEach(function(b){ b.classList.remove('selected'); });
+    document.querySelectorAll('#rs-step2b-' + id + ' .rs-q-btn').forEach(function(b){ b.classList.remove('selected'); });
+    var cb = document.getElementById('rs-agree-' + id);
+    if (cb) { cb.checked = false; rsCheckAgree(id); }
+  };
+
+  document.querySelectorAll('.rs-modal-overlay').forEach(function(ov){
+    ov.addEventListener('click', function(e){ if (e.target === ov) rsCloseAll(sid); });
+  });
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape') rsCloseAll(sid); });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Health Calculator OTP",
+  "settings": [
+    { "type": "header", "content": "Stepper Labels" },
+    { "type": "text", "id": "step1_label", "label": "Step 1 Label", "default": "Goal" },
+    { "type": "text", "id": "step2_label", "label": "Step 2 Label", "default": "Questionnaire" },
+    { "type": "text", "id": "step3_label", "label": "Step 3 Label", "default": "Personal Information" },
+    { "type": "text", "id": "step4_label", "label": "Step 4 Label", "default": "Score" },
+    { "type": "header", "content": "Step 1 – Intro" },
+    { "type": "text", "id": "step1_title", "label": "Card Title", "default": "Diet plans" },
+    { "type": "text", "id": "intro_heading", "label": "Heading", "default": "Know your health" },
+    { "type": "richtext", "id": "intro_text", "label": "Body Text" },
+    { "type": "image_picker", "id": "intro_image", "label": "Intro Image" },
+    { "type": "text", "id": "intro_image_label", "label": "Image Caption", "default": "Quality of life" },
+    { "type": "url", "id": "terms_url", "label": "Terms & Conditions URL" },
+    { "type": "textarea", "id": "disclaimer", "label": "Disclaimer Text", "default": "Consult your doctor before any changes. Right Shift and TGHC are not liable for any adverse health effects." },
+    { "type": "header", "content": "Step 2 – Questions" },
+    { "type": "text", "id": "step2_title", "label": "Card Title", "default": "Energy Levels" }
+  ],
+  "presets": [{ "name": "Health Calculator OTP" }]
+}
+{% endschema %}

@@ -1,0 +1,621 @@
+{% comment %}
+  Section: VS — Scent Library Slider
+  Design: Luxury minimal, staggered cards, bottom progress bar, wishlist + ATC on hover
+{% endcomment %}
+
+{%- liquid
+  assign col = section.settings.collection
+  assign heading = section.settings.heading | default: 'The scent library'
+  assign eyebrow = section.settings.eyebrow | default: 'Signature Collection'
+  assign description = section.settings.description | default: 'A library of scents developed through restraint, material discipline, and an enduring respect for interior life.'
+  assign btn_label = section.settings.btn_label | default: 'Shop now'
+  assign btn_url = section.settings.btn_url | default: col.url
+  assign slider_id = 'scl-' | append: section.id
+-%}
+
+<style>
+  #rs-scl-{{ section.id }} {
+    --scl-bg:          {{ section.settings.bg_color }};
+    --scl-card-bg:     {{ section.settings.card_bg }};
+    --scl-heading-c:   {{ section.settings.heading_color }};
+    --scl-eyebrow-c:   {{ section.settings.eyebrow_color }};
+    --scl-desc-c:      {{ section.settings.desc_color }};
+    --scl-title-c:     {{ section.settings.title_color }};
+    --scl-price-c:     {{ section.settings.price_color }};
+    --scl-btn-bg:      {{ section.settings.btn_bg }};
+    --scl-btn-c:       {{ section.settings.btn_color }};
+    --scl-btn-bdr:     {{ section.settings.btn_border_color }};
+    --scl-atc-bg:      {{ section.settings.atc_bg }};
+    --scl-atc-c:       {{ section.settings.atc_color }};
+    --scl-bar-bg:      {{ section.settings.bar_bg }};
+    --scl-bar-fill:    {{ section.settings.bar_fill }};
+    --scl-pt:          {{ section.settings.pt }}px;
+    --scl-pb:          {{ section.settings.pb }}px;
+    --scl-ph:          {{ section.settings.ph }}px;
+    --scl-card-r:      {{ section.settings.card_radius }}px;
+    --scl-card-gap:    {{ section.settings.card_gap }}px;
+    --scl-ppr:         {{ section.settings.ppr }};
+    --scl-img-ratio:   {{ section.settings.img_ratio }};
+    --scl-stagger-amt: {{ section.settings.stagger_offset }}px;
+  }
+
+  #rs-scl-{{ section.id }} {
+    background: var(--scl-bg);
+    padding: var(--scl-pt) var(--scl-ph) var(--scl-pb);
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    overflow: hidden;
+  }
+
+  /* ── HEADER ── */
+  .scl-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+    margin-bottom: 36px;
+  }
+  .scl-eyebrow {
+    font-size: 16px;
+    color: #492914;
+    margin: 0 0 6px;
+    font-weight: 400;
+  }
+  .scl-heading {
+    font-size: 55px;
+    font-weight: 700;
+    color: var(--scl-heading-c);
+    margin: 0;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+  }
+  .scl-desc {
+    font-size: 18px;
+    color: #492914;
+    line-height: 1.65;
+    margin: 0;
+    max-width: 514px;
+    padding-top: 28px;
+  }
+  .scl-shop-btn {
+    display: inline-block;
+    padding: 3px 26px;
+    min-width: 180px;
+    text-align: center;
+    border: 1px solid #4A2A15;
+    background: var(--scl-btn-bg);
+    color: #4A2A15;
+    font-size: 18px;
+    text-decoration: none;
+    border-radius: 100px;
+    white-space: nowrap;
+    align-self: flex-start;
+    margin-top: 28px;
+    transition: background 0.2s, color 0.2s;
+  }
+  .scl-shop-btn:hover {
+    background: var(--scl-btn-c);
+    color: var(--scl-btn-bg);
+  }
+
+  /* ── SLIDER OUTER ── */
+  .scl-slider-outer {
+    position: relative;
+    cursor: grab;
+  }
+  .scl-slider-outer:active {
+    cursor: grabbing;
+  }
+
+  /* 
+    KEY CHANGE: .scl-slider-viewport ab scroll container hai
+    overflow-x: scroll — drag/scroll yahan hoga
+    padding-bottom stagger ke liye
+  */
+  .scl-slider-viewport {
+    overflow-x: scroll;
+    overflow-y: hidden;
+    padding-bottom: calc(var(--scl-stagger-amt) + 8px);
+    cursor: grab;
+    /* scrollbar hide — all browsers */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scl-slider-viewport::-webkit-scrollbar {
+    display: none;
+  }
+  .scl-slider-viewport:active {
+    cursor: grabbing;
+  }
+
+  /* 
+    KEY CHANGE: track ab transform use nahi karega
+    width: max-content so cards overflow naturally
+    no transition needed — scroll handles animation
+  */
+  .scl-slider-track {
+    display: flex;
+    gap: var(--scl-card-gap);
+    width: max-content;
+    align-items: flex-start;
+  }
+
+  /* ── CARDS ── */
+  .scl-card {
+    flex: 0 0 calc((100vw - (2 * var(--scl-ph)) - (var(--scl-ppr) - 1) * var(--scl-card-gap)) / var(--scl-ppr));
+    border-radius: var(--scl-card-r);
+    overflow: hidden;
+    position: relative;
+    user-select: none;
+  }
+
+  /* ── STAGGER: every even card shifts down ── */
+
+
+  .scl-card-img-wrap {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: var(--scl-img-ratio);
+    background: var(--scl-card-bg);
+  }
+  .scl-card-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    padding: 20px;
+    box-sizing: border-box;
+    transition: transform 0.4s ease;
+    pointer-events: none;
+    draggable: false;
+  }
+ .scl-card:hover  .scl-card-img-wrap { 
+    aspect-ratio: 3 / 4; }
+  .scl-card:hover .scl-card-img-wrap img {
+    transform: scale(1.04);
+   
+  }
+
+  /* ── HOVER OVERLAY ── */
+  .scl-card-overlay {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 14px 12px;
+    background: linear-gradient(to top, rgba(255,255,255,0.92) 0%, transparent 100%);
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    pointer-events: none;
+  }
+  .scl-card:hover .scl-card-overlay {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .scl-btn-atc {
+    background: #4A2A15;
+    color: var(--scl-atc-c);
+    border: none;
+    width: 100%;
+    padding: 10px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: opacity 0.2s;
+  }
+  .scl-btn-atc:hover    { opacity: 0.85; }
+  .scl-btn-atc:disabled { opacity: 0.6; cursor: not-allowed; }
+
+  /* ── WISHLIST ── */
+  .scl-wishlist-btn {
+    position: absolute;
+    top: 10px; right: 10px;
+    background: rgba(255,255,255,0.85);
+    border: none;
+    border-radius: 50%;
+    width: 34px; height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    opacity: 0;
+    transform: scale(0.8);
+    transition: opacity 0.25s, transform 0.25s, background 0.2s;
+    z-index: 2;
+  }
+  .scl-card:hover .scl-wishlist-btn {
+    opacity: 1;
+    transform: scale(1);
+  }
+  .scl-wishlist-btn svg {
+    width: 16px; height: 16px;
+    stroke: #333; fill: none;
+    transition: fill 0.2s, stroke 0.2s;
+  }
+  .scl-wishlist-btn.scl-wishlisted svg {
+    fill: #e53e3e; stroke: #e53e3e;
+  }
+  .scl-wishlist-btn:hover { background: #fff; }
+
+  /* ── CARD BODY ── */
+  .scl-card-body {
+    padding: 14px 4px 18px;
+  }
+  .scl-card-title {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--scl-title-c);
+    margin: 0 0 4px;
+    line-height: 1.3;
+  }
+  .scl-card-title a {
+    color: inherit;
+    text-decoration: none;
+  }
+  .scl-card-price {
+    font-size: 16px;
+    color: var(--scl-price-c);
+    font-weight: 400;
+  }
+  .scl-card-compare {
+    font-size: 13px;
+    color: #aaa;
+    text-decoration: line-through;
+    margin-left: 5px;
+  }
+
+  /* ── PROGRESS BAR ── */
+  .scl-progress-wrap {
+    margin-top: 32px;
+    position: relative;
+    cursor: pointer;
+  }
+  .scl-progress-track {
+    height: 10px;
+    background: var(--scl-bar-bg);
+    border-radius: 2px;
+    position: relative;
+    overflow: hidden;
+  }
+  .scl-progress-bar {
+    height: 100%;
+    background: var(--scl-bar-fill);
+    border-radius: 2px;
+    width: 0%;
+    transition: width 0.1s linear;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    #rs-scl-{{ section.id }} {
+      --scl-ph: 20px;
+      --scl-ppr: {{ section.settings.ppr_mobile }};
+      --scl-stagger-amt: 0px;
+    }
+    .scl-card:nth-child(even) { margin-top: 0; }
+    .scl-card-title   { font-weight: 500; }
+    .scl-heading      { font-size: 36px; }
+    .scl-header       { flex-direction: column; gap: 12px; }
+    .scl-desc         { padding-top: 0; max-width: 100%; font-size: 16px; }
+    .scl-shop-btn     { margin-top: 0; align-self: center; }
+    .scl-card-overlay { opacity: 1; transform: translateY(0); }
+    .scl-wishlist-btn { opacity: 1; transform: scale(1); }
+    .scl-progress-wrap { margin-top: 16px; }
+  }
+
+  @media (max-width: 480px) {
+    #rs-scl-{{ section.id }} { --scl-ppr: 1; }
+  }
+
+  /* ── ATC ANIMATION ── */
+  .scl-btn-atc.scl-flash { animation: sclFlash 0.4s ease; }
+  @keyframes sclFlash {
+    0%   { transform: scale(1); }
+    30%  { transform: scale(0.93); filter: brightness(1.3); }
+    60%  { transform: scale(1.04); }
+    100% { transform: scale(1); }
+  }
+
+  /* ── WISHLIST PULSE ── */
+  .scl-wishlist-btn.scl-wl-pulse { animation: sclWlPulse 0.35s ease; }
+  @keyframes sclWlPulse {
+    0%   { transform: scale(1); }
+    40%  { transform: scale(1.45); }
+    100% { transform: scale(1); }
+  }
+</style>
+
+<section id="rs-scl-{{ section.id }}">
+
+  <!-- HEADER -->
+  <div class="scl-header">
+    <div class="scl-header-left">
+      {% if eyebrow != blank %}
+        <p class="scl-eyebrow">{{ eyebrow }}</p>
+      {% endif %}
+      <h2 class="scl-heading">{{ heading }}</h2>
+    </div>
+    {% if description != blank %}
+      <p class="scl-desc">{{ description }}</p>
+    {% endif %}
+    {% if btn_label != blank and btn_url != blank %}
+      <a href="{{ btn_url }}" class="scl-shop-btn">{{ btn_label }}</a>
+    {% endif %}
+  </div>
+
+  <!-- SLIDER -->
+  <div class="scl-slider-outer">
+
+    <div class="scl-slider-viewport" id="scl-vp-{{ section.id }}">
+      <div class="scl-slider-track" id="{{ slider_id }}">
+
+        {% if col != blank %}
+          {% for product in col.products limit: 50 %}
+            {%- assign vid = product.variants.first.id -%}
+            <div class="scl-card" data-handle="{{ product.handle }}">
+
+              <button class="scl-wishlist-btn" data-handle="{{ product.handle }}" aria-label="Add to wishlist">
+                <svg viewBox="0 0 24 24" stroke-width="1.8">
+                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                </svg>
+              </button>
+
+              <div class="scl-card-img-wrap">
+                <a href="{{ product.url }}">
+                  {% if product.featured_image %}
+                    <img
+                      src="{{ product.featured_image | image_url: width: 600 }}"
+                      alt="{{ product.title | escape }}"
+                      loading="lazy"
+                      draggable="false"
+                    >
+                  {% else %}
+                    <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:#ccc;font-size:13px;">No Image</div>
+                  {% endif %}
+                </a>
+                <div class="scl-card-overlay">
+                  <button class="scl-btn-atc" data-vid="{{ vid }}" onclick="sclATC('{{ vid }}', this)">Add to cart</button>
+                </div>
+              </div>
+
+              <div class="scl-card-body">
+                <p class="scl-card-title"><a href="{{ product.url }}">{{ product.title }}</a></p>
+                <div class="scl-card-price">
+                  {{ product.price | money }}
+                  {% if product.compare_at_price > product.price %}
+                    <span class="scl-card-compare">{{ product.compare_at_price | money }}</span>
+                  {% endif %}
+                </div>
+              </div>
+
+            </div>
+          {% endfor %}
+
+        {% else %}
+          {% for i in (1..6) %}
+            <div class="scl-card">
+              <div class="scl-card-img-wrap" style="background:#f0ede8;">
+                <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:#bbb;font-size:12px;padding:20px;text-align:center;box-sizing:border-box;">Assign collection in editor</div>
+              </div>
+              <div class="scl-card-body">
+                <p class="scl-card-title">Product Name</p>
+                <div class="scl-card-price">$0.00</div>
+              </div>
+            </div>
+          {% endfor %}
+        {% endif %}
+
+      </div>
+    </div>
+
+    <!-- PROGRESS BAR -->
+    <div class="scl-progress-wrap" id="scl-bar-wrap-{{ section.id }}">
+      <div class="scl-progress-track">
+        <div class="scl-progress-bar" id="scl-bar-{{ section.id }}"></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<script>
+(function () {
+
+  var VP_ID   = 'scl-vp-{{ section.id }}';
+  var BAR_ID  = 'scl-bar-{{ section.id }}';
+  var WRAP_ID = 'scl-bar-wrap-{{ section.id }}';
+
+  var vp      = document.getElementById(VP_ID);
+  var barEl   = document.getElementById(BAR_ID);
+  var barWrap = document.getElementById(WRAP_ID);
+
+  if (!vp || !barEl) return;
+
+  /* ── PROGRESS: scroll position → bar width ── */
+  function getScrollPct() {
+    var max = vp.scrollWidth - vp.clientWidth;
+    return max > 0 ? (vp.scrollLeft / max) * 100 : 0;
+  }
+
+  function updateBar() {
+    barEl.style.width = getScrollPct() + '%';
+  }
+
+  vp.addEventListener('scroll', updateBar, { passive: true });
+
+  /* ── DRAG TO SCROLL (mouse) ── */
+  var grabbed  = false;
+  var startX   = 0;
+  var startScroll = 0;
+
+  vp.addEventListener('mousedown', function (e) {
+    grabbed     = true;
+    startX      = e.clientX;
+    startScroll = vp.scrollLeft;
+    vp.style.cursor = 'grabbing';
+    e.preventDefault();
+  });
+
+  document.addEventListener('mousemove', function (e) {
+    if (!grabbed) return;
+    var dx = startX - e.clientX;
+    vp.scrollLeft = startScroll + dx;
+  });
+
+  document.addEventListener('mouseup', function () {
+    if (!grabbed) return;
+    grabbed = false;
+    vp.style.cursor = 'grab';
+  });
+
+  /* prevent link/image drag interfering */
+  vp.addEventListener('dragstart', function (e) { e.preventDefault(); });
+
+  /* ── MOUSE WHEEL ── */
+  vp.addEventListener('wheel', function (e) {
+    e.preventDefault();
+    vp.scrollLeft += e.deltaY;
+  }, { passive: false });
+
+  /* ── TOUCH SWIPE — native scroll handles it, but we still track for bar ── */
+  /* (overflow-x: scroll on vp already handles touch natively) */
+
+  /* ── PROGRESS BAR CLICK + DRAG SCRUB ── */
+  if (barWrap) {
+    var barDragging = false;
+
+    function scrubFromEvent(e) {
+      var rect    = barWrap.getBoundingClientRect();
+      var clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      var pct     = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+      var max     = vp.scrollWidth - vp.clientWidth;
+      vp.scrollLeft = pct * max;
+    }
+
+    barWrap.addEventListener('mousedown',  function (e) { barDragging = true; scrubFromEvent(e); });
+    barWrap.addEventListener('touchstart', function (e) { barDragging = true; scrubFromEvent(e); }, { passive: true });
+
+    document.addEventListener('mousemove', function (e) { if (barDragging) scrubFromEvent(e); });
+    document.addEventListener('touchmove', function (e) { if (barDragging) scrubFromEvent(e); }, { passive: true });
+
+    document.addEventListener('mouseup',  function () { barDragging = false; });
+    document.addEventListener('touchend', function () { barDragging = false; });
+  }
+
+  /* ── INIT bar on load ── */
+  updateBar();
+
+  /* ── ATC ── */
+  window.sclATC = function (vid, btn) {
+    if (!vid || btn.disabled) return;
+    btn.classList.remove('scl-flash');
+    void btn.offsetWidth;
+    btn.classList.add('scl-flash');
+    btn.addEventListener('animationend', function () { btn.classList.remove('scl-flash'); }, { once: true });
+    var orig = btn.textContent;
+    btn.textContent = 'Adding…';
+    btn.disabled = true;
+    fetch('/cart/add.js', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: parseInt(vid), quantity: 1 })
+    })
+    .then(function (r) { return r.json(); })
+    .then(function () {
+      btn.textContent = 'Added ✓';
+      document.dispatchEvent(new CustomEvent('cart:updated'));
+      setTimeout(function () { btn.textContent = orig; btn.disabled = false; }, 1500);
+    })
+    .catch(function () {
+      btn.textContent = 'Error';
+      setTimeout(function () { btn.textContent = orig; btn.disabled = false; }, 1500);
+    });
+  };
+
+  /* ── WISHLIST ── */
+  function getWL() {
+    try { return JSON.parse(localStorage.getItem('rs_wishlist') || '[]'); }
+    catch (e) { return []; }
+  }
+  function setWL(wl) {
+    localStorage.setItem('rs_wishlist', JSON.stringify(wl));
+    window.dispatchEvent(new Event('wishlist:updated'));
+  }
+  function syncWL() {
+    var wl = getWL();
+    document.querySelectorAll('.scl-wishlist-btn').forEach(function (btn) {
+      btn.classList.toggle('scl-wishlisted', wl.indexOf(btn.dataset.handle) !== -1);
+    });
+  }
+
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest('.scl-wishlist-btn');
+    if (!btn) return;
+    var h = btn.dataset.handle; if (!h) return;
+    var wl = getWL();
+    var idx = wl.indexOf(h);
+    if (idx === -1) wl.push(h); else wl.splice(idx, 1);
+    btn.classList.remove('scl-wl-pulse');
+    void btn.offsetWidth;
+    btn.classList.add('scl-wl-pulse');
+    btn.addEventListener('animationend', function () { btn.classList.remove('scl-wl-pulse'); }, { once: true });
+    setWL(wl);
+    syncWL();
+  });
+
+  syncWL();
+  window.addEventListener('wishlist:updated', syncWL);
+
+})();
+</script>
+
+{% schema %}
+{
+  "name": "VS — Scent Library Slider",
+  "tag": "section",
+  "class": "rs-scent-library",
+  "settings": [
+    { "type": "collection",   "id": "collection",       "label": "Collection" },
+    { "type": "header",       "content": "Header" },
+    { "type": "text",         "id": "eyebrow",          "label": "Eyebrow",                  "default": "Signature Collection" },
+    { "type": "text",         "id": "heading",          "label": "Heading",                  "default": "The scent library" },
+    { "type": "textarea",     "id": "description",      "label": "Description",              "default": "A library of scents developed through restraint, material discipline, and an enduring respect for interior life." },
+    { "type": "text",         "id": "btn_label",        "label": "Button Label",             "default": "Shop now" },
+    { "type": "url",          "id": "btn_url",          "label": "Button URL" },
+    { "type": "header",       "content": "Colors" },
+    { "type": "color",        "id": "bg_color",         "label": "Section BG",               "default": "#FAFAF6" },
+    { "type": "color",        "id": "card_bg",          "label": "Card BG",                  "default": "#F2EFE9" },
+    { "type": "color",        "id": "heading_color",    "label": "Heading Color",            "default": "#111111" },
+    { "type": "color",        "id": "eyebrow_color",    "label": "Eyebrow Color",            "default": "#888888" },
+    { "type": "color",        "id": "desc_color",       "label": "Description Color",        "default": "#555555" },
+    { "type": "color",        "id": "title_color",      "label": "Card Title Color",         "default": "#111111" },
+    { "type": "color",        "id": "price_color",      "label": "Price Color",              "default": "#333333" },
+    { "type": "color",        "id": "btn_bg",           "label": "Button BG",                "default": "transparent" },
+    { "type": "color",        "id": "btn_color",        "label": "Button Text",              "default": "#111111" },
+    { "type": "color",        "id": "btn_border_color", "label": "Button Border",            "default": "#111111" },
+    { "type": "color",        "id": "atc_bg",           "label": "ATC Button BG",            "default": "#111111" },
+    { "type": "color",        "id": "atc_color",        "label": "ATC Button Text",          "default": "#ffffff" },
+    { "type": "color",        "id": "bar_bg",           "label": "Progress Bar BG",          "default": "#e0ddd7" },
+    { "type": "color",        "id": "bar_fill",         "label": "Progress Bar Fill",        "default": "#111111" },
+    { "type": "header",       "content": "Layout" },
+    { "type": "range",        "id": "pt",               "label": "Padding Top",              "min": 0,  "max": 120, "step": 4,  "default": 60,  "unit": "px" },
+    { "type": "range",        "id": "pb",               "label": "Padding Bottom",           "min": 0,  "max": 120, "step": 4,  "default": 60,  "unit": "px" },
+    { "type": "range",        "id": "ph",               "label": "Padding Horizontal",       "min": 0,  "max": 80,  "step": 4,  "default": 40,  "unit": "px" },
+    { "type": "range",        "id": "ppr",              "label": "Cards Per Row (Desktop)",  "min": 2,  "max": 6,   "step": 1,  "default": 4 },
+    { "type": "range",        "id": "ppr_mobile",       "label": "Cards Per Row (Mobile)",   "min": 1,  "max": 3,   "step": 1,  "default": 2 },
+    { "type": "range",        "id": "card_gap",         "label": "Card Gap",                 "min": 8,  "max": 40,  "step": 2,  "default": 16,  "unit": "px" },
+    { "type": "range",        "id": "card_radius",      "label": "Card Radius",              "min": 0,  "max": 20,  "step": 2,  "default": 4,   "unit": "px" },
+    { "type": "text",         "id": "img_ratio",        "label": "Image Aspect Ratio",       "default": "3/4" },
+    { "type": "range",        "id": "stagger_offset",   "label": "Card Stagger Offset",      "min": 0,  "max": 80,  "step": 4,  "default": 32,  "unit": "px" }
+  ],
+  "presets": [
+    { "name": "VS — Scent Library Slider" }
+  ]
+}
+{% endschema %}

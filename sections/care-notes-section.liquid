@@ -1,0 +1,329 @@
+{% comment %}
+  Section: Care Notes — "For a Better Burn"
+  Add/remove/reorder items via Shopify Theme Editor (blocks).
+{% endcomment %}
+
+<style>
+  .care-notes {
+    background: {{ section.settings.background_color }};
+    padding: {{ section.settings.section_padding_top }}px 40px {{ section.settings.section_padding_bottom }}px;
+  }
+
+  .care-notes__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 40px;
+    margin-bottom: 36px;
+    flex-wrap: wrap;
+  }
+
+  .care-notes__eyebrow {
+    font-size: 18px;
+    color: #000;
+    margin: 0 0 6px;
+  }
+
+  .care-notes__heading {
+    font-size: 75px;
+    font-weight: 700;
+    margin: 0;
+    color: {{ section.settings.heading_color }};
+    line-height: 1.1;
+  }
+
+  .care-notes__description {
+    font-size: 18px;
+    color: #000;
+    max-width: 611px;
+    line-height: 1.6;
+    margin: 0;
+    padding-top: 40px;
+  }
+
+  .care-notes__divider {
+    border: none;
+    border-top: 1px solid #ddd;
+    margin: 0 0 8px;
+  }
+
+  .care-notes__item {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding: 24px 0;
+    border-bottom: 1px solid #e8e8e8;
+  }
+
+  .care-notes__icon-box {
+    flex-shrink: 0;
+    width: 115px;
+    height: 115px;
+    background: {{ section.settings.icon_bg_color }};
+    border-radius: 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .care-notes__icon-box img,
+  .care-notes__icon-box span {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .care-notes__icon-box img {
+    object-fit: contain;
+  }
+
+  .care-notes__icon-fallback {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #999;
+    display: block;
+  }
+
+  .care-notes__text {
+    font-size: 18px;
+    color: {{ section.settings.text_color }};
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .care-notes__empty {
+    color: #aaa;
+    font-size: 14px;
+    padding: 24px 0;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .care-notes {
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+
+    .care-notes__eyebrow {
+      font-size: 16px;
+    }
+
+    .care-notes__heading {
+      font-size: 36px;
+    }
+
+    .care-notes__description {
+      max-width: 100%;
+      font-size:16px;
+      padding-top:0px;
+    }
+
+    .care-notes__header {
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom:0px;
+    }
+     .care-notes__divider{
+      display:none;
+    }
+    .care-notes__icon-box {
+    width: 71px;
+    height: 67px;
+    }
+     .care-notes__icon-box img{
+    width: 24px;
+    height: 34px;
+  }
+  .care-notes__text {
+    font-size: 15px;
+  }
+  .care-notes__item {
+    gap:16px;
+  }
+}
+</style>
+
+<section class="care-notes">
+  <div class="care-notes__inner">
+
+    {% comment %} Header {% endcomment %}
+    <div class="care-notes__header">
+      <div>
+        {% if section.settings.eyebrow != blank %}
+          <p class="care-notes__eyebrow">{{ section.settings.eyebrow }}</p>
+        {% endif %}
+        <h2 class="care-notes__heading">{{ section.settings.heading }}</h2>
+      </div>
+      {% if section.settings.description != blank %}
+        <p class="care-notes__description">{{ section.settings.description }}</p>
+      {% endif %}
+    </div>
+
+    {% comment %} Divider {% endcomment %}
+    <hr class="care-notes__divider">
+
+    {% comment %} Loop through blocks {% endcomment %}
+    {% for block in section.blocks %}
+      {% if block.type == 'care_item' %}
+        <div class="care-notes__item" {{ block.shopify_attributes }}>
+
+          {% comment %} Icon box {% endcomment %}
+          <div class="care-notes__icon-box">
+            {% if block.settings.icon_image != blank %}
+              <img
+                src="{{ block.settings.icon_image | img_url: '80x80' }}"
+                alt="{{ block.settings.text | strip_html | truncate: 40 }}"
+                width="40"
+                height="40"
+                loading="lazy"
+              >
+            {% elsif block.settings.icon_svg != blank %}
+              <span>{{ block.settings.icon_svg }}</span>
+            {% else %}
+              <span class="care-notes__icon-fallback"></span>
+            {% endif %}
+          </div>
+
+          {% comment %} Text {% endcomment %}
+          <p class="care-notes__text">{{ block.settings.text }}</p>
+
+        </div>
+      {% endif %}
+    {% endfor %}
+
+    {% if section.blocks.size == 0 %}
+      <p class="care-notes__empty">
+        Koi care note nahi hai — Theme Editor mein "Add Block" karein.
+      </p>
+    {% endif %}
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Care Notes",
+  "tag": "section",
+  "class": "section-care-notes",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow text (top label)",
+      "default": "Care Notes"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section heading",
+      "default": "For a Better Burn"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description (right side)",
+      "default": "Vitality is not urgency, but continuity. These notes offer simple considerations that help preserve presence, rhythm, and the intended pace of living."
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#FAFAF7"
+    },
+    {
+      "type": "color",
+      "id": "icon_bg_color",
+      "label": "Icon box background",
+      "default": "#F0EFEA"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#111111"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Item text color",
+      "default": "#333333"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top",
+      "label": "Top padding (px)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom",
+      "label": "Bottom padding (px)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 60
+    }
+  ],
+  "blocks": [
+    {
+      "type": "care_item",
+      "name": "Care note",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon_image",
+          "label": "Icon image (PNG/SVG upload)"
+        },
+        {
+          "type": "textarea",
+          "id": "icon_svg",
+          "label": "Icon SVG code (optional, if no image)",
+          "info": "Paste raw <svg> code here. Leave blank if using image above."
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Care note text"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Care Notes",
+      "blocks": [
+        {
+          "type": "care_item",
+          "settings": {
+            "text": "Trim the wick to ¼ inch before each use to prevent smoke and uneven burning."
+          }
+        },
+        {
+          "type": "care_item",
+          "settings": {
+            "text": "Place away from drafts to maintain a steady flame and reduce soot."
+          }
+        },
+        {
+          "type": "care_item",
+          "settings": {
+            "text": "On the first burn, allow the wax to melt fully across the surface."
+          }
+        },
+        {
+          "type": "care_item",
+          "settings": {
+            "text": "Store in a cool, dry place away from direct sunlight when not in use."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

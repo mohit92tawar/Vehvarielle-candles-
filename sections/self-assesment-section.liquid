@@ -1,0 +1,672 @@
+{% comment %}
+  Self Assessment Form
+  - EmailJS se user + admin dono ko email
+  - submit button working (defer bug fixed)
+  - section.id safe handling
+{% endcomment %}
+
+{%- liquid
+  assign accent     = section.settings.accent_color     | default: '#2d7a3a'
+  assign dark_bar   = section.settings.header_color     | default: '#2b1f16'
+  assign submit_bar = section.settings.submit_bar_color | default: '#2d7a3a'
+  assign img_obj    = section.settings.form_image
+-%}
+
+{%- comment -%}
+  EmailJS SDK — NO defer, load synchronously so it's ready when JS runs
+{%- endcomment -%}
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+{%- comment -%} Inline config — no window key tricks, direct variables {%- endcomment -%}
+<script>
+  var SA_CFG = {
+    publicKey:     {{ section.settings.emailjs_public_key    | default: '' | json }},
+    serviceId:     {{ section.settings.emailjs_service_id    | default: '' | json }},
+    userTpl:       {{ section.settings.emailjs_user_template  | default: '' | json }},
+    adminTpl:      {{ section.settings.emailjs_admin_template | default: '' | json }},
+    adminEmail:    {{ section.settings.admin_email            | default: '' | json }}
+  };
+</script>
+
+<div class="sa-wrap" id="sa-wrap">
+
+  {%- comment -%}── Breadcrumb ──{%- endcomment -%}
+  <nav class="sa-breadcrumb" aria-label="breadcrumb">
+    <a href="{{ routes.root_url }}">Home</a>
+    <span> › </span>
+    <span>{{ section.settings.breadcrumb | default: 'Meal plan curator' }}</span>
+  </nav>
+
+  <div class="sa-card">
+
+    <div class="sa-header">
+      <h1 class="sa-header__title">{{ section.settings.form_title | default: 'Self assessment' }}</h1>
+    </div>
+
+    <div class="sa-body">
+
+      {%- comment -%}── Right image ──{%- endcomment -%}
+      <div class="sa-img" aria-hidden="true">
+        {%- if img_obj != blank -%}
+          {{ img_obj | image_url: width: 480 | image_tag: loading: 'lazy', class: 'sa-img__el', alt: img_obj.alt | default: 'Diet plan' }}
+        {%- else -%}
+          {{ 'product-2' | placeholder_svg_tag: 'sa-img__placeholder' }}
+        {%- endif -%}
+      </div>
+
+      {%- comment -%}══ STEP 1 ══{%- endcomment -%}
+      <div class="sa-step" id="sa-step1">
+        <div class="sa-questions">
+
+          {%- comment -%} Q1 Age {%- endcomment -%}
+          <div class="sa-q">
+            <p class="sa-q__label">Q1.&nbsp; What is your age?</p>
+            <div class="sa-age-row">
+              <input class="sa-input" type="number" id="sa-age"
+                placeholder="45" min="1" max="120" autocomplete="off">
+              <div class="sa-select-wrap">
+                <select class="sa-select" id="sa-age-unit">
+                  <option value="years">In Years</option>
+                </select>
+                <span class="sa-select-arrow">&#9660;</span>
+              </div>
+            </div>
+          </div>
+
+          {%- comment -%} Q2 Gender {%- endcomment -%}
+          <div class="sa-q">
+            <p class="sa-q__label">Q2.&nbsp; What is your gender?</p>
+            <div class="sa-pills" data-single="true" data-field="gender">
+              <button type="button" class="sa-pill" data-val="Male">Male</button>
+              <button type="button" class="sa-pill" data-val="Female">Female</button>
+              <button type="button" class="sa-pill" data-val="Other">Other</button>
+            </div>
+          </div>
+
+          {%- comment -%} Q3 Health Goal {%- endcomment -%}
+          <div class="sa-q">
+            <p class="sa-q__label">Q3.&nbsp; Choose your primary health goal</p>
+            <div class="sa-pills sa-pills--wrap" data-single="true" data-field="health_goal">
+              <button type="button" class="sa-pill" data-val="Lose Weight & Improve Metabolic Health">Lose Weight &amp; Improve Metabolic Health</button>
+              <button type="button" class="sa-pill" data-val="Improve Women's Health">Improve Women's Health</button>
+              <button type="button" class="sa-pill" data-val="Increase Muscle Mass">Increase Muscle Mass</button>
+              <button type="button" class="sa-pill" data-val="Improve Energy Levels">Improve Energy Levels</button>
+              <button type="button" class="sa-pill" data-val="Improve Digestive Health">Improve Digestive Health</button>
+            </div>
+          </div>
+
+          {%- comment -%} Q4 Culinary {%- endcomment -%}
+          <div class="sa-q">
+            <p class="sa-q__label">Q4.&nbsp; What is your culinary preference?</p>
+            <div class="sa-pills" data-single="true" data-field="culinary">
+              <button type="button" class="sa-pill" data-val="North Indian">North Indian</button>
+              <button type="button" class="sa-pill" data-val="East Indian">East Indian</button>
+              <button type="button" class="sa-pill" data-val="West Indian">West Indian</button>
+              <button type="button" class="sa-pill" data-val="South Indian">South Indian</button>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="sa-footer">
+          <button type="button" class="sa-btn-next" id="sa-btn-next">
+            {{ section.settings.next_label | default: 'Next' }}
+          </button>
+        </div>
+      </div>
+
+      {%- comment -%}══ STEP 2 ══{%- endcomment -%}
+      <div class="sa-step sa-hidden" id="sa-step2">
+        <div class="sa-questions">
+
+          {%- comment -%} Q5 Dietary {%- endcomment -%}
+          <div class="sa-q">
+            <p class="sa-q__label">Q5.&nbsp; What is your dietary preference?</p>
+            <div class="sa-pills" data-single="true" data-field="dietary">
+              <button type="button" class="sa-pill" data-val="Vegetarian">Vegetarian</button>
+              <button type="button" class="sa-pill" data-val="Non-Vegetarian">Non-Vegetarian</button>
+            </div>
+          </div>
+
+          {%- comment -%} Q6 Activity {%- endcomment -%}
+          <div class="sa-q">
+            <p class="sa-q__label">Q6.&nbsp; Please describe your physical activity levels</p>
+            <div class="sa-pills sa-pills--grid2" data-single="true" data-field="activity">
+              <button type="button" class="sa-pill sa-pill--block" data-val="Sedentary job, no physical activity">
+                I have a sedentary job and I don't do any physical activity either
+              </button>
+              <button type="button" class="sa-pill sa-pill--block" data-val="Physical job, no extra activity">
+                My job involves physical activity but I don't do any other physical activity
+              </button>
+              <button type="button" class="sa-pill sa-pill--block" data-val="Frequent walks only">
+                I take walks frequently but don't do other exercise
+              </button>
+              <button type="button" class="sa-pill sa-pill--block" data-val="Exercises 5x/week or more">
+                I exercise for at least 30 min, 5 times a week or more
+              </button>
+            </div>
+          </div>
+
+          {%- comment -%} Q7 Conditions {%- endcomment -%}
+          <div class="sa-q">
+            <p class="sa-q__label">Q7.&nbsp; Select any prevailing health conditions</p>
+            <div class="sa-pills sa-pills--grid4" data-multi="true" data-field="conditions">
+              <button type="button" class="sa-pill sa-pill--block" data-val="Type 1 Diabetes">Type 1 Diabetes</button>
+              <button type="button" class="sa-pill sa-pill--block" data-val="Type 2 Diabetes or Prediabetes">Type 2 Diabetes or Prediabetes</button>
+              <button type="button" class="sa-pill sa-pill--block" data-val="Hypertension">Hypertension</button>
+              <button type="button" class="sa-pill sa-pill--block" data-val="Dyslipidemia or fatty liver">Dyslipidemia or fatty liver</button>
+              <button type="button" class="sa-pill sa-pill--block" data-val="Hypothyroidism">Hypothyroidism</button>
+              <button type="button" class="sa-pill sa-pill--block" data-val="Vitamin or mineral deficiencies">Vitamin or mineral deficiencies</button>
+              <button type="button" class="sa-pill sa-pill--block" data-val="Weak immunity">Weak immunity</button>
+              <button type="button" class="sa-pill sa-pill--block" data-val="Disturbed sleep">Disturbed sleep</button>
+              <button type="button" class="sa-pill sa-pill--block" data-val="Mood issues">Mood issues</button>
+              <button type="button" class="sa-pill sa-pill--block" data-val="Perimenopause">Perimenopause</button>
+            </div>
+          </div>
+
+          {%- comment -%} Email {%- endcomment -%}
+          <div class="sa-q">
+            <p class="sa-q__label">Your Email <span class="sa-required">*</span></p>
+            <input class="sa-input sa-input--email" type="email"
+              id="sa-email" placeholder="you@example.com" autocomplete="email">
+          </div>
+
+        </div>
+
+        <div class="sa-footer sa-footer--green">
+          <button type="button" class="sa-btn-submit" id="sa-btn-submit">
+            <span id="sa-btn-label">{{ section.settings.submit_label | default: 'SUBMIT' }}</span>
+            <span id="sa-btn-spinner" class="sa-hidden">Sending…</span>
+          </button>
+        </div>
+      </div>
+
+      {%- comment -%}══ SUCCESS ══{%- endcomment -%}
+      <div class="sa-step sa-hidden" id="sa-success">
+        <div class="sa-success__inner">
+          <div class="sa-success__icon">✓</div>
+          <h2 class="sa-success__title">Thank you!</h2>
+          <p class="sa-success__msg">Your assessment has been submitted.<br>Check your email for your personalised diet plan.</p>
+        </div>
+      </div>
+
+      {%- comment -%}══ ERROR ══{%- endcomment -%}
+      <div class="sa-step sa-hidden" id="sa-error-box">
+        <div class="sa-success__inner">
+          <div class="sa-success__icon" style="background:#e53e3e">!</div>
+          <h2 class="sa-success__title">Could not send email</h2>
+          <p class="sa-success__msg" id="sa-error-msg">Please try again.</p>
+          <button type="button" id="sa-btn-retry" class="sa-retry-btn">Try Again</button>
+        </div>
+      </div>
+
+    </div>{%- comment -%}/sa-body{%- endcomment -%}
+  </div>{%- comment -%}/sa-card{%- endcomment -%}
+
+  <p class="sa-disclaimer">
+    {{ section.settings.disclaimer | default: 'Consult your doctor before any changes, especially with health conditions or allergies. Right Shift and TGHC are not liable for any adverse health effects.' }}
+  </p>
+
+</div>
+
+<!-- ═══════════ STYLES ═══════════ -->
+<style>
+  .sa-wrap {
+    --sa-accent:  {{ accent }};
+    --sa-dark:    {{ dark_bar }};
+    --sa-submit:  {{ submit_bar }};
+    --sa-radius:  10px;
+    --sa-border:  #606060;
+    background: url(https://cdn.shopify.com/s/files/1/0817/1264/4332/files/free-meal-plan-background-image.jpg?v=1773753656);
+    max-width: 1470px;
+    margin: 0 auto;
+    padding: 16px 120px;
+  }
+
+  .sa-hidden { display: none !important; }
+
+  /* Breadcrumb */
+  .sa-breadcrumb { font-size: 18px; color: #212529; padding: 12px 0 8px; }
+  .sa-breadcrumb a { color: #2d2119; text-decoration: none; }
+  .sa-breadcrumb a:hover { text-decoration: underline; }
+
+  /* Card */
+  .sa-card { background: #fff; border-radius: var(--sa-radius); overflow: hidden; box-shadow: 0 2px 20px rgba(0,0,0,.09); }
+
+  /* Header */
+  .sa-header { background: var(--sa-dark); padding: 18px 28px; }
+  .sa-header__title { color: #fff; font-size: 31px; margin: 0; }
+
+  /* Body */
+  .sa-body { position: relative; padding: 28px 28px 0; min-height: 420px; }
+
+  /* Right image */
+  .sa-img { position: absolute; top: 0; right: 0; width: 500px; pointer-events: none; z-index: 1; }
+  .sa-img__el, .sa-img__placeholder { display: block; width: 100%; height: auto; object-fit: contain; }
+
+  /* Steps */
+  .sa-step { position: relative; z-index: 2; }
+
+  /* Questions */
+  .sa-questions { display: flex; flex-direction: column; gap: 24px; padding-right: 240px; padding-bottom: 12px; max-width: 900px; }
+
+  /* Q label */
+  .sa-q__label { font-size: 21px; font-weight: 700; color: #2d2119; margin: 0 0 12px; }
+  .sa-required { color: #c00; }
+
+  /* Inputs */
+  input::placeholder { color: #2d2119 !important; font-size: 18px; }
+  .sa-card input { color: #000 !important; font-size: 18px; }
+
+  .sa-age-row { display: flex; align-items: center; gap: 10px; }
+
+  .sa-input {
+    height: 42px;
+    border: 1px solid #606060 !important;
+    border-radius: 6px;
+    padding: 0 14px;
+    font-size: 14px;
+    color: #2d2119;
+    outline: none;
+    width: 180px;
+    transition: border-color .2s;
+  }
+  .sa-input:focus { border-color: var(--sa-accent); }
+  .sa-input--email { width: 100%; max-width: 380px; }
+
+  .sa-select-wrap { position: relative; display: inline-flex; align-items: center; }
+  .sa-select {
+    appearance: none; height: 42px;
+    border: 1px solid var(--sa-border); border-radius: 6px;
+    padding: 0 36px 0 14px; font-size: 18px; color: #2d2119;
+    background: #fff; cursor: pointer; outline: none;
+  }
+  .sa-select-arrow { position: absolute; right: 10px; font-size: 11px; color: #888; pointer-events: none; }
+
+  /* Pills */
+  .sa-pills { display: flex; flex-wrap: wrap; gap: 20px; }
+  .sa-pills--wrap { flex-wrap: wrap; }
+  .sa-pills--grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sa-pills--grid4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+
+  .sa-pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 9px 10px;
+    border: 1px solid #606060; border-radius: 15px;
+    background: #fff; font-size: 18px; font-weight: 500; color: #2d2119;
+    cursor: pointer; text-align: left; line-height: 1.4;
+    transition: background .18s, border-color .18s, color .18s;
+  }
+  .sa-pill:hover { border-color: var(--sa-accent); color: var(--sa-accent); }
+  .sa-pill.is-active { background: var(--sa-accent); border-color: var(--sa-accent); color: #fff; }
+  .sa-pill--block { width: 100%; padding: 12px 16px; }
+
+  /* Footer / Buttons */
+  .sa-footer { margin-top: 28px; margin-left: -28px; margin-right: -28px; }
+
+  .sa-btn-next,
+  .sa-btn-submit {
+    font-family: 'Paytone One', sans-serif;
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    width: 100%; padding: 18px; border: none;
+    font-size: 31px; text-transform: uppercase;
+    cursor: pointer; line-height: 1;
+    transition: opacity .2s, transform .15s;
+  }
+  .sa-btn-next { background: var(--sa-dark); color: #fff; }
+  .sa-footer--green .sa-btn-submit { background: var(--sa-submit); color: #fff; }
+  .sa-btn-next:hover, .sa-btn-submit:hover { opacity: .88; transform: translateY(-1px); }
+  .sa-btn-submit:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+
+  /* Success / Error */
+  .sa-success__inner { text-align: center; padding: 60px 20px 80px; }
+  .sa-success__icon {
+    width: 64px; height: 64px; border-radius: 50%;
+    background: var(--sa-accent); color: #fff;
+    font-size: 32px; line-height: 64px;
+    margin: 0 auto 20px;
+  }
+  .sa-success__title { font-size: 26px; font-weight: 700; color: #2d2119; margin: 0 0 10px; }
+  .sa-success__msg { font-size: 15px; color: #555; max-width: 420px; margin: 0 auto; line-height: 1.6; }
+
+  .sa-retry-btn {
+    margin-top: 20px; padding: 12px 32px;
+    background: var(--sa-accent); color: #fff;
+    border: none; border-radius: 8px;
+    font-size: 15px; font-weight: 700; cursor: pointer;
+  }
+  .sa-retry-btn:hover { opacity: .85; }
+
+  /* Disclaimer */
+  .sa-disclaimer {
+    font-size: 20px; color: #212529; text-align: center;
+    max-width: 712px; margin: 0 auto; padding: 20px 0 80px; line-height: 1.6;
+  }
+
+  /* Responsive */
+  @media (max-width: 700px) {
+    .sa-wrap { padding: 0 20px; }
+    .sa-pill { font-size: 14px; }
+    .sa-btn-next, .sa-btn-submit { font-size: 20px; }
+    .sa-q__label { font-size: 16px; }
+    .sa-header__title { font-size: 18px; }
+    .sa-img { width: 130px; }
+    .sa-questions { padding-right: 120px; }
+    .sa-pills--grid2, .sa-pills--grid4 { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 500px) {
+    .sa-img { display: none; }
+    .sa-questions { padding-right: 0; }
+    .sa-pills--grid4 { grid-template-columns: 1fr 1fr; }
+    .sa-body { padding: 20px 16px 0; }
+    .sa-footer { margin-left: -16px; margin-right: -16px; }
+  }
+</style>
+
+<!-- ═══════════ JAVASCRIPT ═══════════ -->
+<script>
+(function () {
+
+  /* ── DOM refs — simple IDs, no section.id tricks ── */
+  var step1     = document.getElementById('sa-step1');
+  var step2     = document.getElementById('sa-step2');
+  var successEl = document.getElementById('sa-success');
+  var errorBox  = document.getElementById('sa-error-box');
+  var errorMsg  = document.getElementById('sa-error-msg');
+  var btnNext   = document.getElementById('sa-btn-next');
+  var btnSubmit = document.getElementById('sa-btn-submit');
+  var btnRetry  = document.getElementById('sa-btn-retry');
+  var btnLabel  = document.getElementById('sa-btn-label');
+  var btnSpin   = document.getElementById('sa-btn-spinner');
+
+  /* ── Guard: if any element missing, log and stop ── */
+  if (!step1 || !step2 || !btnNext || !btnSubmit) {
+    console.error('[SA] Required elements not found. Check IDs.');
+    return;
+  }
+
+  /* ── Answers store ── */
+  var answers = {};
+
+  /* ── Helper: show / hide ── */
+  function show(el) { if (el) el.classList.remove('sa-hidden'); }
+  function hide(el) { if (el) el.classList.add('sa-hidden'); }
+  function scrollToTop() {
+    var wrap = document.getElementById('sa-wrap');
+    if (wrap) window.scrollTo({ top: wrap.offsetTop - 20, behavior: 'smooth' });
+  }
+
+  /* ── Pill toggle ── */
+  document.querySelectorAll('#sa-wrap .sa-pills').forEach(function (group) {
+    var isMulti = group.dataset.multi === 'true';
+    var field   = group.dataset.field;
+    if (!field) return;
+
+    group.querySelectorAll('.sa-pill').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        if (isMulti) {
+          btn.classList.toggle('is-active');
+          var selected = [];
+          group.querySelectorAll('.sa-pill.is-active').forEach(function (b) {
+            selected.push(b.dataset.val);
+          });
+          answers[field] = selected.join(', ');
+        } else {
+          group.querySelectorAll('.sa-pill').forEach(function (b) {
+            b.classList.remove('is-active');
+          });
+          btn.classList.add('is-active');
+          answers[field] = btn.dataset.val;
+        }
+      });
+    });
+  });
+
+  /* ── NEXT button ── */
+  btnNext.addEventListener('click', function () {
+    var ageEl     = document.getElementById('sa-age');
+    var ageUnitEl = document.getElementById('sa-age-unit');
+    var age       = ageEl ? ageEl.value.trim() : '';
+
+    if (!age)                    { alert('Please enter your age.'); return; }
+    if (!answers['gender'])      { alert('Please select your gender.'); return; }
+    if (!answers['health_goal']) { alert('Please select a health goal.'); return; }
+    if (!answers['culinary'])    { alert('Please select a culinary preference.'); return; }
+
+    answers['age'] = age + ' ' + (ageUnitEl ? ageUnitEl.value : 'years');
+
+    hide(step1);
+    show(step2);
+    scrollToTop();
+  });
+
+  /* ── Loading state ── */
+  function setLoading(on) {
+    btnSubmit.disabled = on;
+    if (on) { hide(btnLabel); show(btnSpin); }
+    else    { show(btnLabel); hide(btnSpin); }
+  }
+
+  /* ── EmailJS send (returns Promise) ── */
+  function sendEmails(email) {
+    return new Promise(function (resolve, reject) {
+
+      /* Check EmailJS loaded */
+      if (typeof emailjs === 'undefined') {
+        reject(new Error('EmailJS library not loaded. Check internet connection.'));
+        return;
+      }
+
+      var cfg = window.SA_CFG || {};
+
+      /* Check config filled */
+      if (!cfg.publicKey || !cfg.serviceId || !cfg.userTpl) {
+        /* No config — just resolve (show success without email) */
+        console.warn('[SA] EmailJS not configured in Theme Customizer. Showing success without sending email.');
+        resolve();
+        return;
+      }
+
+      /* Init EmailJS */
+      try {
+        emailjs.init({ publicKey: cfg.publicKey });
+      } catch(e) {
+        console.warn('[SA] emailjs.init failed:', e);
+      }
+
+      /* Template variables — match these in your EmailJS template */
+      var params = {
+        to_email:    email,
+        to_name:     email.split('@')[0],
+        reply_to:    email,
+        age:         answers['age']         || '—',
+        gender:      answers['gender']      || '—',
+        health_goal: answers['health_goal'] || '—',
+        culinary:    answers['culinary']    || '—',
+        dietary:     answers['dietary']     || '—',
+        activity:    answers['activity']    || '—',
+        conditions:  answers['conditions']  || 'None selected'
+      };
+
+      var sends = [];
+
+      /* 1. User email */
+      sends.push(
+        emailjs.send(cfg.serviceId, cfg.userTpl, params)
+      );
+
+      /* 2. Admin notification */
+      if (cfg.adminTpl && cfg.adminEmail) {
+        var adminParams = {};
+        for (var k in params) adminParams[k] = params[k];
+        adminParams.to_email = cfg.adminEmail;
+        sends.push(
+          emailjs.send(cfg.serviceId, cfg.adminTpl, adminParams)
+        );
+      }
+
+      Promise.all(sends).then(resolve).catch(reject);
+    });
+  }
+
+  /* ── SUBMIT button ── */
+  btnSubmit.addEventListener('click', function () {
+    var emailEl = document.getElementById('sa-email');
+    var email   = emailEl ? emailEl.value.trim() : '';
+
+    /* Validate */
+    if (!answers['dietary'])              { alert('Please select dietary preference.'); return; }
+    if (!answers['activity'])             { alert('Please select your activity level.'); return; }
+    if (!email || email.indexOf('@') < 0) { alert('Please enter a valid email address.'); return; }
+
+    setLoading(true);
+
+    sendEmails(email)
+      .then(function () {
+        setLoading(false);
+        hide(step2);
+        show(successEl);
+        scrollToTop();
+      })
+      .catch(function (err) {
+        setLoading(false);
+        console.error('[SA] Send failed:', err);
+        var msg = (err && err.text) ? err.text
+                : (err && err.message) ? err.message
+                : String(err);
+        if (errorMsg) errorMsg.textContent = msg;
+        hide(step2);
+        show(errorBox);
+        scrollToTop();
+      });
+  });
+
+  /* ── Retry button ── */
+  if (btnRetry) {
+    btnRetry.addEventListener('click', function () {
+      hide(errorBox);
+      show(step2);
+    });
+  }
+
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Self Assessment Form",
+  "tag": "section",
+  "class": "sa-section-wrapper",
+  "settings": [
+    {
+      "type": "header",
+      "content": "📧 EmailJS — Email Setup"
+    },
+    {
+      "type": "paragraph",
+      "content": "Setup: 1) emailjs.com pe free account → 2) Gmail service connect → 3) Do templates banao → 4) IDs fill karo neeche"
+    },
+    {
+      "type": "text",
+      "id": "emailjs_public_key",
+      "label": "EmailJS Public Key",
+      "info": "emailjs.com → Account → API Keys → Public Key"
+    },
+    {
+      "type": "text",
+      "id": "emailjs_service_id",
+      "label": "EmailJS Service ID",
+      "info": "Email Services → Service ID (e.g. service_abc123)"
+    },
+    {
+      "type": "text",
+      "id": "emailjs_user_template",
+      "label": "User Template ID",
+      "info": "User ko jaane wala template ID. Variables: {{to_email}} {{to_name}} {{age}} {{gender}} {{health_goal}} {{culinary}} {{dietary}} {{activity}} {{conditions}}"
+    },
+    {
+      "type": "text",
+      "id": "emailjs_admin_template",
+      "label": "Admin Notification Template ID",
+      "info": "Store owner ko notification (optional)"
+    },
+    {
+      "type": "text",
+      "id": "admin_email",
+      "label": "Admin / Store Email",
+      "info": "Admin notification yahan aayega"
+    },
+    {
+      "type": "header",
+      "content": "✏️ Text"
+    },
+    {
+      "type": "text",
+      "id": "breadcrumb",
+      "label": "Breadcrumb label",
+      "default": "Meal plan curator"
+    },
+    {
+      "type": "text",
+      "id": "form_title",
+      "label": "Form title",
+      "default": "Self assessment"
+    },
+    {
+      "type": "text",
+      "id": "next_label",
+      "label": "Next button label",
+      "default": "Next"
+    },
+    {
+      "type": "text",
+      "id": "submit_label",
+      "label": "Submit button label",
+      "default": "SUBMIT"
+    },
+    {
+      "type": "textarea",
+      "id": "disclaimer",
+      "label": "Disclaimer text",
+      "default": "Consult your doctor before any changes, especially with health conditions or allergies. Right Shift and TGHC are not liable for any adverse health effects."
+    },
+    {
+      "type": "header",
+      "content": "🖼️ Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "form_image",
+      "label": "Right-side image"
+    },
+    {
+      "type": "header",
+      "content": "🎨 Colors"
+    },
+    {
+      "type": "color",
+      "id": "header_color",
+      "label": "Header bar color",
+      "default": "#2b1f16"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Active pill / accent color",
+      "default": "#2d7a3a"
+    },
+    {
+      "type": "color",
+      "id": "submit_bar_color",
+      "label": "Submit bar color",
+      "default": "#2d7a3a"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Self Assessment Form",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}

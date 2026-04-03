@@ -1,0 +1,282 @@
+{% schema %}
+{
+  "name": "Health Goals",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "What’s your health goal"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#2c1b12"
+    },
+    {
+      "type": "color",
+      "id": "description_color",
+      "label": "Description Color",
+      "default": "#2c1b12"
+    },
+    {
+      "type": "color",
+      "id": "section_bg",
+      "label": "Section Background",
+      "default": "#f4c842"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "Start Now"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "goal",
+      "name": "Goal Item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Icon Image"
+        },
+        {
+          "type": "color",
+          "id": "circle_bg",
+          "label": "Circle Background",
+          "default": "#efe1cf"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Health Goals",
+      "blocks": [
+        { "type": "goal" },
+        { "type": "goal" },
+        { "type": "goal" },
+        { "type": "goal" },
+        { "type": "goal" }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+<section class="health-goals" style="background: {{ section.settings.section_bg }};">
+  <div class="page-width">
+
+    <div class="hg-header">
+      <h2 style="color: {{ section.settings.heading_color }};">
+        {{ section.settings.heading }}
+      </h2>
+
+      <div class="hg-description-wrapper" style="color: {{ section.settings.description_color }};">
+        <div class="hg-description">
+          {{ section.settings.description }}
+        </div>
+
+        <div class="hg-readmore-toggle">
+          <span class="hg-readmore-text">Read More</span>
+          <span class="hg-arrow">▼</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="hg-grid">
+      {% for block in section.blocks %}
+        <div class="hg-item" {{ block.shopify_attributes }}>
+          <div class="hg-icon" style="background: {{ block.settings.circle_bg }};">
+            {% if block.settings.icon %}
+              <img src="{{ block.settings.icon | image_url: width: 200 }}" alt="{{ block.settings.title }}">
+            {% endif %}
+          </div>
+          <h4>{{ block.settings.title }}</h4>
+        </div>
+      {% endfor %}
+    </div>
+
+    {% if section.settings.button_text != blank %}
+      <div class="hg-btn-wrap">
+        <a href="{{ section.settings.button_link }}" class="hg-btn">
+          {{ section.settings.button_text }}
+        </a>
+      </div>
+    {% endif %}
+
+  </div>
+</section>
+
+<style>
+.health-goals {
+  padding: 80px 20px;
+  text-align: center;
+}
+
+.hg-header h2 {
+  font-size: 45px;
+  font-weight: 500;
+  margin-bottom: 15px;
+}
+
+.hg-description-wrapper {
+  max-width: 750px;
+  margin: 0 auto 60px;
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+.hg-description {
+  transition: all 0.3s ease;
+}
+
+.hg-readmore-toggle {
+  display: none;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 8px;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+/* GRID */
+.hg-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 40px;
+  max-width: 1014px;
+  margin: 0 auto;
+}
+
+.hg-item {
+  text-align: center;
+}
+
+.hg-icon {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+}
+
+.hg-icon img {
+  max-width: 100px;
+  max-height: 100px;
+}
+
+.hg-item h4 {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.4;
+  font-family: 'Urbanist';
+}
+
+.hg-btn-wrap {
+  margin-top: 60px;
+}
+
+.hg-btn {
+  background: #3a2416;
+    color: #fff;
+    padding: 10px 40px;
+    border-radius: 40px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 24px;
+    min-width: 243px;
+    display: inline-block;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .hg-btn { min-width: auto;
+        font-size: 16px;
+        max-width: 200px; }
+  .hg-icon img { width: 80px; height: 80px; }
+  .hg-item h4 {
+  font-size: 16px;
+
+}
+  .hg-description-wrapper {
+  margin: 0 auto 30px;
+  font-size: 16px;
+}
+  .hg-readmore-toggle { color: #098040;
+    font-size: 16px; }
+
+  .health-goals {
+    padding: 30px 20px;
+  }
+
+  .hg-header h2 {
+    font-size: 28px;
+  }
+
+  .hg-description {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    font-size: 16px;
+  }
+
+  .hg-description.expanded {
+    -webkit-line-clamp: unset;
+  }
+
+  .hg-readmore-toggle {
+    display: inline-flex;
+  }
+
+  .hg-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+  }
+
+  .hg-item:nth-child(5) {
+    grid-column: span 2;
+  }
+}
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  var toggle = document.querySelector(".hg-readmore-toggle");
+  var desc = document.querySelector(".hg-description");
+
+  if (toggle && desc) {
+    toggle.addEventListener("click", function() {
+      desc.classList.toggle("expanded");
+
+      if (desc.classList.contains("expanded")) {
+        toggle.querySelector(".hg-readmore-text").innerText = "Read Less";
+      } else {
+        toggle.querySelector(".hg-readmore-text").innerText = "Read More";
+      }
+    });
+  }
+});
+</script>

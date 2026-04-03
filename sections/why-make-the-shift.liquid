@@ -1,0 +1,228 @@
+
+
+
+<style>
+.shift-section {
+  background: #e8d7c3;
+  padding: {{ section.settings.section_padding }}px 20px;
+}
+
+.shift-container {
+  max-width: 1230px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  gap: 60px;
+}
+
+.shift-content {
+  flex: 1;
+}
+
+.shift-content h2 {
+  font-size: 45px;
+  font-weight: 500;
+  margin-bottom: 20px;
+}
+
+.shift-content p {
+  font-size: 20px;
+  line-height: 1.6;
+  max-width: 550px;
+}
+
+.shift-image {
+  flex: 1;
+  text-align: right;
+}
+
+.shift-image img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Mobile Image Control */
+.mobile-img {
+  display: none;
+}
+@media screen and (max-width:768px){
+
+.shift-desc .desc-full{
+display:none;
+}
+
+.read-more-btn{
+color:#1c7c4a;
+cursor:pointer;
+font-weight:500;
+margin-left:5px;
+}
+
+}
+
+/* Responsive */
+@media screen and (max-width: 768px) {
+  .shift-section {
+ padding: 30px 20px;
+}
+
+  .shift-content p { font-size: 16px; }
+
+  .shift-container {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .shift-content h2 {
+    font-size: 28px;
+  }
+  .shift-content h4 { font-size: 22px; }
+
+  .shift-image {
+    text-align: center;
+  }
+
+  .desktop-img {
+    display: none;
+  }
+
+  .mobile-img {
+    display: block;
+  }
+}
+</style>
+<section class="shift-section" style="">
+  <div class="shift-container">
+
+    <!-- LEFT CONTENT -->
+    <div class="shift-content">
+      <h2>{{ section.settings.heading }}</h2>
+      <p class="shift-desc">
+  <span class="desc-short">
+    {{ section.settings.description | truncate: 120 }}
+  </span>
+
+  <span class="desc-full">
+    {{ section.settings.description }}
+  </span>
+
+  <span class="read-more-btn">Read More</span>
+</p>
+    </div>
+
+    <!-- RIGHT IMAGE -->
+    <div class="shift-image">
+      {% if section.settings.desktop_image != blank %}
+        <img 
+          class="desktop-img"
+          src="{{ section.settings.desktop_image | image_url: width: 1200 }}" 
+          alt="Shift Image"
+          loading="lazy"
+        >
+      {% endif %}
+
+      {% if section.settings.mobile_image != blank %}
+        <img 
+          class="mobile-img"
+          src="{{ section.settings.mobile_image | image_url: width: 800 }}" 
+          alt="Shift Image"
+          loading="lazy"
+        >
+      {% endif %}
+      <h4 style="text-align: center;">{{ section.settings.heading_bottom }}</h4>
+    </div>
+
+  </div>
+</section>
+
+  
+<script>
+
+document.addEventListener("DOMContentLoaded", function(){
+
+if(window.innerWidth <= 768){
+
+document.querySelectorAll('.shift-desc').forEach(function(el){
+
+let shortText = el.querySelector('.desc-short');
+let fullText = el.querySelector('.desc-full');
+let btn = el.querySelector('.read-more-btn');
+
+btn.addEventListener('click', function(){
+
+if(fullText.style.display === "none"){
+
+fullText.style.display = "inline";
+shortText.style.display = "none";
+btn.innerText = " Read Less";
+
+}else{
+
+fullText.style.display = "none";
+shortText.style.display = "inline";
+btn.innerText = " Read More";
+
+}
+
+});
+
+});
+
+}
+
+});
+
+</script>
+
+
+
+{% schema %}
+{
+  "name": "Why Make The Shift",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Why make the shift?"
+    },
+     {
+      "type": "text",
+      "id": "heading_bottom",
+      "label": "Heading bottom",
+      "default": "Are you making the shift?"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Your 40s, 50s, and 60s can be the best time to explore, shine and truly enjoy everything you have achieved so far. However, we know that taking care of your body after a certain age can become tricky."
+    },
+    {
+      "type": "image_picker",
+      "id": "desktop_image",
+      "label": "Desktop Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "Mobile Image"
+    },
+    {
+      "type": "range",
+      "id": "section_padding",
+      "min": 0,
+      "max": 120,
+      "step": 10,
+      "unit": "px",
+      "label": "Section Padding",
+      "default": 60
+    }
+  ],
+  "presets": [
+    {
+      "name": "Why Make The Shift"
+    }
+  ]
+}
+{% endschema %}

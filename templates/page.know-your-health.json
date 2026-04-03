@@ -1,0 +1,116 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "blocks": {
+        "heading": {
+          "type": "text",
+          "name": "Title",
+          "settings": {
+            "text": "<h1>{{ closest.page.title }}</h1>",
+            "width": "100%",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "h2",
+            "font": "var(--font-primary--family)",
+            "font_size": "",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "page-content": {
+          "type": "page-content",
+          "settings": {},
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "heading",
+        "page-content"
+      ],
+      "disabled": true,
+      "settings": {
+        "content_direction": "column",
+        "gap": 32,
+        "color_scheme": "",
+        "padding-block-start": 40,
+        "padding-block-end": 80
+      }
+    },
+    "rs_meal_plan_hero_CQtAPw": {
+      "type": "rs-meal-plan-hero",
+      "name": "RS - Meal Plan Hero",
+      "settings": {
+        "bg_image": "shopify://shop_images/health-score-desktop.webp",
+        "bg_image_mobile": "shopify://shop_images/health-score-mobile.webp",
+        "title": "Meal plan curator",
+        "description": "<p>Teaming up with TGHC – The Good Health Clinic, we bring science-led, easy-to-follow meal plans for various health goals. TGHC's nutrition experts have crafted nutrient-packed, delicious food recommendations for you.</p><p>Fill in the below questions to create your customised meal plan.</p>",
+        "show_info_strip": false,
+        "info_strip_text": "<p>Teaming up with TGHC – The Good Health Clinic, we bring science-led, easy-to-follow meal plans for various health goals. TGHC's nutrition experts have crafted nutrient-packed, delicious food recommendations for you.</p><p>Fill in the below questions to create your customised meal plan.</p>"
+      }
+    },
+    "rs_calculator_YVYVKz": {
+      "type": "rs-calculator",
+      "disabled": true,
+      "name": "RS - Health Calculator",
+      "settings": {
+        "step1_label": "Goal",
+        "step2_label": "Questionnaire",
+        "step3_label": "Personal Information",
+        "step4_label": "Score",
+        "step1_title": "Diet plans",
+        "intro_heading": "Know your health",
+        "intro_text": "",
+        "intro_image": "shopify://shop_images/e5cb4073-472e-4c57-97a0-33728fef5c9f_1.png",
+        "intro_image_label": "Quality of life",
+        "terms_url": "",
+        "disclaimer": "Consult your doctor before any changes, especially with health conditions or allergies. Right Shift and TGHC are not liable for any adverse health effects.",
+        "step2_title": "Energy Levels"
+      }
+    },
+    "right_shift_health_otp_verify_mUGWaW": {
+      "type": "right-shift-health-otp-verify",
+      "name": "Health Calculator OTP",
+      "settings": {
+        "step1_label": "Goal",
+        "step2_label": "Questionnaire",
+        "step3_label": "Personal Information",
+        "step4_label": "Score",
+        "step1_title": "Self-Assessment",
+        "intro_heading": "Quality of life score",
+        "intro_text": "<p>By answering a few simple questions about your eating habits and lifestyle,you can quickly discover your health score.We have partnered up with <a href=\"/policies/privacy-policy\" target=\"_blank\" title=\"Privacy Policy\">TGHC - The Good Health Clinic</a> to give you a quick and easy way to start your journey towards a healthier lifestyle.</p>",
+        "intro_image": "shopify://shop_images/e5cb4073-472e-4c57-97a0-33728fef5c9f_1.png",
+        "intro_image_label": "Quality of life",
+        "terms_url": "",
+        "disclaimer": "",
+        "step2_title": "Energy Levels"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "rs_meal_plan_hero_CQtAPw",
+    "rs_calculator_YVYVKz",
+    "right_shift_health_otp_verify_mUGWaW"
+  ]
+}

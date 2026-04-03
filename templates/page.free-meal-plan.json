@@ -1,0 +1,93 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "blocks": {
+        "heading": {
+          "type": "text",
+          "name": "Title",
+          "settings": {
+            "text": "<h1>{{ closest.page.title }}</h1>",
+            "width": "100%",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "h2",
+            "font": "var(--font-primary--family)",
+            "font_size": "",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "page-content": {
+          "type": "page-content",
+          "settings": {},
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "heading",
+        "page-content"
+      ],
+      "disabled": true,
+      "settings": {
+        "content_direction": "column",
+        "gap": 32,
+        "color_scheme": "",
+        "padding-block-start": 40,
+        "padding-block-end": 80
+      }
+    },
+    "rs_meal_plan_hero_GFFBgh": {
+      "type": "rs-meal-plan-hero",
+      "name": "RS - Meal Plan Hero",
+      "settings": {
+        "bg_image": "shopify://shop_images/meal-plan-desktop.webp",
+        "bg_image_mobile": "shopify://shop_images/meal-plan-mobile.webp",
+        "title": "",
+        "description": "",
+        "show_info_strip": true,
+        "info_strip_text": "<p>Teaming up with TGHC – The Good Health Clinic, we bring science-led, easy-to-follow meal plans for various health goals. TGHC's nutrition experts have crafted nutrient-packed, delicious food recommendations for you.</p><p>Fill in the below questions to create your customised meal plan.</p>"
+      }
+    },
+    "self_assesment_section_yJk8H7": {
+      "type": "self-assesment-section",
+      "name": "Self Assessment Form",
+      "settings": {
+        "breadcrumb": "Meal plan curator",
+        "form_title": "Diet Plan",
+        "next_label": "Next",
+        "submit_label": "SUBMIT",
+        "disclaimer": "Consult your doctor before any changes, especially with health conditions or allergies. Right Shift and TGHC are not liable for any adverse health effects.",
+        "form_image": "shopify://shop_images/meal-modal-bg.jpg",
+        "header_color": "#2b1f16",
+        "accent_color": "#2d7a3a",
+        "submit_bar_color": "#2d7a3a"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "rs_meal_plan_hero_GFFBgh",
+    "self_assesment_section_yJk8H7"
+  ]
+}

@@ -1,0 +1,750 @@
+{% assign custom_blog = section.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .blog-section-{{ custom_blog }} {
+    display: block;
+    width: 100%;
+    background-color: {{ section.settings.background_color }};
+    padding: {{ section.settings.section_padding_top }}px 0 {{ section.settings.section_padding_bottom }}px;
+  }
+
+  .blog-section-container-{{ custom_blog }} {
+    padding: 0 60px;
+  }
+
+  .blog-section-header-{{ custom_blog }} {
+    text-align: {{ section.settings.text_alignment }};
+    margin-bottom: {{ section.settings.header_spacing }}px;
+  }
+
+  .blog-section-title-{{ custom_blog }} {
+    font-size: {{ section.settings.title_size }}px;
+    font-weight: {{ section.settings.title_weight }};
+    color: {{ section.settings.title_color }};
+    margin: 0 0 {{ section.settings.title_margin_bottom }}px;
+    letter-spacing: {{ section.settings.title_letter_spacing }}px;
+  }
+
+  .blog-section-subtitle-{{ custom_blog }} {
+    font-size: {{ section.settings.subtitle_size }}px;
+    color: {{ section.settings.subtitle_color }};
+    line-height: 1.6;
+    max-width: 841px;
+  }
+
+  .blog-grid-{{ custom_blog }} {
+    display: grid;
+    grid-template-columns: repeat({{ section.settings.columns_desktop }}, 1fr);
+    gap: {{ section.settings.card_spacing }}px;
+    margin-top: {{ section.settings.grid_margin_top }}px;
+  }
+
+  .blog-card-{{ custom_blog }} {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .blog-card-image-wrapper-{{ custom_blog }} {
+    position: relative;
+    width: 100%;
+    padding-bottom: 125%;
+    overflow: hidden;
+  }
+
+  .blog-card-image-{{ custom_blog }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  .blog-card-{{ custom_blog }}:hover .blog-card-image-{{ custom_blog }} {
+    transform: scale(1.05);
+  }
+
+  .blog-card-image-placeholder-{{ custom_blog }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #f5f5f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .blog-card-image-placeholder-{{ custom_blog }} svg {
+    width: 60%;
+    height: 60%;
+    opacity: 0.3;
+  }
+
+  .blog-card-content-{{ custom_blog }} {
+    padding: {{ section.settings.card_padding }}px 0px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+
+  .blog-card-date-{{ custom_blog }} {
+    font-size: {{ section.settings.date_size }}px;
+    color: {{ section.settings.date_color }};
+    margin-bottom: {{ section.settings.date_margin_bottom }}px;
+    text-transform: {{ section.settings.date_text_transform }};
+  }
+
+  .blog-card-title-{{ custom_blog }} {
+    font-size: {{ section.settings.card_title_size }}px;
+    font-weight: {{ section.settings.card_title_weight }};
+    color: {{ section.settings.card_title_color }};
+    margin: 0 0 {{ section.settings.card_title_margin_bottom }}px;
+    line-height: 1.3;
+  }
+
+  .blog-card-title-link-{{ custom_blog }} {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  .blog-card-title-link-{{ custom_blog }}:hover {
+    color: {{ section.settings.link_hover_color }};
+  }
+
+  .blog-card-description-{{ custom_blog }} {
+    font-size: {{ section.settings.description_size }}px;
+    color: {{ section.settings.description_color }};
+    line-height: 1.6;
+    margin-bottom: {{ section.settings.description_margin_bottom }}px;
+    flex-grow: 1;
+  }
+
+  .blog-card-cta-{{ custom_blog }} {
+    display: inline-block;
+    font-size: {{ section.settings.cta_size }}px;
+    color: {{ section.settings.cta_color }};
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    transition: color 0.3s ease, text-decoration-color 0.3s ease;
+    font-weight: {{ section.settings.cta_weight }};
+  }
+
+  .blog-card-cta-{{ custom_blog }}:hover {
+    color: {{ section.settings.cta_hover_color }};
+    text-decoration-color: {{ section.settings.cta_hover_color }};
+  }
+
+  @media screen and (max-width: 989px) {
+    .blog-grid-{{ custom_blog }} {
+      grid-template-columns: repeat({{ section.settings.columns_tablet }}, 1fr);
+      gap: {{ section.settings.card_spacing_mobile }}px;
+    }
+
+    .blog-section-title-{{ custom_blog }} {
+      /* font-size: calc({{ section.settings.title_size }}px * 0.75); */
+      font-size:36px;
+    }
+     .blog-section-container-{{ custom_blog }} {
+      padding: 0 20px;
+     }
+    .blog-section-subtitle-{{ custom_blog }} {
+      /* font-size: calc({{ section.settings.subtitle_size }}px * 0.9); */
+        font-size:16px;
+    }
+     .blog-card-title-{{ custom_blog }} {
+    font-size:34px;
+  }
+  }
+
+  @media screen and (max-width: 749px) {
+    .blog-grid-{{ custom_blog }} {
+      grid-template-columns: repeat({{ section.settings.columns_mobile }}, 1fr);
+    }
+
+    .blog-section-{{ custom_blog }} {
+      padding: {{ section.settings.section_padding_top | times: 0.6 }}px 0 {{ section.settings.section_padding_bottom | times: 0.6 }}px;
+    }
+
+    .blog-card-content-{{ custom_blog }} {
+      padding: {{ section.settings.card_padding | times: 0.8 }}px;
+    }
+  }
+{% endstyle %}
+
+<blog-section-{{ custom_blog }} class="blog-section-{{ custom_blog }}" {{ section.shopify_attributes }}>
+  <div class="blog-section-container-{{ custom_blog }}">
+    <div class="blog-section-header-{{ custom_blog }}">
+      {% if section.settings.section_title != blank %}
+        <h2 class="blog-section-title-{{ custom_blog }}">{{ section.settings.section_title }}</h2>
+      {% endif %}
+      {% if section.settings.section_subtitle != blank %}
+        <p class="blog-section-subtitle-{{ custom_blog }}">{{ section.settings.section_subtitle }}</p>
+      {% endif %}
+    </div>
+
+    <div class="blog-grid-{{ custom_blog }}">
+      {% if section.settings.blog != blank %}
+        {% for article in section.settings.blog.articles limit: section.settings.articles_to_show %}
+          <article class="blog-card-{{ custom_blog }}">
+            <a href="{{ article.url }}" class="blog-card-image-wrapper-{{ custom_blog }}">
+              {% if article.image %}
+                <img
+                  src="{{ article.image | image_url: width: 800 }}"
+                  alt="{{ article.image.alt | escape }}"
+                  class="blog-card-image-{{ custom_blog }}"
+                  loading="lazy"
+                  width="800"
+                  height="1000"
+                >
+              {% else %}
+                <div class="blog-card-image-placeholder-{{ custom_blog }}">
+                  {{ 'image' | placeholder_svg_tag }}
+                </div>
+              {% endif %}
+            </a>
+
+            <div class="blog-card-content-{{ custom_blog }}">
+              <time class="blog-card-date-{{ custom_blog }}" datetime="{{ article.published_at | date: '%Y-%m-%d' }}">
+                {{ article.published_at | date: '%d %B %Y' }}
+              </time>
+
+              <h3 class="blog-card-title-{{ custom_blog }}">
+                <a href="{{ article.url }}" class="blog-card-title-link-{{ custom_blog }}">
+                  {{ article.title }}
+                </a>
+              </h3>
+
+              {% if article.excerpt != blank %}
+                <div class="blog-card-description-{{ custom_blog }}">
+                  {{ article.excerpt | strip_html | truncate: 120 }}
+                </div>
+              {% endif %}
+
+              <a href="{{ article.url }}" class="blog-card-cta-{{ custom_blog }}">
+                {{ section.settings.cta_text }}
+              </a>
+            </div>
+          </article>
+        {% endfor %}
+      {% else %}
+        {% for i in (1..3) %}
+          <article class="blog-card-{{ custom_blog }}">
+            <div class="blog-card-image-wrapper-{{ custom_blog }}">
+              <div class="blog-card-image-placeholder-{{ custom_blog }}">
+                {{ 'image' | placeholder_svg_tag }}
+              </div>
+            </div>
+
+            <div class="blog-card-content-{{ custom_blog }}">
+              <time class="blog-card-date-{{ custom_blog }}">1 January 2026</time>
+
+              <h3 class="blog-card-title-{{ custom_blog }}">
+                <span class="blog-card-title-link-{{ custom_blog }}">
+                  Jewelry Trends to Watch This Season
+                </span>
+              </h3>
+
+              <div class="blog-card-description-{{ custom_blog }}">
+                Discover the latest trends in jewelry design and styling for the modern lifestyle enthusiast.
+              </div>
+
+              <span class="blog-card-cta-{{ custom_blog }}">
+                {{ section.settings.cta_text }}
+              </span>
+            </div>
+          </article>
+        {% endfor %}
+      {% endif %}
+    </div>
+  </div>
+</blog-section-{{ custom_blog }}>
+
+<script>
+  (function() {
+    class BlogSection{{ custom_blog }} extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+        this.initLazyLoading();
+      }
+
+      initLazyLoading() {
+        if ('IntersectionObserver' in window) {
+          const images = this.querySelectorAll('.blog-card-image-{{ custom_blog }}');
+          const imageObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                const img = entry.target;
+                img.src = img.dataset.src || img.src;
+                observer.unobserve(img);
+              }
+            });
+          });
+
+          images.forEach(img => imageObserver.observe(img));
+        }
+      }
+    }
+
+    customElements.define('blog-section-{{ custom_blog }}', BlogSection{{ custom_blog }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Blog section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "blog",
+      "id": "blog",
+      "label": "Blog"
+    },
+    {
+      "type": "range",
+      "id": "articles_to_show",
+      "label": "Articles to show",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Section title",
+      "default": "Our blogs"
+    },
+    {
+      "type": "textarea",
+      "id": "section_subtitle",
+      "label": "Subtitle",
+      "default": "For moments of uncertainty, these writings offer quiet guidance on care, timing, and practices best understood early."
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "CTA text",
+      "default": "Read Article"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "container_max_width",
+      "label": "Container max width",
+      "min": 800,
+      "max": 1600,
+      "step": 50,
+      "unit": "px",
+      "default": 1200
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "label": "Columns on desktop",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "select",
+      "id": "columns_tablet",
+      "label": "Columns on tablet",
+      "options": [
+        {
+          "value": "1",
+          "label": "1"
+        },
+        {
+          "value": "2",
+          "label": "2"
+        }
+      ],
+      "default": "2"
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "label": "Columns on mobile",
+      "options": [
+        {
+          "value": "1",
+          "label": "1"
+        },
+        {
+          "value": "2",
+          "label": "2"
+        }
+      ],
+      "default": "1"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top",
+      "label": "Section padding top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom",
+      "label": "Section padding bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "header_spacing",
+      "label": "Header spacing",
+      "min": 20,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "grid_margin_top",
+      "label": "Grid margin top",
+      "min": 20,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "card_spacing",
+      "label": "Card spacing (desktop)",
+      "min": 16,
+      "max": 60,
+      "step": 4,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "card_spacing_mobile",
+      "label": "Card spacing (mobile)",
+      "min": 12,
+      "max": 40,
+      "step": 4,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "card_padding",
+      "label": "Card padding",
+      "min": 16,
+      "max": 48,
+      "step": 4,
+      "unit": "px",
+      "default": 28
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#f5f5f5"
+    },
+   
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Subtitle",
+      "default": "#666666"
+    },
+    {
+      "type": "color",
+      "id": "date_color",
+      "label": "Date",
+      "default": "#999999"
+    },
+    {
+      "type": "color",
+      "id": "card_title_color",
+      "label": "Card title",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "description_color",
+      "label": "Description",
+      "default": "#666666"
+    },
+    {
+      "type": "color",
+      "id": "cta_color",
+      "label": "CTA",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "cta_hover_color",
+      "label": "CTA hover",
+      "default": "#333333"
+    },
+    {
+      "type": "color",
+      "id": "link_hover_color",
+      "label": "Link hover",
+      "default": "#333333"
+    },
+    {
+      "type": "color",
+      "id": "hover_shadow_color",
+      "label": "Hover shadow",
+      "default": "rgba(0, 0, 0, 0.1)"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Title size",
+      "min": 24,
+      "max": 72,
+      "step": 2,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "title_weight",
+      "label": "Title weight",
+      "min": 300,
+      "max": 700,
+      "step": 100,
+      "default": 600
+    },
+    {
+      "type": "range",
+      "id": "title_letter_spacing",
+      "label": "Title letter spacing",
+      "min": -2,
+      "max": 4,
+      "step": 0.5,
+      "unit": "px",
+      "default": -0.5
+    },
+    {
+      "type": "range",
+      "id": "title_margin_bottom",
+      "label": "Title margin bottom",
+      "min": 8,
+      "max": 40,
+      "step": 4,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "subtitle_size",
+      "label": "Subtitle size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "date_size",
+      "label": "Date size",
+      "min": 10,
+      "max": 26,
+      "step": 1,
+      "unit": "px",
+      "default": 18
+    },
+    {
+      "type": "select",
+      "id": "date_text_transform",
+      "label": "Date text transform",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "uppercase",
+          "label": "Uppercase"
+        }
+      ],
+      "default": "uppercase"
+    },
+    {
+      "type": "range",
+      "id": "date_margin_bottom",
+      "label": "Date margin bottom",
+      "min": 8,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "card_title_size",
+      "label": "Card title size",
+      "min": 16,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "card_title_weight",
+      "label": "Card title weight",
+      "min": 400,
+      "max": 700,
+      "step": 100,
+      "default": 600
+    },
+    {
+      "type": "range",
+      "id": "card_title_margin_bottom",
+      "label": "Card title margin bottom",
+      "min": 8,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "description_size",
+      "label": "Description size",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "description_margin_bottom",
+      "label": "Description margin bottom",
+      "min": 12,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "cta_size",
+      "label": "CTA size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "cta_weight",
+      "label": "CTA weight",
+      "min": 400,
+      "max": 700,
+      "step": 100,
+      "default": 500
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+   
+    {
+      "type": "range",
+      "id": "hover_lift",
+      "label": "Hover lift",
+      "min": 0,
+      "max": 12,
+      "step": 2,
+      "unit": "px",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "hover_shadow_y",
+      "label": "Hover shadow Y",
+      "min": 4,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "hover_shadow_blur",
+      "label": "Hover shadow blur",
+      "min": 12,
+      "max": 48,
+      "step": 4,
+      "unit": "px",
+      "default": 32
+    }
+  ],
+  "presets": [
+    {
+      "name": "Blog section"
+    }
+  ]
+}
+{% endschema %}

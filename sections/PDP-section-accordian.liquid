@@ -1,0 +1,386 @@
+<section class="product-detail-section" id="product-detail-section">
+  <style>
+    .product-detail-section {
+      background: #fff;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .accordion-item {
+      border-bottom: 1.5px solid #e0d9ce;
+      overflow: hidden;
+    }
+
+    .accordion-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 0;
+      cursor: pointer;
+      user-select: none;
+      background: transparent;
+      border: none;
+      width: 100%;
+      text-align: left;
+      max-width: 1251px;
+      margin: 0 auto;
+    }
+
+    .accordion-header h3 {
+      font-size: 36px;
+      font-weight: 700;
+      color: #4a7c2f;
+      margin: 0;
+      letter-spacing: 0.01em;
+    }
+
+    .accordion-icon {
+      width: 32px;
+      height: 32px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .accordion-icon::before {
+      content: '';
+      display: block;
+      width: 9px;
+      height: 9px;
+      border-right: 2px solid #4a7c2f;
+      border-top: 2px solid #4a7c2f;
+      transform: rotate(-45deg) translateY(2px);
+      transition: transform 0.3s ease;
+    }
+
+    .accordion-item.active .accordion-icon::before {
+      transform: rotate(135deg) translateY(2px);
+    }
+
+    .accordion-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .accordion-item.active .accordion-body {
+      max-height: 2000px;
+    }
+
+    .accordion-content {
+      padding-bottom: 32px;
+    }
+
+    /* ── FULL WIDTH IMAGE ── */
+    .banner-image-wrap img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 12px;
+    }
+
+    /* ── IMAGE + VIDEO OVERLAY ──
+       Banner image fills full width.
+       Video sits on top of the RIGHT half as an absolute overlay.
+    ── */
+    .image-video-wrap {
+      position: relative;
+      border-radius: 12px;
+      overflow: hidden;
+      line-height: 0;
+      max-height: 624px;
+    }
+
+    /* Full-width banner */
+    .image-video-wrap .iv-banner {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* Dark overlay on right 50% behind video */
+    .image-video-wrap .iv-video-overlay {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 50%;
+      height: 100%;
+      max-width: 550px;
+      background: #1c1c1c;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    /* Video fills its overlay box */
+    .image-video-wrap .iv-video-overlay video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      border: none;
+      outline: none;
+    }
+
+    @media (max-width: 768px) {
+      .accordion-header h3 {
+        font-size: 28px;
+      }
+
+      /* On mobile: video goes BELOW the image (stacked) */
+      .image-video-wrap .iv-video-overlay {
+        position: relative;
+        width: 100%;
+        height: 240px;
+        top: auto;
+        right: auto;
+      }
+
+      .image-video-wrap {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .image-video-wrap .iv-banner {
+        border-radius: 12px 12px 0 0;
+      }
+
+      .image-video-wrap .iv-video-overlay {
+        border-radius: 0 0 12px 12px;
+      }
+    }
+  </style>
+
+  {%- assign first_visible = true -%}
+
+  {%- for block in section.blocks -%}
+
+    {%- assign block_type = block.settings.layout_type -%}
+    {%- assign has_image  = false -%}
+    {%- assign has_video  = false -%}
+    {%- assign has_content = false -%}
+
+    {%- if block.settings.banner_image != blank -%}
+      {%- assign has_image = true -%}
+    {%- endif -%}
+
+    {%- if block.settings.banner_video != blank -%}
+      {%- assign has_video = true -%}
+    {%- endif -%}
+
+    {%- if block_type == 'image_video' -%}
+      {%- if has_image or has_video -%}
+        {%- assign has_content = true -%}
+      {%- endif -%}
+    {%- else -%}
+      {%- if has_image -%}
+        {%- assign has_content = true -%}
+      {%- endif -%}
+    {%- endif -%}
+
+    {%- if has_content -%}
+      {%- if first_visible -%}
+        {%- assign is_active   = true -%}
+        {%- assign first_visible = false -%}
+      {%- else -%}
+        {%- assign is_active = false -%}
+      {%- endif -%}
+
+      <div class="accordion-item{% if is_active %} active{% endif %}" data-accordion {{ block.shopify_attributes }}>
+        <button class="accordion-header" aria-expanded="{{ is_active }}">
+          <h3>{{ block.settings.title }}</h3>
+          <span class="accordion-icon" aria-hidden="true"></span>
+        </button>
+
+        <div class="accordion-body">
+          <div class="accordion-content">
+
+            {%- if block_type == 'image_video' -%}
+              {%- comment -%}
+                Full-width banner image with video overlaid on its right 50%.
+                If no image but has video → video fills full width.
+                If no video → just show image normally.
+              {%- endcomment -%}
+
+              {%- if has_image and has_video -%}
+                <div class="image-video-wrap">
+                  <img
+                    class="iv-banner"
+                    src="{{ block.settings.banner_image | image_url: width: 1200 }}"
+                    alt="{{ block.settings.title | escape }}"
+                    loading="lazy"
+                    width="1200"
+                  >
+                  <div class="iv-video-overlay">
+                    {%- liquid
+                      assign video_src = ''
+                      if block.settings.banner_video.sources.size > 1
+                        assign video_src = block.settings.banner_video.sources[1].url
+                      elsif block.settings.banner_video.sources.size > 0
+                        assign video_src = block.settings.banner_video.sources[0].url
+                      endif
+                    -%}
+                    {%- if video_src != blank -%}
+                      <video
+                        src="{{ video_src }}"
+                        controls
+                        muted
+                        playsinline
+                        preload="none"
+                        poster="{{ block.settings.banner_video.preview_image | image_url: width: 800 }}"
+                      ></video>
+                    {%- endif -%}
+                  </div>
+                </div>
+
+              {%- elsif has_image -%}
+                <div class="banner-image-wrap">
+                  <img
+                    src="{{ block.settings.banner_image | image_url: width: 1200 }}"
+                    alt="{{ block.settings.title | escape }}"
+                    loading="lazy"
+                    width="1200"
+                  >
+                </div>
+
+              {%- elsif has_video -%}
+                {%- liquid
+                  assign video_src = ''
+                  if block.settings.banner_video.sources.size > 1
+                    assign video_src = block.settings.banner_video.sources[1].url
+                  elsif block.settings.banner_video.sources.size > 0
+                    assign video_src = block.settings.banner_video.sources[0].url
+                  endif
+                -%}
+                {%- if video_src != blank -%}
+                  <div class="banner-image-wrap" style="background:#1c1c1c;border-radius:12px;overflow:hidden;line-height:0;">
+                    <video
+                      src="{{ video_src }}"
+                      controls
+                      muted
+                      playsinline
+                      preload="none"
+                      poster="{{ block.settings.banner_video.preview_image | image_url: width: 1200 }}"
+                      style="width:100%;height:auto;display:block;"
+                    ></video>
+                  </div>
+                {%- endif -%}
+              {%- endif -%}
+
+            {%- else -%}
+              {%- comment -%} Full-width image only {%- endcomment -%}
+              <div class="banner-image-wrap">
+                {%- if has_image -%}
+                  <img
+                    src="{{ block.settings.banner_image | image_url: width: 1200 }}"
+                    alt="{{ block.settings.title | escape }}"
+                    loading="lazy"
+                    width="1200"
+                  >
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+
+          </div>
+        </div>
+      </div>
+    {%- endif -%}
+
+  {%- endfor -%}
+
+</section>
+
+<script>
+  document.querySelectorAll('[data-accordion]').forEach(function(item) {
+    var btn = item.querySelector('.accordion-header');
+    btn.addEventListener('click', function() {
+      var isActive = item.classList.contains('active');
+      document.querySelectorAll('[data-accordion]').forEach(function(el) {
+        el.classList.remove('active');
+        el.querySelector('.accordion-header').setAttribute('aria-expanded', 'false');
+        /* Pause any playing videos when accordion closes */
+        el.querySelectorAll('video').forEach(function(v) { v.pause(); });
+      });
+      if (!isActive) {
+        item.classList.add('active');
+        btn.setAttribute('aria-expanded', 'true');
+      }
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Product Detail Accordions",
+  "tag": "section",
+  "class": "product-detail-accordions",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "accordion_block",
+      "name": "Accordion",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Accordion Title",
+          "default": "Section Title"
+        },
+        {
+          "type": "select",
+          "id": "layout_type",
+          "label": "Layout Type",
+          "options": [
+            { "value": "image",       "label": "Full Width Image" },
+            { "value": "image_video", "label": "Image + Video Overlay (right half)" }
+          ],
+          "default": "image"
+        },
+        {
+          "type": "header",
+          "content": "Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "banner_image",
+          "label": "Banner Image"
+        },
+        {
+          "type": "header",
+          "content": "Video (for Image + Video layout)"
+        },
+        {
+          "type": "video",
+          "id": "banner_video",
+          "label": "Video"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Detail Accordions",
+      "blocks": [
+        {
+          "type": "accordion_block",
+          "settings": { "title": "What is in it",             "layout_type": "image" }
+        },
+        {
+          "type": "accordion_block",
+          "settings": { "title": "How to use",                "layout_type": "image_video" }
+        },
+        {
+          "type": "accordion_block",
+          "settings": { "title": "Why right shift",           "layout_type": "image" }
+        },
+        {
+          "type": "accordion_block",
+          "settings": { "title": "Why gut health is important","layout_type": "image" }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

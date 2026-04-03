@@ -1,0 +1,149 @@
+{% comment %}
+  Right Shift - Reviews Section
+  File: sections/rs-reviews.liquid
+  Features: Heading, subtext, review cards as blocks (grid 3-col), star rating
+{% endcomment %}
+
+<style>
+.rs-reviews { padding: 60px 40px 80px; background: #fff; }
+
+.rs-reviews__heading {
+  font-size: 55px; 
+  font-weight: 600;
+  color: #1a1a1a; margin-bottom: 10px; line-height: 1.1;
+}
+.rs-reviews__sub {
+  font-size: 18px; 
+  color: #000; 
+  font-weight: 300;
+  max-width: 488px; 
+  line-height: 1.6; 
+  margin-bottom: 40px;
+}
+
+.rs-reviews__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.rs-review-card {
+  background: #F7F6F0;
+  border-radius: 4px;
+  padding: 32px 28px 28px;
+  display: flex; flex-direction: column; gap: 14px;
+  text-align: center;
+}
+
+.rs-review-card__stars { color: #c8962e; font-size: 20px; letter-spacing: 3px; }
+
+.rs-review-card__text {
+  font-size: 16px; 
+  color: #492914;
+  line-height: 1.75; font-weight: 300;
+  flex: 1;
+}
+
+.rs-review-card__name {
+  font-size: 14px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase;
+  color: #4A2A15; margin-top: 4px;
+}
+
+@media (max-width: 860px) {
+  .rs-reviews { padding: 40px 20px 60px; }
+  .rs-reviews__grid { grid-template-columns: repeat(2, 1fr); }
+  .rs-reviews__heading { font-size: 36px; }
+  .rs-reviews__sub {font-size: 16px; }
+}
+@media (max-width: 540px) {
+  .rs-reviews__grid { grid-template-columns: 1fr; }
+}
+</style>
+
+
+<div class="rs-reviews">
+  <div class="rs-reviews__inner">
+
+    <h2 class="rs-reviews__heading">{{ section.settings.heading | default: 'The Reviews Speak' }}</h2>
+    {% if section.settings.subtext != blank %}
+      <p class="rs-reviews__sub">{{ section.settings.subtext }}</p>
+    {% endif %}
+
+    <div class="rs-reviews__grid">
+      {% for block in section.blocks %}
+        {% if block.type == 'review_card' %}
+          <div class="rs-review-card" {{ block.shopify_attributes }}>
+            <div class="rs-review-card__stars">
+              {% assign stars = block.settings.rating | default: 5 %}
+              {% for i in (1..stars) %}★{% endfor %}
+            </div>
+            <p class="rs-review-card__text">{{ block.settings.review_text | default: 'Hear the stories from those who now experience our grace and beauty. Let their experiences transform your routine.' }}</p>
+            <div class="rs-review-card__name">{{ block.settings.reviewer_name | default: 'NAME HERE' }}</div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "VS - Reviews",
+  "blocks": [
+    {
+      "type": "review_card",
+      "name": "Review Card",
+      "settings": [
+        {
+          "type": "range",
+          "id": "rating",
+          "label": "Star Rating",
+          "min": 1, "max": 5, "step": 1,
+          "default": 5
+        },
+        {
+          "type": "textarea",
+          "id": "review_text",
+          "label": "Review Text",
+          "default": "Hear the stories from those who now experience our grace and beauty. Let their experiences transform your routine."
+        },
+        {
+          "type": "text",
+          "id": "reviewer_name",
+          "label": "Reviewer Name",
+          "default": "NAME HERE"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section Heading",
+      "default": "The Reviews Speak"
+    },
+    {
+      "type": "textarea",
+      "id": "subtext",
+      "label": "Subtext",
+      "default": "Reflections that confirm what careful making and consistency over time naturally produce."
+    }
+  ],
+  "presets": [
+    {
+      "name": "VS - Reviews",
+      "blocks": [
+        { "type": "review_card", "settings": { "rating": 5, "reviewer_name": "Priya S." } },
+        { "type": "review_card", "settings": { "rating": 5, "reviewer_name": "Rahul M." } },
+        { "type": "review_card", "settings": { "rating": 5, "reviewer_name": "Ananya K." } },
+        { "type": "review_card", "settings": { "rating": 5, "reviewer_name": "Vikram T." } },
+        { "type": "review_card", "settings": { "rating": 5, "reviewer_name": "Meera R." } },
+        { "type": "review_card", "settings": { "rating": 5, "reviewer_name": "Arjun P." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

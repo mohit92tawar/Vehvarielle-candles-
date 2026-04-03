@@ -1,0 +1,102 @@
+<section class="rs-shift" id="rs-shift-{{ section.id }}">
+  <div class="rs-shift__inner">
+    <h2 class="rs-shift__heading">{{ section.settings.heading }}</h2>
+    <p class="rs-shift__desc">{{ section.settings.description }}</p>
+
+    <div class="rs-shift__services">
+
+      <div class="rs-shift__service">
+        <div class="rs-shift__icon-wrap">
+          {% if section.settings.service_icon_1 != blank %}
+            <img src="{{ section.settings.service_icon_1 | image_url: width: 120 }}" alt="{{ section.settings.service_label_1 }}" loading="lazy">
+          {% else %}
+            <svg viewBox="0 0 64 64" width="56" height="56" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="8" y="6" width="32" height="42" rx="4" stroke="#1a1a1a" stroke-width="3"/>
+              <rect x="14" y="12" width="20" height="10" rx="2" fill="#1a1a1a"/>
+              <circle cx="16" cy="34" r="3" fill="#1a1a1a"/>
+              <circle cx="28" cy="34" r="3" fill="#1a1a1a"/>
+              <circle cx="16" cy="44" r="3" fill="#1a1a1a"/>
+              <circle cx="28" cy="44" r="3" fill="#2e7d32"/>
+              <line x1="48" y1="20" x2="48" y2="58" stroke="#2e7d32" stroke-width="3" stroke-linecap="round"/>
+              <path d="M44 20 Q44 30 48 34 Q52 30 52 20" stroke="#2e7d32" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            </svg>
+          {% endif %}
+        </div>
+        <p class="rs-shift__service-label">{{ section.settings.service_label_1 }}</p>
+      </div>
+
+      <div class="rs-shift__service">
+        <div class="rs-shift__icon-wrap">
+          {% if section.settings.service_icon_2 != blank %}
+            <img src="{{ section.settings.service_icon_2 | image_url: width: 120 }}" alt="{{ section.settings.service_label_2 }}" loading="lazy">
+          {% else %}
+            <svg viewBox="0 0 64 64" width="56" height="56" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10 44 A22 22 0 0 1 54 44" stroke="#1a1a1a" stroke-width="3.5" stroke-linecap="round"/>
+              <path d="M16 50 A18 18 0 0 1 48 50" stroke="#e0e0e0" stroke-width="6" stroke-linecap="round"/>
+              <path d="M16 50 A18 18 0 0 1 38 24" stroke="#2e7d32" stroke-width="6" stroke-linecap="round"/>
+              <circle cx="32" cy="44" r="4" fill="#1a1a1a"/>
+              <line x1="32" y1="44" x2="38" y2="28" stroke="#1a1a1a" stroke-width="2.5" stroke-linecap="round"/>
+            </svg>
+          {% endif %}
+        </div>
+        <p class="rs-shift__service-label">{{ section.settings.service_label_2 }}</p>
+      </div>
+
+    </div>
+
+    <a href="{{ section.settings.btn_url }}" class="rs-shift__btn">{{ section.settings.btn_label }}</a>
+  </div>
+</section>
+
+<style>
+.rs-shift { background: #FFEDD6; padding: 64px 40px; text-align: center; }
+.rs-shift__inner { max-width: 900px; margin: 0 auto; }
+.rs-shift__heading { font-size: 45; font-weight: 900; color: #2D2119; margin-bottom: 12px; }
+.rs-shift__desc { font-size: 20px; color: #2D2119; line-height: 1.8; max-width: 900px; margin: 0 auto 48px; }
+.rs-shift__services { display: flex; justify-content: center; gap: 64px; flex-wrap: wrap; margin-bottom: 48px; }
+.rs-shift__service { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+.rs-shift__icon-wrap { width: 160px; height: 160px; background: #2B211A; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+.rs-shift__icon-wrap img { width: 100px; height: 100px; object-fit: contain; }
+.rs-shift__service-label { font-size: 18px; font-weight: 700; color: #382312; max-width: 130px; line-height: 1.4; text-align: center; }
+.rs-shift__btn { display: inline-block;
+    background: #2D2119;
+    color: #fff;
+    padding: 9px 64px;
+    border-radius: 50px;
+    font-size: 24px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background .2s; }
+.rs-shift__btn:hover { background: #333; color: #fff; }
+
+@media (max-width: 749px) {
+  .rs-shift { padding: 36px 16px; }
+  .rs-shift__heading { font-size: 28px; }
+  .rs-shift__desc { margin-bottom: 32px; font-size: 16px; }
+  .rs-shift__services { gap: 32px; }
+  .rs-shift__icon-wrap { width: 96px; height: 96px; }
+  .rs-shift__btn { padding: 14px 48px; font-size: 16px; min-width: auto; max-width: 200px; }
+  .rs-shift__icon-wrap { width: 130px; height: 130px; }
+  .rs-shift__icon-wrap img { width: 60px; height: 60px; }
+}
+</style>
+
+{% schema %}
+{
+  "name": "How To Make The Shift",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "How to make the right shift?" },
+    { "type": "textarea", "id": "description", "label": "Description", "default": "Going forward, we will be your constant companion guiding you to make your health and mindset your everyday priority. No generic solutions here! We walk alongside you, understand your health needs, and offer personalized services like" },
+    { "type": "header", "content": "Service 1" },
+    { "type": "image_picker", "id": "service_icon_1", "label": "Icon 1 (optional)" },
+    { "type": "text", "id": "service_label_1", "label": "Label 1", "default": "Personalized Meal Plans" },
+    { "type": "header", "content": "Service 2" },
+    { "type": "image_picker", "id": "service_icon_2", "label": "Icon 2 (optional)" },
+    { "type": "text", "id": "service_label_2", "label": "Label 2", "default": "Know Your Score" },
+    { "type": "header", "content": "Button" },
+    { "type": "text", "id": "btn_label", "label": "Button Text", "default": "Get Started" },
+    { "type": "url", "id": "btn_url", "label": "Button URL" }
+  ],
+  "presets": [{ "name": "How To Make The Shift" }]
+}
+{% endschema %}

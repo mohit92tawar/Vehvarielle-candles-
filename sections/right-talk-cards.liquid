@@ -1,0 +1,420 @@
+{% comment %}
+  Section: Right Shift Blog Grid
+  Renders blog articles using Liquid (server-side) so it works
+  in both the Shopify theme editor preview AND on the live site.
+  Tab filtering is handled client-side via JavaScript after render.
+{% endcomment %}
+
+{% assign blog_handle = section.settings.blog_handle | default: 'news' %}
+{% assign target_blog = blogs[blog_handle] %}
+{% assign max_posts   = section.settings.max_posts | default: 12 %}
+
+<style>
+.rtc-wrap *, .rtc-wrap *::before, .rtc-wrap *::after { box-sizing: border-box; margin: 0; padding: 0; }
+.blogs_container { background: #ffedd6; padding: 20px 90px 60px;  }
+.rtc-wrap {
+  background: #fcf1e4;
+}
+{% comment %} .rtc-inner { max-width: 1200px; margin: 0 auto; } {% endcomment %}
+.rtc-read-btn svg { rotate: 180deg; height: 25px; }
+.rtc-heading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 40px;
+  font-weight: 800;
+  color: #1a1a1a;
+  margin-bottom: 0px;
+  min-height: 144px;
+}
+
+/* ── TABS ── */
+.rtc-tabs {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 40px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  gap: 40px;
+  padding-bottom: 0;
+}
+.rtc-tabs::-webkit-scrollbar { display: none; }
+.rtc-tab {
+  font-size: 20px;
+  font-weight: 700;
+  color: #2d2119;
+  cursor: pointer;
+  padding: 0 4px 14px;
+  border: none;
+  background: none;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  flex-shrink: 0;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -1px;
+  transition: color .2s;
+}
+.rtc-tab:hover  { color: #1b6b3a; }
+.rtc-tab.active { color: #1b6b3a; border-bottom: 0px; }
+
+/* ── GRID ── */
+.rtc-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+  min-height: 200px;
+  transition: opacity 0.2s;
+}
+
+/* ── CARD ── */
+.rtc-card {
+  border-radius: 40px;
+  overflow: hidden;
+  background: #fff;
+  cursor: pointer;
+  transition: transform .25s ease, box-shadow .25s ease;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+}
+.rtc-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,.12); }
+.rtc-card[hidden] { display: none; }
+
+.rtc-card-img {
+  overflow: hidden;
+  background: #e8e0d5;
+  flex-shrink: 0;
+}
+.rtc-card-img img {
+ display: block;
+    transition: transform .45s ease;
+    min-height: 190px;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 40px 40px 0 0;
+}
+.rtc-card:hover .rtc-card-img img { transform: scale(1.06); }
+
+/* Placeholder when no featured image */
+.rtc-card-img-placeholder {
+  width: 100%; height: 100%;
+  background: #d4e8dc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rtc-card-body {
+  background: #1b6b3a;
+  padding: 24px 35px 45px;
+  min-height: 270px;
+
+}
+.rtc-card-tag {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: #a8e0bc;
+}
+.rtc-card-title {
+  font-size: 22px;
+  line-height: 1.4;
+  color: #fff;
+  font-family: 'Paytone One';
+  margin-bottom: 14px;
+}
+.rtc-read-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #FCEED9;
+  border: none;
+  color: #1a1a1a;
+      padding: 8px 18px;
+    min-width: 172px;
+  border-radius: 30px;
+  font-size: 20px;
+  font-weight: 700;
+  width: fit-content;
+  text-decoration: none;
+  transition: background .2s;
+}
+.rtc-read-btn:hover span { text-decoration: underline; }
+
+
+.rtc-empty {
+  grid-column: 1/-1;
+  text-align: center;
+  color: #888;
+  padding: 60px 20px;
+  font-size: 15px;
+  line-height: 1.8;
+}
+.rtc-no-results {
+  grid-column: 1/-1;
+  text-align: center;
+  color: #888;
+  padding: 60px 20px;
+  font-size: 15px;
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .rtc-tabs { margin-bottom: 20px; }
+  .rtc-card-body { min-height: auto; }
+  .blogs_container { padding: 20px; }
+  .rtc-tabs { gap: 20px; justify-content: flex-start; }
+  .rtc-tab { font-size: 12px; padding: 0 2px 12px; }
+  .rtc-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+}
+@media (max-width: 480px) {
+  .rtc-grid { grid-template-columns: 1fr; }
+}
+</style>
+
+<div class="rtc-wrap">
+  <div class="rtc-inner">
+
+    {% if section.settings.heading != blank %}
+      <h2 class="rtc-heading">{{ section.settings.heading }}</h2>
+    {% endif %}
+<div class="blogs_container">
+    <!-- Filter Tabs -->
+    <div class="rtc-tabs" id="rtcTabs">
+      <button class="rtc-tab active" data-tag="all">ALL</button>
+      {% for block in section.blocks %}
+        {% if block.type == 'filter_tab' %}
+          <button
+            class="rtc-tab"
+            data-tag="{{ block.settings.tag_filter | downcase | strip }}"
+          >{{ block.settings.tab_label }}</button>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    <!-- Blog Cards Grid — rendered server-side via Liquid -->
+    <div class="rtc-grid" id="rtcGrid">
+
+      {% if target_blog == blank %}
+
+        <div class="rtc-empty">
+          Blog not found.<br>
+          <small>
+            Please check the <strong>Blog Handle</strong> in section settings.<br>
+            Current value: <strong>{{ blog_handle }}</strong><br>
+            Go to <strong>Shopify Admin → Online Store → Blog posts → Manage blogs</strong>
+            and copy the handle from the blog URL.
+          </small>
+        </div>
+
+      {% else %}
+
+        {% assign article_count = 0 %}
+
+        {% for article in target_blog.articles limit: max_posts %}
+          {% assign article_count = article_count | plus: 1 %}
+
+          {% comment %} Build a comma-separated lowercase tag string for JS filtering {% endcomment %}
+          {% assign tag_string = '' %}
+          {% for tag in article.tags %}
+            {% assign tag_lower = tag | downcase | strip %}
+            {% if forloop.first %}
+              {% assign tag_string = tag_lower %}
+            {% else %}
+              {% assign tag_string = tag_string | append: ',' | append: tag_lower %}
+            {% endif %}
+          {% endfor %}
+
+          {% comment %} Pick first matching configured tab tag for the card label {% endcomment %}
+          {% assign display_tag = '' %}
+          {% for block in section.blocks %}
+            {% if block.type == 'filter_tab' and display_tag == '' %}
+              {% assign cfg_tag = block.settings.tag_filter | downcase | strip %}
+              {% for art_tag in article.tags %}
+                {% if art_tag == cfg_tag and display_tag == '' %}
+                  {% assign display_tag = block.settings.tab_label %}
+                {% endif %}
+              {% endfor %}
+            {% endif %}
+          {% endfor %}
+          {% if display_tag == '' and article.tags.size > 0 %}
+            {% assign display_tag = article.tags.first %}
+          {% endif %}
+
+          <a
+            class="rtc-card"
+            href="{{ article.url }}"
+            data-tags="{{ tag_string }}"
+          >
+            <div class="rtc-card-img">
+              {% if article.image %}
+                <img
+                 src="{{ article.image | image_url: width: 1200 }}"
+                  alt="{{ article.image.alt | default: article.title | escape }}"
+                  loading="lazy"
+                  width="600"
+                  height="450"
+                >
+              {% else %}
+                <div class="rtc-card-img-placeholder">
+                  <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#1b6b3a" stroke-width="1.5">
+                    <rect x="3" y="3" width="18" height="18" rx="2"/>
+                    <circle cx="8.5" cy="8.5" r="1.5"/>
+                    <polyline points="21 15 16 10 5 21"/>
+                  </svg>
+                </div>
+              {% endif %}
+            </div>
+
+            <div class="rtc-card-body">
+              {% comment %} {% if display_tag != '' %}
+                <div class="rtc-card-tag">{{ display_tag }}</div>
+              {% endif %} {% endcomment %}
+              <h5 class="rtc-card-title">{{ article.title }}</h5>
+              <span class="rtc-read-btn">
+               <span>Read More</span> 
+               {{ 'slick-arrow.svg' | inline_asset_content }}
+              </span>
+            </div>
+          </a>
+
+        {% endfor %}
+
+        {% if article_count == 0 %}
+          <div class="rtc-empty">
+            No blog posts found in <strong>{{ target_blog.title }}</strong>.<br>
+            <small>Make sure posts are published and belong to this blog.</small>
+          </div>
+        {% endif %}
+
+        <!-- Shown via JS when a filtered tab has zero results -->
+        <div class="rtc-no-results" id="rtcNoResults">
+          No blogs found in this category.<br>
+          <small>Add the matching tag to your blog posts to show them here.</small>
+        </div>
+
+      {% endif %}
+
+    </div><!-- /.rtc-grid -->
+</div>
+  </div>
+</div>
+
+<script>
+(function () {
+
+  var tabs    = document.querySelectorAll('#rtcTabs .rtc-tab');
+  var cards   = document.querySelectorAll('#rtcGrid .rtc-card');
+  var noRes   = document.getElementById('rtcNoResults');
+  var grid    = document.getElementById('rtcGrid');
+
+  function filterCards(tag) {
+    var visible = 0;
+
+    cards.forEach(function (card) {
+      if (tag === 'all') {
+        card.removeAttribute('hidden');
+        visible++;
+      } else {
+        /* data-tags is a comma-separated lowercase string built by Liquid */
+        var cardTags = (card.dataset.tags || '').split(',').map(function(t){ return t.trim(); });
+        if (cardTags.indexOf(tag) !== -1) {
+          card.removeAttribute('hidden');
+          visible++;
+        } else {
+          card.setAttribute('hidden', '');
+        }
+      }
+    });
+
+    /* Show/hide the "no results" message */
+    if (noRes) noRes.style.display = (visible === 0 ? 'block' : 'none');
+  }
+
+  tabs.forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      /* Update active tab */
+      tabs.forEach(function (t) { t.classList.remove('active'); });
+      tab.classList.add('active');
+
+      var tag = tab.dataset.tag;
+
+      /* Fade out → filter → fade in */
+      grid.style.opacity = '0';
+      setTimeout(function () {
+        filterCards(tag);
+        grid.style.opacity = '1';
+      }, 180);
+    });
+  });
+
+  /* Initial render — show all */
+  filterCards('all');
+
+}());
+</script>
+
+{% schema %}
+{
+  "name": "Right Talk Blog Grid",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section Heading",
+      "default": "Right Shift Health Blogs"
+    },
+    {
+      "type": "text",
+      "id": "blog_handle",
+      "label": "Blog Handle",
+      "info": "The URL handle of your blog. Go to Shopify Admin → Blog posts → Manage blogs. The handle is the last part of the blog URL. Example: /blogs/news → enter 'news'.",
+      "default": "news"
+    },
+    {
+      "type": "range",
+      "id": "max_posts",
+      "label": "Max Posts to Show",
+      "min": 6,
+      "max": 48,
+      "step": 6,
+      "default": 12
+    }
+  ],
+  "blocks": [
+    {
+      "type": "filter_tab",
+      "name": "Filter Tab",
+      "settings": [
+        {
+          "type": "text",
+          "id": "tab_label",
+          "label": "Tab Label (displayed on screen)",
+          "default": "RIGHT NUTRITION"
+        },
+        {
+          "type": "text",
+          "id": "tag_filter",
+          "label": "Blog Tag",
+          "info": "Enter the exact tag applied to your blog posts in Shopify. Tag matching is case-insensitive. Example: if the post has tag 'nutrition', enter 'nutrition'.",
+          "default": "nutrition"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Right Talk Blog Grid",
+      "blocks": [
+        { "type": "filter_tab", "settings": { "tab_label": "RIGHT NUTRITION", "tag_filter": "nutrition" } },
+        { "type": "filter_tab", "settings": { "tab_label": "RIGHT LIFESTYLE",  "tag_filter": "lifestyle"  } },
+        { "type": "filter_tab", "settings": { "tab_label": "RIGHT MINDSET",    "tag_filter": "mindset"    } },
+        { "type": "filter_tab", "settings": { "tab_label": "RIGHT HEALTH",     "tag_filter": "health"     } }
+      ]
+    }
+  ]
+}
+{% endschema %}

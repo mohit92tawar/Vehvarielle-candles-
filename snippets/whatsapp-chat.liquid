@@ -1,0 +1,154 @@
+<style>
+
+.whatsapp-widget{
+position:fixed;
+right:20px;
+bottom:20px;
+z-index:9999;
+display:flex;
+align-items:center;
+gap:10px;
+font-family:inherit;
+}
+
+/* Chat bubble */
+
+.whatsapp-message{
+background:#ffffff;
+    padding: 21px 28px 21px 11px;
+border-radius: 0px;
+font-size: 21px;
+box-shadow:0 6px 20px rgba(0,0,0,0.15);
+position:relative;
+transform:translateX(20px);
+animation:chatSlide 0.6s ease forwards;
+animation-delay:1s;
+color: #000;
+}
+
+.whatsapp-message:after{
+content:"";
+position:absolute;
+right:-6px;
+bottom:8px;
+width:12px;
+height:12px;
+background:white;
+transform:rotate(45deg);
+box-shadow:2px 2px 5px rgba(0,0,0,0.05);
+}
+
+/* Close button */
+
+.whatsapp-close{
+position:absolute;
+right:6px;
+top:-4px;
+font-size:21px;
+cursor:pointer;
+opacity:.6;
+}
+
+/* Icon */
+
+.whatsapp-icon{
+width:70px;
+height:70px;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+box-shadow:0 8px 20px rgba(0,0,0,0.25);
+cursor:pointer;
+animation:pulse 2s infinite;
+}
+
+.whatsapp-icon svg{
+width:26px;
+height:26px;
+fill:white;
+}
+
+/* Slide animation */
+
+@keyframes chatSlide{
+from{
+opacity:0;
+transform:translateX(20px);
+}
+to{
+opacity:1;
+transform:translateX(0);
+}
+}
+
+/* Pulse animation */
+
+@keyframes pulse{
+0%{
+box-shadow:0 0 0 0 rgba(37,211,102,0.6);
+}
+70%{
+box-shadow:0 0 0 14px rgba(37,211,102,0);
+}
+100%{
+box-shadow:0 0 0 0 rgba(37,211,102,0);
+}
+}
+
+/* Mobile */
+
+@media(max-width:768px){
+
+.whatsapp-widget{
+right:12px;
+bottom:12px;
+gap:8px;
+max-width:90vw;
+}
+
+.whatsapp-message{
+font-size:16px;
+padding:14px 22px 14px 10px;
+line-height:1.3;
+max-width:65vw;
+word-break:break-word;
+}
+
+.whatsapp-close{
+font-size:16px;
+top:-2px;
+right:4px;
+}
+
+.whatsapp-icon{
+width: 46px;
+height: 46px;
+}
+
+
+}
+
+</style>
+
+
+<div class="whatsapp-widget">
+
+<div class="whatsapp-message" id="waMsg">
+
+<span class="whatsapp-close" onclick="document.getElementById('waMsg').style.display='none'">
+×
+</span>
+
+Hey, Let's chat!
+
+</div>
+
+
+<a href="https://wa.me/9663358485" target="_blank" class="whatsapp-icon">
+
+<img src="https://cdn.shopify.com/s/files/1/0817/1264/4332/files/whatsapp.png?v=1773317330" alt="whatsapp">
+
+</a>
+
+</div>

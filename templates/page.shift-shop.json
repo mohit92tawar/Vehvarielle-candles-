@@ -1,0 +1,310 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "blocks": {
+        "heading": {
+          "type": "text",
+          "name": "Title",
+          "settings": {
+            "text": "<h1>{{ closest.page.title }}</h1>",
+            "width": "100%",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "h2",
+            "font": "var(--font-primary--family)",
+            "font_size": "",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "page-content": {
+          "type": "page-content",
+          "settings": {},
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "heading",
+        "page-content"
+      ],
+      "disabled": true,
+      "settings": {
+        "content_direction": "column",
+        "gap": 32,
+        "color_scheme": "",
+        "padding-block-start": 40,
+        "padding-block-end": 80
+      }
+    },
+    "rs_shift_shop_gBdbLa": {
+      "type": "rs-shift-shop",
+      "blocks": {
+        "nav_icon_gPUXcK": {
+          "type": "nav_icon",
+          "settings": {
+            "nav_collection": "frontpage",
+            "icon_image": "shopify://shop_images/Roasted_Multigrain_Namkeen_SKU_PNG_Image_2.png",
+            "icon_label": "Shop all",
+            "icon_bg": "#f5f0e8",
+            "icon_border_color": "#e0c97a"
+          }
+        },
+        "nav_icon_PMVrKg": {
+          "type": "nav_icon",
+          "settings": {
+            "nav_collection": "",
+            "icon_label": "Shop by Occasion",
+            "icon_bg": "#f5f0e8",
+            "icon_border_color": "#e0c97a"
+          }
+        },
+        "nav_icon_6hftPU": {
+          "type": "nav_icon",
+          "settings": {
+            "nav_collection": "",
+            "icon_label": "Oats",
+            "icon_bg": "#f5f0e8",
+            "icon_border_color": "#e0c97a"
+          }
+        },
+        "nav_icon_4whNmJ": {
+          "type": "nav_icon",
+          "settings": {
+            "nav_collection": "",
+            "icon_label": "Cooking Mixes",
+            "icon_bg": "#f5f0e8",
+            "icon_border_color": "#e0c97a"
+          }
+        },
+        "nav_icon_n9CbqJ": {
+          "type": "nav_icon",
+          "settings": {
+            "nav_collection": "",
+            "icon_label": "Drink Mix",
+            "icon_bg": "#f5f0e8",
+            "icon_border_color": "#e0c97a"
+          }
+        },
+        "nav_icon_wiJwEe": {
+          "type": "nav_icon",
+          "settings": {
+            "nav_collection": "",
+            "icon_label": "Healthy Snacks",
+            "icon_bg": "#f5f0e8",
+            "icon_border_color": "#e0c97a"
+          }
+        },
+        "nav_icon_mx6nDA": {
+          "type": "nav_icon",
+          "settings": {
+            "nav_collection": "",
+            "icon_label": "Cookies",
+            "icon_bg": "#f5f0e8",
+            "icon_border_color": "#e0c97a"
+          }
+        },
+        "nav_icon_CFTdA6": {
+          "type": "nav_icon",
+          "settings": {
+            "nav_collection": "",
+            "icon_label": "Gluten Free Indulges",
+            "icon_bg": "#f5f0e8",
+            "icon_border_color": "#e0c97a"
+          }
+        },
+        "product_row_3bAr7z": {
+          "type": "product_row",
+          "settings": {
+            "row_collection": "frontpage",
+            "row_heading": "Shift to better breakfast",
+            "row_subheading": "Something corny. Something healthy. All things crunchy.",
+            "badge_grains": true,
+            "badge_nutrition": true,
+            "badge_chemicals": true
+          }
+        },
+        "product_row_yq7dkV": {
+          "type": "product_row",
+          "settings": {
+            "row_collection": "",
+            "row_heading": "Shift to better meals",
+            "row_subheading": "Something corny. Something healthy. All things crunchy.",
+            "badge_grains": true,
+            "badge_nutrition": true,
+            "badge_chemicals": true
+          }
+        },
+        "product_row_V9EXzQ": {
+          "type": "product_row",
+          "settings": {
+            "row_collection": "",
+            "row_heading": "Shift to gluten free snacks",
+            "row_subheading": "Something corny. Something healthy. All things crunchy.",
+            "badge_grains": true,
+            "badge_nutrition": true,
+            "badge_chemicals": true
+          }
+        },
+        "product_row_7wGxcX": {
+          "type": "product_row",
+          "settings": {
+            "row_collection": "",
+            "row_heading": "Shift to better energy",
+            "row_subheading": "Something corny. Something healthy. All things crunchy.",
+            "badge_grains": true,
+            "badge_nutrition": true,
+            "badge_chemicals": true
+          }
+        },
+        "faq_item_XEW7NX": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Lorem Ipsum Dolor Sit, conswqaytu Adipiscing?",
+            "answer": "<p>Nam malesuada quic theru kubits. Doing ac three lotreyu aio ger, there will thaddguth.</p>"
+          }
+        },
+        "faq_item_c4ETeH": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Lorem Ipsum Dolor Sit, conswqaytu Adipiscing?",
+            "answer": "<p>Nam malesuada quic theru kubits. Doing ac three lotreyu aio ger, there will thaddguth.</p>"
+          }
+        },
+        "faq_item_ALYNhb": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Lorem Ipsum Dolor Sit, conswqaytu Adipiscing?",
+            "answer": "<p>Nam malesuada quic theru kubits. Doing ac three lotreyu aio ger, there will thaddguth.</p>"
+          }
+        },
+        "faq_item_LnAJjf": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Lorem Ipsum Dolor Sit, conswqaytu Adipiscing?",
+            "answer": "<p>Nam malesuada quic theru kubits. Doing ac three lotreyu aio ger, there will thaddguth.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "nav_icon_gPUXcK",
+        "nav_icon_PMVrKg",
+        "nav_icon_6hftPU",
+        "nav_icon_4whNmJ",
+        "nav_icon_n9CbqJ",
+        "nav_icon_wiJwEe",
+        "nav_icon_mx6nDA",
+        "nav_icon_CFTdA6",
+        "product_row_3bAr7z",
+        "product_row_yq7dkV",
+        "product_row_V9EXzQ",
+        "product_row_7wGxcX",
+        "faq_item_XEW7NX",
+        "faq_item_c4ETeH",
+        "faq_item_ALYNhb",
+        "faq_item_LnAJjf"
+      ],
+      "name": "RS - Shift Shop Page",
+      "settings": {
+        "card_color_1": "#f5b800",
+        "card_color_2": "#1bbde8",
+        "card_color_3": "#8dc63f",
+        "hero_bg_color": "#6aaa64",
+        "hero_bg_opacity": 100,
+        "hero_height": 460,
+        "hero_heading": "The shift shop",
+        "hero_heading_color": "#ffffff",
+        "hero_heading_size": 44,
+        "hero_description": "Embark on a journey of wellness inspiration. connect with fellow health enthusiasts like you.",
+        "hero_desc_color": "#ffffff",
+        "hero_desc_size": 15,
+        "hero_img_width": 440,
+        "hero_padding_v": 60,
+        "hero_padding_h": 20,
+        "show_icons_row": true,
+        "icons_bg": "#2c2c2c",
+        "icons_padding": 20,
+        "icons_align": "center",
+        "icons_gap": 12,
+        "icon_size": 68,
+        "icon_border": 2,
+        "icon_item_width": 80,
+        "icon_label_color": "#ffffff",
+        "icon_label_size": 11,
+        "all_icon_image": "shopify://shop_images/Roasted_Multigrain_Namkeen_SKU_PNG_Image_2_c5ef00f5-57b5-4cf7-82b5-17d645237318.png",
+        "all_icon_label": "Shop all",
+        "all_icon_bg": "#f5f0e8",
+        "all_icon_border_color": "#e0c97a",
+        "show_breadcrumb": true,
+        "breadcrumb_shop_text": "The shift shop",
+        "shop_page_handle": "shift-shop",
+        "breadcrumb_color": "#888888",
+        "section_pt": 40,
+        "section_pb": 40,
+        "row_heading_color": "#1a1a1a",
+        "row_heading_size": 32,
+        "row_sub_color": "#666666",
+        "row_gap": 48,
+        "products_per_row": 3,
+        "card_gap": 18,
+        "card_radius": 12,
+        "product_title_color": "#1a1a1a",
+        "product_desc_color": "#666666",
+        "price_color": "#1a1a1a",
+        "atc_bg": "#1a1a1a",
+        "atc_color": "#ffffff",
+        "buy_bg": "#e0c97a",
+        "buy_color": "#1a1a1a",
+        "show_arrows": true,
+        "arrow_bg": "#ffffff",
+        "arrow_color": "#1a1a1a",
+        "single_col_heading": "A variety to choose from",
+        "single_col_subheading": "Something corny. Something healthy. All things crunchy. Just so you can start your mornings on the right note.",
+        "single_badge_grains": true,
+        "single_badge_nutrition": true,
+        "single_badge_chemicals": true,
+        "single_products_per_row": 3,
+        "faq_heading": "Frequently Asked Questions",
+        "faq_bg": "#ffffff",
+        "faq_heading_color": "#1a1a1a",
+        "faq_heading_size": 36,
+        "faq_divider": "#e5e5e5",
+        "faq_q_color": "#1a1a1a",
+        "faq_q_size": 15,
+        "faq_a_color": "#444444",
+        "faq_a_size": 14,
+        "faq_icon_color": "#1a1a1a",
+        "faq_icon": "+",
+        "faq_item_pad": 16,
+        "faq_img_width": 280,
+        "faq_img_radius": 12,
+        "faq_pt": 60,
+        "faq_pb": 60
+      }
+    }
+  },
+  "order": [
+    "main",
+    "rs_shift_shop_gBdbLa"
+  ]
+}

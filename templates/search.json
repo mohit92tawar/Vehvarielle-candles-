@@ -1,0 +1,122 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "search": {
+      "type": "search-header",
+      "blocks": {
+        "heading": {
+          "type": "_heading",
+          "static": true,
+          "settings": {
+            "type_preset": "h2",
+            "font": "var(--font-primary--family)",
+            "font_size": "",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "",
+            "text": "",
+            "read_only": true,
+            "alignment": "left",
+            "show_alignment": true,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "search": {
+          "type": "_search-input",
+          "static": true,
+          "settings": {
+            "width": "custom",
+            "custom_width": 50,
+            "inherit_color_scheme": true,
+            "color_scheme": ""
+          },
+          "blocks": {}
+        }
+      },
+      "settings": {
+        "alignment": "flex-start",
+        "color_scheme": "scheme-1",
+        "padding-block-start": 40,
+        "padding-block-end": 0
+      }
+    },
+    "main": {
+      "type": "search-results",
+      "blocks": {
+        "filters": {
+          "type": "filters",
+          "static": true,
+          "settings": {
+            "enable_filtering": true,
+            "filter_style": "horizontal",
+            "filter_width": "centered",
+            "text_label_case": "default",
+            "show_swatch_label": true,
+            "show_filter_label": true,
+            "enable_sorting": true,
+            "enable_grid_density": false,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "padding-block-start": 8,
+            "padding-block-end": 8,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0,
+            "facets_margin_bottom": 8,
+            "facets_margin_right": 20
+          },
+          "blocks": {}
+        }
+      },
+      "settings": {
+        "hero_bg_color": "#2e7d32",
+        "hero_bg_opacity": 100,
+        "hero_height": 280,
+        "hero_heading": "Shift to better Breakfast",
+        "hero_heading_color": "#ffffff",
+        "hero_heading_size": 40,
+        "hero_description": "Something corny. Something healthy. All things crunchy.",
+        "hero_desc_color": "#ffffff",
+        "hero_desc_size": 15,
+        "badge_grains": true,
+        "badge_nutrition": true,
+        "badge_chemicals": true,
+        "card_color_1": "#f5b800",
+        "card_color_2": "#1bbde8",
+        "card_color_3": "#8dc63f",
+        "atc_bg": "#1a1a1a",
+        "atc_color": "#ffffff",
+        "buy_bg": "#e0c97a",
+        "buy_color": "#1a1a1a",
+        "card_radius": 14,
+        "card_gap": 18,
+        "product_title_color": "#1a1a1a",
+        "product_desc_color": "#2d2119",
+        "price_color": "#1a1a1a",
+        "row_heading_color": "#175c2e",
+        "enable_infinite_scroll": true,
+        "products_per_page": 24,
+        "color_scheme": "scheme-1",
+        "padding-block-start": 40,
+        "padding-block-end": 40
+      }
+    }
+  },
+  "order": [
+    "search",
+    "main"
+  ]
+}

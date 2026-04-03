@@ -1,0 +1,453 @@
+{% comment %}
+  FILE: sections/free-consultation.liquid
+{% endcomment %}
+
+<style>
+  .fc-page-wrapper {
+    background: #FFEDD6;
+    padding: 24px 16px 48px;
+  }
+  .fc-breadcrumb { max-width: 1241px; margin: 0 auto 20px; font-size: 18px; color: #2D2119; }
+  .fc-breadcrumb a { color: #888; text-decoration: none; }
+  .fc-breadcrumb span { margin: 0 6px; }
+  .fc-card {
+    background: #fff; border-radius: 16px;
+    max-width: 1241px; margin: 0 auto;
+    padding: 36px 40px 40px;
+  }
+  .fc-step-title {
+    font-weight: 700; font-size: 21px;
+     text-transform: uppercase;
+    color: #222; margin-bottom: 18px; margin-top: 30px;
+  }
+  .fc-card input[type="text"],
+  .fc-card input[type="email"],
+  .fc-card input[type="tel"],
+  .fc-card input[type="date"],
+  .fc-card input[type="time"],
+  .fc-card textarea {
+    width: 100%; border: 1.5px solid #e0e0e0;
+    border-radius: 8px; padding: 12px 14px;
+    font-size: 18px; color: #2D2119; outline: none; background: #fff;
+    transition: border-color 0.2s; -webkit-appearance: none;
+    box-sizing: border-box;
+  }
+  .fc-card input:focus, .fc-card textarea:focus { border-color: #c9a84c; }
+  .fc-card input::placeholder, .fc-card textarea::placeholder { color: #2D2119 !important; }
+  .fc-row { display: flex; gap: 14px; margin-bottom: 14px; }
+  .fc-row input { flex: 1; min-width: 0; }
+  .fc-phone-row { display: flex; gap: 10px; margin-bottom: 14px; }
+  .fc-phone-code { width: 68px !important; flex-shrink: 0; }
+  .fc-phone-row input[type="tel"] { flex: 1; min-width: 0; }
+  .fc-field { margin-bottom: 14px; }
+  .fc-whatsapp-check {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 18px; color: #2D2119; margin-bottom: 40px; margin-top: 30px;
+  }
+  .fc-whatsapp-check input[type="checkbox"] {
+    width: 15px; height: 15px; accent-color: #5a9e4b;
+    cursor: pointer; flex-shrink: 0;
+  }
+  .fc-sep-top { margin-top: 22px; }
+  .fc-concerns-grid { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 18px; }
+  .fc-concern-item {
+    display: flex; flex-direction: column;
+    align-items: center; cursor: pointer;
+    width: 165px; text-align: center;
+  }
+  .fc-concern-item input[type="radio"] { display: none; }
+  .fc-concern-icon {
+    width: 124px; height: 124px; border-radius: 50%;
+    background: #FFEDD6; display: flex;
+    align-items: center; justify-content: center;
+    margin-bottom: 8px; border: 2.5px solid transparent;
+    transition: border-color 0.2s, background 0.2s;
+    overflow: hidden;
+  }
+  .fc-concern-icon img { width: 100%; height: 100%; object-fit: contain; display: block; border-radius: 50%; max-width: 80px;
+    max-height: 80px; }
+  .fc-concern-icon svg { width: 32px; height: 32px; }
+  .fc-concern-item input[type="radio"]:checked + .fc-concern-icon {
+    border-color: #c9a84c; background: #fff8ec;
+  }
+  .fc-concern-label { font-size: 18px; color: #382312; line-height: 1.4; font-weight: 600; }
+  .fc-concern-text-label { font-size: 18px; font-weight: 600; color: #2D2119; margin-bottom: 8px; }
+  .fc-card textarea { resize: none; height: 72px; }
+  .fc-date-time-row { display: flex; gap: 14px; margin-bottom: 6px; }
+  .fc-date-time-col { flex: 1; }
+  .fc-date-time-col > label { display: block; font-size: 19px; font-weight: 600; color: #2D2119; margin-bottom: 7px; }
+  .fc-book-btn {
+    display: block; width: 100%;
+    background: #2b2416; color: #fff;
+    font-size: 18px; font-weight: 700;
+     border: none;
+    border-radius: 10px; padding: 17px;
+    cursor: pointer; margin-top: 26px; transition: background 0.2s;
+  }
+  .fc-book-btn:hover { background: #3e3520; }
+  .fc-terms-note {
+    text-align: center; font-size: 11.5px;
+    color: #aaa; margin-top: 14px; line-height: 1.6;
+  }
+  .fc-terms-note input[type="checkbox"] {
+    margin-right: 5px; accent-color: #c9a84c; vertical-align: middle;
+  }
+  .fc-form-error {
+    background: #fff3f3; border: 1px solid #f5a5a5;
+    border-radius: 8px; padding: 12px 16px;
+    margin-bottom: 20px; font-size: 13px; color: #c0392b;
+  }
+  .fc-success { text-align: center; padding: 40px 20px; }
+  .fc-success-icon { font-size: 56px; margin-bottom: 14px; display: block; }
+  .fc-success h2 { color: #2b2416; font-size: 24px; margin-bottom: 10px; }
+  .fc-success p { color: #777; font-size: 14px; line-height: 1.6; }
+
+  /* ── OVERLAY ── */
+  .fc-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.55); z-index: 99999;
+    align-items: center; justify-content: center; padding: 16px;
+  }
+  .fc-overlay.active { display: flex; }
+
+  @keyframes fc-pop {
+    from { transform: scale(0.85); opacity: 0; }
+    to   { transform: scale(1); opacity: 1; }
+  }
+
+  /* ── SINGLE GREEN POPUP ── */
+  .fc-green-popup {
+    background: #098040;
+    border-radius: 20px;
+    padding: 30px 26px 24px;
+    max-width: 320px;
+    width: 100%;
+    text-align: center;
+    animation: fc-pop 0.3s ease;
+  }
+  .fc-green-popup h3 {
+    font-size: 22px; font-weight: 700;
+    color: #fff; margin: 0 0 8px; line-height: 1.3;
+  }
+  .fc-green-popup > p {
+    font-size: 12.5px; color: rgba(255,255,255,0.85);
+    margin: 0 0 16px; line-height: 1.5;
+  }
+  .fc-green-popup > p strong { color: #fff; }
+
+  /* 20k badge */
+  .fc-green-badge {
+    display: inline-flex; align-items: center; gap: 12px;
+    background: rgba(255,255,255,0.13);
+    border-radius: 50px; padding: 10px 18px;
+    margin-bottom: 18px;
+  }
+  .fc-green-avatar {
+    width: 52px; height: 52px; border-radius: 50%;
+    background: #4a8c3f;
+    border: 2.5px solid rgba(255,255,255,0.5);
+    display: flex; align-items: center;
+    justify-content: center; font-size: 26px; flex-shrink: 0;
+  }
+  .fc-green-count strong {
+    display: block; font-size: 22px; font-weight: 800;
+    color: #fff; line-height: 1;
+  }
+  .fc-green-count span { font-size: 12px; color: rgba(255,255,255,0.8); }
+
+  /* Claim button */
+  .fc-green-claim-btn {
+    display: block; width: 100%;
+    background: rgba(255,255,255,0.15);
+    border: 1.5px solid rgba(255,255,255,0.55);
+    color: #fff; font-size: 13.5px; font-weight: 700;
+    border-radius: 50px; padding: 13px 20px;
+    cursor: pointer; margin-bottom: 10px;
+    transition: background 0.2s;
+  }
+  .fc-green-claim-btn:hover { background: rgba(255,255,255,0.25); }
+
+  /* Edit + Quit row */
+  .fc-green-bottom-row {
+    display: flex; align-items: center;
+    justify-content: center; gap: 16px;
+  }
+  .fc-green-edit-btn {
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.3);
+    color: rgba(255,255,255,0.9);
+    font-size: 13px; font-weight: 600;
+    border-radius: 50px; padding: 9px 20px;
+    cursor: pointer; transition: background 0.2s;
+  }
+  .fc-green-edit-btn:hover { background: rgba(255,255,255,0.22); color: #fff; }
+  .fc-green-quit-btn {
+    background: none; border: none;
+    color: rgba(255,255,255,0.65);
+    font-size: 13px; font-weight: 500;
+    cursor: pointer; text-decoration: underline; padding: 4px;
+  }
+  .fc-green-quit-btn:hover { color: #fff; }
+
+  @media (max-width: 520px) {
+    .fc-card { padding: 24px 20px 28px; }
+    .fc-row, .fc-date-time-row { flex-direction: column; gap: 10px; }
+    .fc-concerns-grid { gap: 10px; }
+    .fc-concern-item { width: 72px; }
+    .fc-concern-icon { width: 58px; height: 58px; }
+    .fc-green-popup { max-width: 92vw; }
+  }
+</style>
+
+<!-- ══ SINGLE GREEN POPUP ══ -->
+<div class="fc-overlay" id="fc-popup-overlay">
+  <div class="fc-green-popup">
+    <h3 id="fc-popup-title">Do you really want<br>to quit now?</h3>
+    <p id="fc-popup-sub">A step away from claiming your<br><strong>FREE nutritionist consult</strong></p>
+    <div class="fc-green-badge">
+      <div class="fc-green-avatar">👩‍⚕️</div>
+      <div class="fc-green-count">
+        <strong>20k +</strong>
+        <span>Happy customers</span>
+      </div>
+    </div>
+    <button class="fc-green-claim-btn" id="fc-claim-btn">
+      I want to claim my FREE consult
+    </button>
+    <div class="fc-green-bottom-row">
+      <button class="fc-green-edit-btn" id="fc-edit-btn">✏️ Edit Details</button>
+      <button class="fc-green-quit-btn" id="fc-quit-btn">Quit</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MAIN FORM ══ -->
+<div class="fc-page-wrapper">
+  <div class="fc-breadcrumb">
+    <a href="/">Home</a><span>›</span><span>Free Consultation</span>
+  </div>
+  <div class="fc-card">
+
+    {%- form 'contact', id: 'FreeConsultationForm' -%}
+
+      {%- if form.posted_successfully? -%}
+        <div class="fc-success">
+          <span class="fc-success-icon">✅</span>
+          <h2>Appointment Booked!</h2>
+          <p>Your details have been submitted successfully.<br>We will confirm your appointment shortly via WhatsApp / Email.</p>
+        </div>
+
+      {%- else -%}
+
+        {%- if form.errors -%}
+          <div class="fc-form-error">⚠️ {{ form.errors | default_errors }}</div>
+        {%- endif -%}
+
+        <div class="fc-step-title" style="margin-top: 0px;">Step 1. Personal Information</div>
+        <div class="fc-row">
+          <input type="text" name="contact[first_name]" id="fc-first-name" placeholder="First Name" value="{{ form.first_name }}" required />
+          <input type="text" name="contact[last_name]"  id="fc-last-name"  placeholder="Last Name"  value="{{ form.last_name }}"  required />
+        </div>
+        <div class="fc-phone-row">
+          <input class="fc-phone-code" type="text" name="contact[phone_code]" id="fc-phone-code" value="+91" />
+          <input type="tel" name="contact[phone]" id="fc-phone" placeholder="Phone Number" required />
+        </div>
+        <div class="fc-field">
+          <input type="email" name="contact[email]" id="fc-email" placeholder="Email" value="{{ form.email }}" required autocomplete="email" />
+        </div>
+        <div class="fc-whatsapp-check">
+          <input type="checkbox" name="contact[whatsapp_updates]" id="fc-wa" value="Yes" checked />
+          <label for="fc-wa">Get updates on WhatsApp. You may opt out anytime.</label>
+        </div>
+
+
+        <div class="fc-step-title">Step 2. Pick Your Concern</div>
+        <div class="fc-concerns-grid">
+
+          {% for block in section.blocks %}
+            {% if block.type == 'concern' %}
+            <label class="fc-concern-item" {{ block.shopify_attributes }}>
+              <input type="radio" name="contact[concern]" value="{{ block.settings.label }}" {% if forloop.first %}required{% endif %} />
+              <div class="fc-concern-icon">
+                {% if block.settings.image != blank %}
+                  <img src="{{ block.settings.image | image_url: width: 200 }}" alt="{{ block.settings.label }}" loading="lazy">
+                {% else %}
+                  <svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="16" stroke="#c9a84c" stroke-width="2.5"/></svg>
+                {% endif %}
+              </div>
+              <span class="fc-concern-label">{{ block.settings.label }}</span>
+            </label>
+            {% endif %}
+          {% endfor %}
+
+        </div>
+
+        <div class="fc-concern-text-label">Please type your concern here</div>
+        <textarea name="contact[body]" id="fc-body-text" placeholder="Describe your concern here..."></textarea>
+
+
+        <div class="fc-step-title">Step 3. Choose Date and Time</div>
+        <div class="fc-date-time-row">
+          <div class="fc-date-time-col">
+            <label for="fc-date">Select a date</label>
+            <input type="date" name="contact[appointment_date]" id="fc-date" required />
+          </div>
+          <div class="fc-date-time-col">
+            <label for="fc-time">Select a time</label>
+            <input type="time" name="contact[appointment_time]" id="fc-time" required />
+          </div>
+        </div>
+
+        <button type="submit" id="fc-real-submit" style="display:none;"></button>
+        <button type="button" class="fc-book-btn" id="fc-book-btn">Book appointment</button>
+
+        {% comment %} <div class="fc-terms-note">
+          <label>
+            <input type="checkbox" id="fc-terms" />
+            By proceeding, you agree to ITC and TGHC's Terms of Use and Privacy Policy.<br/>
+            All liability on the part of ITC and TGHC.
+          </label>
+        </div> {% endcomment %}
+
+      {%- endif -%}
+
+    {%- endform -%}
+
+  </div>
+  <div class="fc-terms-note">
+          <label>
+            <input type="checkbox" id="fc-terms" />
+            By proceeding, you agree to ITC and TGHC's Terms of Use and Privacy Policy.<br/>
+            All liability on the part of ITC and TGHC.
+          </label>
+        </div>
+</div>
+
+
+<script>
+(function () {
+  var exitShown = false;
+  var formTouched = false;
+  /* mode: 'exit' = mouse leave trigger, 'confirm' = book btn trigger */
+  var currentMode = 'exit';
+
+  document.querySelectorAll('#FreeConsultationForm input, #FreeConsultationForm textarea').forEach(function(el) {
+    el.addEventListener('change', function() { formTouched = true; });
+    el.addEventListener('input',  function() { formTouched = true; });
+  });
+
+  /* ── Show popup ── */
+  function showPopup(mode) {
+    currentMode = mode;
+    var title = document.getElementById('fc-popup-title');
+    var sub   = document.getElementById('fc-popup-sub');
+    var claim = document.getElementById('fc-claim-btn');
+
+    if (mode === 'confirm') {
+      title.innerHTML = 'Ready to Book<br>Your Appointment?';
+      sub.innerHTML   = 'Your <strong>FREE consultation</strong> is one step away!';
+      claim.textContent = '✅ Yes, Confirm Booking';
+    } else {
+      title.innerHTML = 'Do you really want<br>to quit now?';
+      sub.innerHTML   = 'A step away from claiming your<br><strong>FREE nutritionist consult</strong>';
+      claim.textContent = 'I want to claim my FREE consult';
+    }
+
+    document.getElementById('fc-popup-overlay').classList.add('active');
+  }
+
+  function closePopup() {
+    document.getElementById('fc-popup-overlay').classList.remove('active');
+  }
+
+  /* ── Exit intent (mouse leave top) ── */
+  document.addEventListener('mouseleave', function(e) {
+    if (e.clientY < 10 && !exitShown && formTouched) {
+      exitShown = true;
+      showPopup('exit');
+    }
+  });
+
+  /* ── Claim / Confirm button ── */
+  document.getElementById('fc-claim-btn').addEventListener('click', function() {
+    closePopup();
+    if (currentMode === 'confirm') {
+      document.getElementById('fc-real-submit').click();
+    } else {
+      var el = document.getElementById('fc-first-name');
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  });
+
+  /* ── Edit button ── */
+  document.getElementById('fc-edit-btn').addEventListener('click', function() {
+    closePopup();
+    var el = document.getElementById('fc-first-name');
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  });
+
+  /* ── Quit button ── */
+  document.getElementById('fc-quit-btn').addEventListener('click', function() {
+    closePopup();
+  });
+
+  /* ── Book appointment button ── */
+  document.getElementById('fc-book-btn').addEventListener('click', function() {
+    var firstName = document.getElementById('fc-first-name').value.trim();
+    var lastName  = document.getElementById('fc-last-name').value.trim();
+    var phone     = document.getElementById('fc-phone').value.trim();
+    var email     = document.getElementById('fc-email').value.trim();
+    var concernEl = document.querySelector('input[name="contact[concern]"]:checked');
+    var date      = document.getElementById('fc-date').value;
+    var time      = document.getElementById('fc-time').value;
+    var terms     = document.getElementById('fc-terms').checked;
+
+    if (!firstName || !lastName) { alert('Please enter your first and last name.'); return; }
+    if (!phone)     { alert('Please enter your phone number.'); return; }
+    if (!email)     { alert('Please enter a valid email address.'); return; }
+    if (!concernEl) { alert('Please select a concern.'); return; }
+    if (!date)      { alert('Please select an appointment date.'); return; }
+    if (!time)      { alert('Please select an appointment time.'); return; }
+    if (!terms)     { alert('Please accept the Terms of Use to proceed.'); return; }
+
+    showPopup('confirm');
+  });
+
+  /* ── Close on overlay background click ── */
+  document.getElementById('fc-popup-overlay').addEventListener('click', function(e) {
+    if (e.target === this) closePopup();
+  });
+
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Free Consultation Form",
+  "tag": "div",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "concern",
+      "name": "Concern Item",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Icon Image" },
+        { "type": "text", "id": "label", "label": "Concern Label", "default": "My Concern" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Free Consultation Form",
+      "blocks": [
+        { "type": "concern", "settings": { "label": "Lose Weight & Improve Metabolic Health" } },
+        { "type": "concern", "settings": { "label": "Improve Women's Health" } },
+        { "type": "concern", "settings": { "label": "Increase Muscle Mass" } },
+        { "type": "concern", "settings": { "label": "Improve Energy Levels" } },
+        { "type": "concern", "settings": { "label": "Improve Digestive Health" } },
+        { "type": "concern", "settings": { "label": "Others" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

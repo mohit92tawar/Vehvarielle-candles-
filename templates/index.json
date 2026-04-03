@@ -1,0 +1,569 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "health_hero_slider_UAF93e": {
+      "type": "health-hero-slider",
+      "blocks": {
+        "slide_PnkjwU": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/Group_1321317201.png",
+            "product": "bloom-no-5",
+            "product_button_text": "Shop now"
+          }
+        },
+        "slide_GCtJjL": {
+          "type": "slide",
+          "disabled": true,
+          "settings": {
+            "image": "shopify://shop_images/Group_1321317200.png",
+            "product": "",
+            "product_button_text": "Shop now"
+          }
+        },
+        "slide_LQmkaE": {
+          "type": "slide",
+          "disabled": true,
+          "settings": {
+            "product": "",
+            "product_button_text": "Shop now"
+          }
+        }
+      },
+      "block_order": [
+        "slide_PnkjwU",
+        "slide_GCtJjL",
+        "slide_LQmkaE"
+      ],
+      "name": "Health Hero Slider",
+      "settings": {
+        "desktop_width_percent": 100,
+        "border_radius": 0,
+        "image_position": "center",
+        "autoplay": true,
+        "autoplay_speed": 5,
+        "transition_speed": 0.5,
+        "show_navigation": true,
+        "show_dots": true,
+        "nav_button_size": 40,
+        "nav_offset": 15,
+        "nav_icon_color": "#000000",
+        "dot_size": 14,
+        "dots_spacing": 8,
+        "dot_color": "#ffffff",
+        "dot_active_color": "#ffffff",
+        "overlay_style": "left_fade",
+        "overlay_opacity": 1,
+        "text_area_width": 50,
+        "content_alignment": "center",
+        "content_spacing": 40,
+        "padding_vertical": 100,
+        "padding_horizontal": 40,
+        "heading_size": 50,
+        "heading_color": "#fceed9",
+        "subheading_size": 20,
+        "description_size": 16,
+        "text_color": "#f5f5f5",
+        "text_shadow": "medium"
+      }
+    },
+    "hero_trjgLy": {
+      "type": "hero",
+      "blocks": {
+        "marquee_dFLCh7": {
+          "type": "_marquee",
+          "settings": {
+            "movement_direction": "normal",
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "transparent_background": true,
+            "padding-block-start": 24,
+            "padding-block-end": 24,
+            "gap_between_elements": 24
+          },
+          "blocks": {
+            "icon_nzj8WP": {
+              "type": "icon",
+              "name": "t:names.icon",
+              "settings": {
+                "icon": "price_tag",
+                "image_upload": "shopify://shop_images/Layer_1_3.png",
+                "width": 170,
+                "link": "",
+                "open_in_new_tab": false
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "icon_nzj8WP"
+          ]
+        }
+      },
+      "block_order": [
+        "marquee_dFLCh7"
+      ],
+      "name": "t:names.hero_marquee",
+      "settings": {
+        "media_type_1": "image",
+        "image_1": "shopify://shop_images/Rectangle_2279.png",
+        "media_type_2": "image",
+        "stack_media_on_mobile": false,
+        "custom_mobile_media": false,
+        "media_type_1_mobile": "image",
+        "media_type_2_mobile": "image",
+        "link": "",
+        "open_in_new_tab": false,
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "center",
+        "vertical_alignment_flex_direction_column": "space-between",
+        "gap": 32,
+        "section_width": "page-width",
+        "section_height": "auto",
+        "section_height_custom": 50,
+        "color_scheme": "scheme-5",
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "gradient",
+        "gradient_direction": "to top",
+        "blurred_reflection": false,
+        "reflection_opacity": 75,
+        "padding-block-start": 18,
+        "padding-block-end": 18
+      }
+    },
+    "section_ptiVWE": {
+      "type": "section",
+      "blocks": {
+        "text_NxVXwH": {
+          "type": "text",
+          "name": "t:names.text",
+          "settings": {
+            "text": "<p>We make things that work better and last longer. Our products solve real problems with clean design and honest materials.</p>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "custom",
+            "font": "var(--font-body--family)",
+            "font_size": "2rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "text_NxVXwH"
+      ],
+      "name": "t:names.custom_section",
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "center",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 12,
+        "section_width": "page-width",
+        "section_height": "small",
+        "section_height_custom": 50,
+        "color_scheme": "scheme-1",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
+    },
+    "candle_hero_section_9kLYpq": {
+      "type": "Candle-hero-section",
+      "blocks": {
+        "slide_tnztti": {
+          "type": "slide",
+          "settings": {
+            "thumb_image": "shopify://shop_images/Rectangle_2226.png",
+            "main_image": "shopify://shop_images/Rectangle_2226_2.png"
+          }
+        },
+        "slide_rNwRFe": {
+          "type": "slide",
+          "settings": {
+            "thumb_image": "shopify://shop_images/Rectangle_2304.png",
+            "main_image": "shopify://shop_images/Rectangle_2226.png"
+          }
+        },
+        "slide_nTLKNM": {
+          "type": "slide",
+          "settings": {
+            "thumb_image": "shopify://shop_images/Rectangle_2303.png",
+            "main_image": "shopify://shop_images/Rectangle_2226_2.png"
+          }
+        },
+        "slide_AB7j8x": {
+          "type": "slide",
+          "settings": {
+            "thumb_image": "shopify://shop_images/Rectangle_2226_2.png",
+            "main_image": "shopify://shop_images/Rectangle_2226.png"
+          }
+        }
+      },
+      "block_order": [
+        "slide_tnztti",
+        "slide_rNwRFe",
+        "slide_nTLKNM",
+        "slide_AB7j8x"
+      ],
+      "name": "Candle Hero Gallery",
+      "settings": {
+        "heading": "Where time\nslows,\nmoments\nsettle.",
+        "description": "An everyday presence shaped by intention, designed to remain through quiet hours, familiar spaces, and the subtle rhythm of living."
+      }
+    },
+    "care_notes_section_dq4q3e": {
+      "type": "care-notes-section",
+      "blocks": {
+        "care_item_4CwAAz": {
+          "type": "care_item",
+          "settings": {
+            "icon_image": "shopify://shop_images/Layer_1_6.svg",
+            "icon_svg": "",
+            "text": "Trim the wick to ¼ inch before each use to prevent smoke and uneven burning."
+          }
+        },
+        "care_item_h4jRPf": {
+          "type": "care_item",
+          "settings": {
+            "icon_image": "shopify://shop_images/Layer_1_7.svg",
+            "icon_svg": "",
+            "text": "Place away from drafts to maintain a steady flame and reduce soot."
+          }
+        },
+        "care_item_7EPnNc": {
+          "type": "care_item",
+          "settings": {
+            "icon_image": "shopify://shop_images/Layer_1_8.svg",
+            "icon_svg": "",
+            "text": "On the first burn, allow the wax to melt fully across the surface."
+          }
+        },
+        "care_item_tqMTTD": {
+          "type": "care_item",
+          "settings": {
+            "icon_image": "shopify://shop_images/Layer_1_9.svg",
+            "icon_svg": "",
+            "text": "Store in a cool, dry place away from direct sunlight when not in use."
+          }
+        }
+      },
+      "block_order": [
+        "care_item_4CwAAz",
+        "care_item_h4jRPf",
+        "care_item_7EPnNc",
+        "care_item_tqMTTD"
+      ],
+      "name": "Care Notes",
+      "settings": {
+        "eyebrow": "Care Notes",
+        "heading": "For a Better Burn",
+        "description": "Vitality is not urgency, but continuity. These notes offer simple considerations that help preserve presence, rhythm, and the intended pace of living.",
+        "background_color": "#ffffff",
+        "icon_bg_color": "#f7f6f0",
+        "heading_color": "#111111",
+        "text_color": "#000000",
+        "section_padding_top": 60,
+        "section_padding_bottom": 60
+      }
+    },
+    "section_ViMdni": {
+      "type": "section",
+      "blocks": {
+        "image_eqnFK3": {
+          "type": "image",
+          "name": "t:names.image",
+          "settings": {
+            "image": "shopify://shop_images/Group_1321317203.png",
+            "link": "",
+            "image_ratio": "adapt",
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "image_eqnFK3"
+      ],
+      "name": "t:names.custom_section",
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 12,
+        "section_width": "page-width",
+        "section_height": "small",
+        "section_height_custom": 50,
+        "color_scheme": "",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 46,
+        "padding-block-end": 29
+      }
+    },
+    "vs_scent_library_VXttd8": {
+      "type": "vs-scent-library",
+      "name": "VS — Scent Library Slider",
+      "settings": {
+        "collection": "frontpage",
+        "eyebrow": "Signature Collection",
+        "heading": "The scent library",
+        "description": "A library of scents developed through restraint, material discipline, and an enduring respect for interior life.",
+        "btn_label": "Shop now",
+        "btn_url": "",
+        "bg_color": "#ffffff",
+        "card_bg": "#f2efe9",
+        "heading_color": "#111111",
+        "eyebrow_color": "#888888",
+        "desc_color": "#555555",
+        "title_color": "#111111",
+        "price_color": "#333333",
+        "btn_bg": "rgba(0,0,0,0)",
+        "btn_color": "#111111",
+        "btn_border_color": "#111111",
+        "atc_bg": "#111111",
+        "atc_color": "#ffffff",
+        "bar_bg": "#f4f5f0",
+        "bar_fill": "#d1d1d1",
+        "pt": 60,
+        "pb": 60,
+        "ph": 40,
+        "ppr": 4,
+        "ppr_mobile": 2,
+        "card_gap": 16,
+        "card_radius": 4,
+        "img_ratio": "1/1",
+        "stagger_offset": 32
+      }
+    },
+    "candale_hero_section_Vye48t": {
+      "type": "candale-hero-section",
+      "name": "Candle Hero Split",
+      "settings": {
+        "main_image": "shopify://shop_images/Rectangle_2326.png",
+        "product_image": "shopify://shop_images/BLOOM.png",
+        "heading": "The hour learns to pause.",
+        "heading_size": 72,
+        "description": "It begins quietly. Light shifts, the room listens, and something ordinary becomes enough without explanation, instruction, or interruption.",
+        "button_label": "About us",
+        "button_link": "shopify://products/tuberose-copy",
+        "background_color": "#f5f0eb",
+        "text_color": "#4a2a15"
+      }
+    },
+    "blog_section_bcfE7H": {
+      "type": "blog-section",
+      "name": "Blog section",
+      "settings": {
+        "blog": "news",
+        "articles_to_show": 3,
+        "section_title": "Our blogs",
+        "section_subtitle": "For moments of uncertainty, these writings offer quiet guidance on care, timing, and practices best understood early.",
+        "cta_text": "Read Article",
+        "container_max_width": 1200,
+        "text_alignment": "left",
+        "columns_desktop": 3,
+        "columns_tablet": "2",
+        "columns_mobile": "1",
+        "section_padding_top": 80,
+        "section_padding_bottom": 80,
+        "header_spacing": 48,
+        "grid_margin_top": 48,
+        "card_spacing": 32,
+        "card_spacing_mobile": 24,
+        "card_padding": 28,
+        "background_color": "#f5f5f5",
+        "title_color": "#000000",
+        "subtitle_color": "#000000",
+        "date_color": "#000000",
+        "card_title_color": "#000000",
+        "description_color": "#666666",
+        "cta_color": "#000000",
+        "cta_hover_color": "#333333",
+        "link_hover_color": "#333333",
+        "hover_shadow_color": "#0000001a",
+        "title_size": 54,
+        "title_weight": 600,
+        "title_letter_spacing": -0.5,
+        "title_margin_bottom": 16,
+        "subtitle_size": 24,
+        "date_size": 18,
+        "date_text_transform": "uppercase",
+        "date_margin_bottom": 12,
+        "card_title_size": 36,
+        "card_title_weight": 600,
+        "card_title_margin_bottom": 16,
+        "description_size": 14,
+        "description_margin_bottom": 20,
+        "cta_size": 18,
+        "cta_weight": 500,
+        "hover_lift": 4,
+        "hover_shadow_y": 12,
+        "hover_shadow_blur": 32
+      }
+    },
+    "vs_reviews_fVMLwM": {
+      "type": "vs-reviews",
+      "blocks": {
+        "review_card_w4PmqK": {
+          "type": "review_card",
+          "settings": {
+            "rating": 5,
+            "review_text": "Hear the stories from those who now experience our grace and beauty. Let their experiences transform your routine.",
+            "reviewer_name": "Priya S."
+          }
+        },
+        "review_card_6dNWAq": {
+          "type": "review_card",
+          "settings": {
+            "rating": 5,
+            "review_text": "Hear the stories from those who now experience our grace and beauty. Let their experiences transform your routine.",
+            "reviewer_name": "Rahul M."
+          }
+        },
+        "review_card_tDhwTU": {
+          "type": "review_card",
+          "settings": {
+            "rating": 5,
+            "review_text": "Hear the stories from those who now experience our grace and beauty. Let their experiences transform your routine.",
+            "reviewer_name": "Ananya K."
+          }
+        },
+        "review_card_QEpHfy": {
+          "type": "review_card",
+          "settings": {
+            "rating": 5,
+            "review_text": "Hear the stories from those who now experience our grace and beauty. Let their experiences transform your routine.",
+            "reviewer_name": "Vikram T."
+          }
+        },
+        "review_card_MGF9LH": {
+          "type": "review_card",
+          "settings": {
+            "rating": 5,
+            "review_text": "Hear the stories from those who now experience our grace and beauty. Let their experiences transform your routine.",
+            "reviewer_name": "Meera R."
+          }
+        },
+        "review_card_eCWqrq": {
+          "type": "review_card",
+          "settings": {
+            "rating": 5,
+            "review_text": "Hear the stories from those who now experience our grace and beauty. Let their experiences transform your routine.",
+            "reviewer_name": "Arjun P."
+          }
+        }
+      },
+      "block_order": [
+        "review_card_w4PmqK",
+        "review_card_6dNWAq",
+        "review_card_tDhwTU",
+        "review_card_QEpHfy",
+        "review_card_MGF9LH",
+        "review_card_eCWqrq"
+      ],
+      "name": "RS - Reviews",
+      "settings": {
+        "heading": "The Reviews Speak",
+        "subtext": "Reflections that confirm what careful making and consistency over time naturally produce."
+      }
+    },
+    "newsletter_inner_circle_pJm97H": {
+      "type": "newsletter-inner-circle",
+      "name": "Newsletter Inner Circle",
+      "settings": {
+        "heading": "Newsletter Inner Circle",
+        "description": "Be the first to discover our latest creations, exclusive collections, and member-only invitations. Subscribe to our newsletter and step into a world where elegance is eternal and every detail is curated for the discerning soul.",
+        "placeholder": "EMAIL",
+        "btn_label": "SIGN UP",
+        "success_msg": "Thank you for subscribing!",
+        "bg_color": "#f7f6f0",
+        "heading_color": "#4a2a15",
+        "desc_color": "#4a2a15",
+        "input_bg": "#f7f6f0",
+        "input_border": "#000000",
+        "input_text_color": "#4a2a15",
+        "btn_bg": "#4a2a15",
+        "btn_color": "#ffffff",
+        "pt": 80,
+        "pb": 80
+      }
+    }
+  },
+  "order": [
+    "health_hero_slider_UAF93e",
+    "hero_trjgLy",
+    "section_ptiVWE",
+    "candle_hero_section_9kLYpq",
+    "care_notes_section_dq4q3e",
+    "section_ViMdni",
+    "vs_scent_library_VXttd8",
+    "candale_hero_section_Vye48t",
+    "blog_section_bcfE7H",
+    "vs_reviews_fVMLwM",
+    "newsletter_inner_circle_pJm97H"
+  ]
+}

@@ -1,0 +1,380 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "collection_list_Wfgh3m": {
+      "type": "main-collection-list",
+      "blocks": {
+        "group_4FtiAg": {
+          "type": "group",
+          "name": "t:names.header",
+          "settings": {
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 12,
+            "width": "fit-content",
+            "custom_width": 100,
+            "width_mobile": "fit-content",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "custom_height": 100,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "background_media": "none",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "link": "",
+            "open_in_new_tab": false,
+            "placeholder": "",
+            "padding-block-start": 0,
+            "padding-block-end": 48,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "text_fRMQMR": {
+              "type": "text",
+              "name": "t:names.text",
+              "settings": {
+                "text": "<h1>Collections</h1>",
+                "width": "100%",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "h2",
+                "font": "var(--font-primary--family)",
+                "font_size": "",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 16,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "text_fRMQMR"
+          ]
+        },
+        "static-collection-card": {
+          "type": "_collection-card",
+          "name": "t:names.collection_card",
+          "static": true,
+          "settings": {
+            "placement": "below_image",
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "flex-start",
+            "collection_card_gap": 8,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0
+          },
+          "blocks": {
+            "collection_title_7YgBPU": {
+              "type": "collection-title",
+              "name": "t:names.collection_title",
+              "settings": {
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "collection-card-image": {
+              "type": "_collection-card-image",
+              "name": "t:names.collection_card_image",
+              "static": true,
+              "settings": {
+                "image_ratio": "adapt",
+                "toggle_overlay": false,
+                "overlay_color": "#00000026",
+                "overlay_style": "solid",
+                "gradient_direction": "to top",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "collection_title_7YgBPU"
+          ]
+        }
+      },
+      "block_order": [
+        "group_4FtiAg"
+      ],
+      "disabled": true,
+      "name": "Collection list",
+      "settings": {
+        "layout_type": "grid",
+        "carousel_on_mobile": false,
+        "columns": 3,
+        "mobile_columns": "2",
+        "columns_gap": 12,
+        "bento_gap": 8,
+        "rows_gap": 24,
+        "max_collections": 4,
+        "icons_style": "arrow",
+        "icons_shape": "none",
+        "section_width": "page-width",
+        "gap": 12,
+        "color_scheme": "",
+        "padding-block-start": 48,
+        "padding-block-end": 48
+      }
+    },
+    "rs_shift_shop_Wn99qH": {
+      "type": "rs-shift-shop",
+      "blocks": {
+        "nav_icon_pmtU8G": {
+          "type": "nav_icon",
+          "settings": {
+            "nav_collection": "shift-to-better-breakfast",
+            "icon_image": "shopify://shop_images/download.png",
+            "icon_label": "Oats",
+            "icon_bg": "#c0d72f",
+            "icon_border_color": "#e0c97a"
+          }
+        },
+        "nav_icon_FbGmVJ": {
+          "type": "nav_icon",
+          "settings": {
+            "nav_collection": "shift-to-better-cookies",
+            "icon_image": "shopify://shop_images/download_1.png",
+            "icon_label": "Cookies",
+            "icon_bg": "#fcad17",
+            "icon_border_color": "#e0c97a"
+          }
+        },
+        "nav_icon_kMQm6z": {
+          "type": "nav_icon",
+          "settings": {
+            "nav_collection": "shift-to-better-atta",
+            "icon_image": "shopify://shop_images/download_2.png",
+            "icon_label": "Cooking Mixes",
+            "icon_bg": "#709344",
+            "icon_border_color": "#e0c97a"
+          }
+        },
+        "product_row_qzNgtT": {
+          "type": "product_row",
+          "settings": {
+            "row_collection": "shift-to-better-breakfast",
+            "row_heading": "Shift to better Breakfast",
+            "row_subheading": "Something corny. Something healthy. All things crunchy.",
+            "badge_grains": true,
+            "badge_nutrition": true,
+            "badge_chemicals": true
+          }
+        },
+        "product_row_47Kfjx": {
+          "type": "product_row",
+          "disabled": true,
+          "settings": {
+            "row_collection": "frontpage",
+            "row_heading": "Shift to better meals",
+            "row_subheading": "Something corny. Something healthy. All things crunchy.",
+            "badge_grains": true,
+            "badge_nutrition": true,
+            "badge_chemicals": true
+          }
+        },
+        "product_row_dywRmx": {
+          "type": "product_row",
+          "settings": {
+            "row_collection": "shift-to-better-cookies",
+            "row_heading": "Shift to better Cookies",
+            "row_subheading": "Something corny. Something healthy. All things crunchy.",
+            "badge_grains": true,
+            "badge_nutrition": true,
+            "badge_chemicals": true
+          }
+        },
+        "product_row_JM7rCE": {
+          "type": "product_row",
+          "settings": {
+            "row_collection": "shift-to-better-atta",
+            "row_heading": "Shift to better Atta",
+            "row_subheading": "Something corny. Something healthy. All things crunchy.",
+            "badge_grains": true,
+            "badge_nutrition": true,
+            "badge_chemicals": true
+          }
+        },
+        "faq_item_gYrywy": {
+          "type": "faq_item",
+          "settings": {
+            "question": "What is Right Shift?",
+            "answer": "<p>Right shift is a food brand from ITC that has a vast range of oats and millets-based products such as masala oats, cookies, snacks, atta etc. The brand caters to people’s changing nutritional needs with age. The products are designed by experts to provide benefits like better digestion, strength and energy.</p>"
+          }
+        },
+        "faq_item_ipdbC4": {
+          "type": "faq_item",
+          "settings": {
+            "question": "What are some benefits of using Right Shift products?",
+            "answer": "<p>While each product is design in a unique way to provide you various benefits but key benefits of Right Shift products are that each product has No Added Preservatives, No Trans Fat, No Artificial Flavours, Fibre to aid digestion, and Protein to maintain muscle mass.</p>"
+          }
+        },
+        "faq_item_8wUKfY": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Does Right Shift Millet Oats contain Palm Oil?",
+            "answer": "<p>No, Right Shift millet oats quick meal range doesn’t contain palm oil.</p>"
+          }
+        },
+        "faq_item_waP8Tm": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Why Right shift millet oats are better?",
+            "answer": "<p>All the 7 products in Right shift millet oats range have clinically proven ingredients to support Gut health, fibre to aid digestion, vitamins B1, B2, B6, Iron to support energy metabolism, protein to maintain muscle mass and have no added preservatives, no added colours, no artificial flavours, and no trans-fat.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "nav_icon_pmtU8G",
+        "nav_icon_FbGmVJ",
+        "nav_icon_kMQm6z",
+        "product_row_qzNgtT",
+        "product_row_47Kfjx",
+        "product_row_dywRmx",
+        "product_row_JM7rCE",
+        "faq_item_gYrywy",
+        "faq_item_ipdbC4",
+        "faq_item_8wUKfY",
+        "faq_item_waP8Tm"
+      ],
+      "name": "RS - Shift Shop Page",
+      "settings": {
+        "card_color_1": "#f5b800",
+        "card_color_2": "#1bbde8",
+        "card_color_3": "#8dc63f",
+        "hero_bg_color": "#6aaa64",
+        "hero_bg_image": "shopify://shop_images/shift-shop-desktop.jpg",
+        "hero_bg_image_mobile": "shopify://shop_images/shift-shop-mobile.jpg",
+        "hero_bg_opacity": 100,
+        "hero_height": 650,
+        "hero_heading": "The shift shop",
+        "hero_heading_color": "#ffffff",
+        "hero_heading_size": 44,
+        "hero_description": "Embark on a journey of wellness inspiration. Connect with fellow health enthusiasts like you.",
+        "hero_desc_color": "#ffffff",
+        "hero_desc_size": 15,
+        "hero_img_width": 440,
+        "hero_padding_v": 60,
+        "hero_padding_h": 60,
+        "show_icons_row": true,
+        "icons_bg": "#2d2119",
+        "icons_padding": 20,
+        "icons_align": "center",
+        "icons_gap": 20,
+        "icon_size": 120,
+        "icon_border": 2,
+        "icon_item_width": 112,
+        "icon_label_color": "#ffffff",
+        "icon_label_size": 14,
+        "all_icon_image": "shopify://shop_images/Group_1216022017.png",
+        "all_icon_label": "Shop all",
+        "all_icon_bg": "#f5f0e8",
+        "all_icon_border_color": "#e0c97a",
+        "show_breadcrumb": true,
+        "breadcrumb_shop_text": "The shift shop",
+        "shop_page_handle": "shift-shop",
+        "breadcrumb_color": "#2d2119",
+        "section_pt": 40,
+        "section_pb": 40,
+        "row_heading_color": "#175c2e",
+        "row_heading_size": 49,
+        "row_sub_color": "#2d2119",
+        "row_gap": 48,
+        "products_per_row": 3,
+        "card_gap": 18,
+        "card_radius": 14,
+        "product_title_color": "#1a1a1a",
+        "product_desc_color": "#2d2119",
+        "price_color": "#1a1a1a",
+        "atc_bg": "#2d2119",
+        "atc_color": "#ffffff",
+        "buy_bg": "#2d2119",
+        "buy_color": "#ffffff",
+        "show_arrows": true,
+        "arrow_bg": "#ffffff",
+        "arrow_color": "#1a1a1a",
+        "single_col_heading": "A variety to choose from",
+        "single_col_subheading": "Something corny. Something healthy. All things crunchy.",
+        "single_badge_grains": true,
+        "single_badge_nutrition": true,
+        "single_badge_chemicals": true,
+        "single_products_per_row": 3,
+        "faq_heading": "Frequently Asked Questions",
+        "faq_bg": "#ffffff",
+        "faq_heading_color": "#1a1a1a",
+        "faq_heading_size": 36,
+        "faq_divider": "#e5e5e5",
+        "faq_q_color": "#1a1a1a",
+        "faq_q_size": 15,
+        "faq_a_color": "#444444",
+        "faq_a_size": 14,
+        "faq_icon_color": "#1a1a1a",
+        "faq_icon": "+",
+        "faq_item_pad": 16,
+        "faq_side_image": "shopify://shop_images/faq-desktop.png",
+        "faq_img_width": 280,
+        "faq_img_radius": 12,
+        "faq_pt": 60,
+        "faq_pb": 60
+      }
+    }
+  },
+  "order": [
+    "collection_list_Wfgh3m",
+    "rs_shift_shop_Wn99qH"
+  ]
+}

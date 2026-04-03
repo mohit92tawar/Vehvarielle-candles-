@@ -1,0 +1,149 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "rs-product-main",
+      "blocks": {
+        "perfect_match_JVNq84": {
+          "type": "perfect_match",
+          "settings": {
+            "product_handle": "tuberose-copy-1"
+          }
+        },
+        "perfect_match_Hf9Dzi": {
+          "type": "perfect_match",
+          "settings": {
+            "product_handle": "tuberose-copy-1"
+          }
+        },
+        "perfect_match_BMwaGw": {
+          "type": "perfect_match",
+          "settings": {
+            "product_handle": "tuberose-copy-1"
+          }
+        },
+        "perfect_match_JEmNqY": {
+          "type": "perfect_match",
+          "settings": {
+            "product_handle": "tuberose-copy-1"
+          }
+        },
+        "accordion_EcYzaM": {
+          "type": "accordion",
+          "settings": {
+            "label": "Product Description",
+            "content": "<p>{{ product.vendor }}</p>"
+          }
+        },
+        "accordion_VHmeag": {
+          "type": "accordion",
+          "settings": {
+            "label": "Characteristics",
+            "content": "<p>{{ product.title }}</p>"
+          }
+        },
+        "accordion_rmgwqd": {
+          "type": "accordion",
+          "settings": {
+            "label": "Care",
+            "content": "<p>{{ product.title }}</p>"
+          }
+        },
+        "accordion_DEBbxR": {
+          "type": "accordion",
+          "settings": {
+            "label": "Ingredients",
+            "content": "<p>{{ product.title }}</p>"
+          }
+        }
+      },
+      "block_order": [
+        "perfect_match_JVNq84",
+        "perfect_match_Hf9Dzi",
+        "perfect_match_BMwaGw",
+        "perfect_match_JEmNqY",
+        "accordion_EcYzaM",
+        "accordion_VHmeag",
+        "accordion_rmgwqd",
+        "accordion_DEBbxR"
+      ],
+      "settings": {
+        "tab_overview": "",
+        "tab_packaging": "",
+        "tab_shipping": "",
+        "perfect_match_heading": "Perfect match with"
+      }
+    },
+    "section_RYLGPG": {
+      "type": "section",
+      "blocks": {
+        "image_NwWiHt": {
+          "type": "image",
+          "name": "t:names.image",
+          "settings": {
+            "image": "shopify://shop_images/Group_1321317205.png",
+            "link": "",
+            "image_ratio": "adapt",
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "image_NwWiHt"
+      ],
+      "name": "t:names.custom_section",
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 12,
+        "section_width": "page-width",
+        "section_height": "small",
+        "section_height_custom": 50,
+        "color_scheme": "",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 0,
+        "padding-block-end": 100
+      }
+    }
+  },
+  "order": [
+    "main",
+    "section_RYLGPG"
+  ]
+}

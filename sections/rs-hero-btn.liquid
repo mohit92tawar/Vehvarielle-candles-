@@ -1,0 +1,173 @@
+{% comment %}
+  RS Hero Section — Full background image banner
+  File: sections/rs-hero.liquid
+{% endcomment %}
+
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+.rs-hero-wrap *, .rs-hero-wrap *::before, .rs-hero-wrap *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+.rs-hero-wrap {
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  min-height: 329px;
+  display: flex;
+  align-items: center;
+  font-family: 'DM Sans', sans-serif;
+}
+
+/* Full background image */
+.rs-hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.rs-hero-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+}
+/* Green gradient overlay — strong on left for readability, fades right */
+.rs-hero-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to right,
+    rgba(22, 88, 48, 0.93) 0%,
+    rgba(22, 88, 48, 0.82) 38%,
+    rgba(22, 88, 48, 0.28) 68%,
+    rgba(22, 88, 48, 0.00) 100%
+  );
+  z-index: 1;
+}
+
+
+
+/* Text content */
+.rs-hero-content {
+  position: relative;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
+    max-width: 1317px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.rs-hero-title {
+  font-size: 45px;
+  font-weight: 500;
+  color: #FCEED9;
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+}
+
+.rs-hero-desc {
+     font-size: 16px;
+    line-height: 1.72;
+    color: #FCEED9;
+    font-family: 'Urbanist';
+    max-width: 600px;
+}
+
+.rs-hero-btn {
+ display: inline-flex;
+    align-items: center;
+    background: #098040;
+    color: #fff;
+    font-family: 'Urbanist';
+    border: none;
+    text-align: center;
+    justify-content: center;
+    min-width: 253px;
+    padding: 5px 26px;
+    border-radius: 40px;
+    font-size: 24px;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    width: fit-content;
+    transition: background 0.25s, color 0.25s, transform 0.2s;
+    margin-top: 25px;
+}
+.rs-hero-btn:hover { background: transparent; color: #ffffff; transform: translateY(-1px); }
+
+@media (max-width: 768px) {
+  .rs-hero-content { padding: 30px 24px; max-width: 100%; }
+  .rs-hero-title { font-size: 26px; }
+  .rs-hero-bg::after { background: rgba(22, 88, 48, 0.72); }
+}
+</style>
+
+<div class="rs-hero-wrap">
+
+  <!-- Full background image -->
+  <div class="rs-hero-bg">
+    {% if section.settings.hero_image %}
+      <img src="{{ section.settings.hero_image | img_url: '1400x' }}" alt="{{ section.settings.title | escape }}" loading="eager">
+    {% else %}
+      <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=1400&q=85" alt="The right talk" loading="eager">
+    {% endif %}
+  </div>
+
+  
+
+  <!-- Text -->
+  <div class="rs-hero-content">
+    <h1 class="rs-hero-title">{{ section.settings.title | default: "The right talk" }}</h1>
+    <p class="rs-hero-desc">{{ section.settings.description | default: "Embark on a journey of wellness inspiration. With this one-stop destination for guidance on nutrition, wellness, and vibrant living at any age." }}</p>
+    <a href="{{ section.settings.button_url | default: '#' }}" class="rs-hero-btn">
+      {{ section.settings.button_text | default: "Join community" }}
+    </a>
+  </div>
+
+</div>
+
+{% schema %}
+{
+  "name": "RS – Hero Section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Background Image (full width)"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "The right talk"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Embark on a journey of wellness inspiration. With this one-stop destination for guidance on nutrition, wellness, and vibrant living at any age."
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "Join community"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "Button Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "RS – Hero Section"
+    }
+  ]
+}
+{% endschema %}

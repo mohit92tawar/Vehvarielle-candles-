@@ -1,0 +1,203 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-blog",
+      "blocks": {
+        "title": {
+          "type": "text",
+          "name": "Title",
+          "settings": {
+            "text": "<h1>{{ closest.blog.title }}</h1>",
+            "width": "fit-content",
+            "max_width": "narrow",
+            "alignment": "left",
+            "type_preset": "h2",
+            "font": "var(--font-primary--family)",
+            "font_size": "",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 48,
+            "padding-block-end": 48,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "static-blog-post-card": {
+          "type": "_blog-post-card",
+          "static": true,
+          "settings": {
+            "alignment": "left"
+          },
+          "blocks": {
+            "image": {
+              "type": "_blog-post-image",
+              "static": true,
+              "settings": {
+                "height": "large",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 4
+              },
+              "blocks": {}
+            },
+            "heading": {
+              "type": "_heading",
+              "name": "t:names.title",
+              "static": true,
+              "settings": {
+                "type_preset": "h4",
+                "font": "var(--font-primary--family)",
+                "font_size": "",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "",
+                "text": "",
+                "read_only": true,
+                "alignment": "left",
+                "show_alignment": false,
+                "padding-block-start": 0,
+                "padding-block-end": 10,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "blog-post-details": {
+              "type": "_blog-post-info-text",
+              "name": "t:names.details",
+              "static": true,
+              "settings": {
+                "show_date": true,
+                "show_author": false,
+                "type_preset": "",
+                "alignment": "left",
+                "show_alignment": false,
+                "padding-block-start": 0,
+                "padding-block-end": 0
+              },
+              "blocks": {}
+            },
+            "content": {
+              "type": "_blog-post-description",
+              "static": true,
+              "settings": {
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "padding-block-start": 16,
+                "padding-block-end": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": []
+        }
+      },
+      "block_order": [
+        "title"
+      ],
+      "disabled": true,
+      "settings": {
+        "color_scheme": "",
+        "padding-block-start": 0,
+        "padding-block-end": 48
+      }
+    },
+    "rs_hero_btn_Q98M6j": {
+      "type": "rs-hero-btn",
+      "disabled": true,
+      "name": "RS - Hero Section",
+      "settings": {
+        "hero_image": "shopify://shop_images/Hero_Banner.png",
+        "title": "The right talk",
+        "description": "Embark on a journey of wellness inspiration. With this one-stop destination for guidance on nutrition, wellness, and vibrant living at any age.",
+        "button_text": "Join community",
+        "button_url": ""
+      }
+    },
+    "rs_meal_plan_hero_zhVKU8": {
+      "type": "rs-meal-plan-hero",
+      "name": "RS - Meal Plan Hero",
+      "settings": {
+        "bg_image": "shopify://shop_images/right-talk-desktop-new-banner.webp",
+        "bg_image_mobile": "shopify://shop_images/right-talk-mobile-new-banner.webp",
+        "title": "Meal plan curator",
+        "description": "<p>Teaming up with TGHC – The Good Health Clinic, we bring science-led, easy-to-follow meal plans for various health goals. TGHC's nutrition experts have crafted nutrient-packed, delicious food recommendations for you.</p><p>Fill in the below questions to create your customised meal plan.</p>",
+        "show_info_strip": false,
+        "info_strip_text": "<p>Teaming up with TGHC – The Good Health Clinic, we bring science-led, easy-to-follow meal plans for various health goals. TGHC's nutrition experts have crafted nutrient-packed, delicious food recommendations for you.</p><p>Fill in the below questions to create your customised meal plan.</p>"
+      }
+    },
+    "blog_carousel_qgyzdL": {
+      "type": "blog-carousel",
+      "disabled": true,
+      "name": "Right Talk Blog Carousel",
+      "settings": {
+        "blog": "news",
+        "post_limit": 6,
+        "default_label": "BLOG",
+        "show_read_more": true,
+        "read_more_text": "Read More"
+      }
+    },
+    "right_talk_cards_YxApUH": {
+      "type": "right-talk-cards",
+      "blocks": {
+        "filter_tab_N9LDbc": {
+          "type": "filter_tab",
+          "settings": {
+            "tab_label": "RIGHT NUTRITION",
+            "tag_filter": "nutrition"
+          }
+        },
+        "filter_tab_gTajMx": {
+          "type": "filter_tab",
+          "settings": {
+            "tab_label": "RIGHT LIFESTYLE",
+            "tag_filter": "rightsift"
+          }
+        }
+      },
+      "block_order": [
+        "filter_tab_N9LDbc",
+        "filter_tab_gTajMx"
+      ],
+      "name": "Right Talk Cards Grid",
+      "settings": {
+        "heading": "Right Shift Health Blogs",
+        "blog_handle": "news",
+        "max_posts": 12
+      }
+    }
+  },
+  "order": [
+    "main",
+    "rs_hero_btn_Q98M6j",
+    "rs_meal_plan_hero_zhVKU8",
+    "blog_carousel_qgyzdL",
+    "right_talk_cards_YxApUH"
+  ]
+}

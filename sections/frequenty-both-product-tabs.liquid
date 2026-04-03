@@ -1,0 +1,823 @@
+{% comment %}
+  Section: Product Tabs
+  File: sections/product-tabs.liquid
+{% endcomment %}
+
+<style>
+  
+/* ============================================
+   Product Tabs Section
+   ============================================ */
+.inner_card_wrapper { border-radius: 10px; overflow: hidden; position: relative;}
+.pt-section-wrapper {
+  max-width: 1267px;
+  margin: 0 auto;
+  padding: 30px 16px 40px;
+}
+
+/* TABS */
+.pt-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin-bottom: 28px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  white-space: nowrap;
+  padding-bottom: 4px;
+}
+.pt-tabs::-webkit-scrollbar { display: none; }
+
+.pt-tab-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #222;
+  padding: 4px 0 6px;
+  border-bottom: 3px solid transparent;
+  transition: color 0.2s, border-color 0.2s;
+  flex-shrink: 0;
+}
+.pt-tab-btn.active { color: #098040 }
+.pt-tab-btn:hover  { color: #098040 }
+
+/* ── DESKTOP SLIDER ── */
+.pt-slider-outer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pt-arrow-btn {
+  background: #fff;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+  min-width: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 18px;
+  color: #444;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.10);
+  transition: background 0.15s;
+  flex-shrink: 0;
+}
+.pt-arrow-btn:hover { background: #f3f3f3; }
+.pt-arrow-btn.pt-arrow-hidden {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.pt-cards-track-wrap {
+  overflow: hidden;
+  flex: 1;
+}
+
+.pt-cards-track {
+  display: flex;
+  gap: 24px;
+  transition: transform 0.35s cubic-bezier(.4,0,.2,1);
+  will-change: transform;
+}
+
+/* ── CARD ── */
+.pt-card {
+  flex: 0 0 calc((100% - 48px) / 3);
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+}
+
+.pt-card-img-wrap {
+  border-radius: 16px 16px 0 0;
+  padding: 20px 20px 0 20px;
+  min-height: 260px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+  aspect-ratio: 1 / 1;
+}
+.pt-card[data-color="orange"] .pt-card-img-wrap { background: #FCAD17; }
+.pt-card[data-color="blue"]   .pt-card-img-wrap { background: #009FDF; }
+.pt-card[data-color="green"]  .pt-card-img-wrap { background: #C0D72F; }
+
+.pt-card-img-wrap img,
+.pt-card-img-wrap svg {
+  width: 100%;
+  max-width: 220px;
+  object-fit: contain;
+  display: block;
+  position: relative;
+  z-index: 1;
+}
+
+/* BUTTONS */
+.pt-card-btns {
+  display: flex;
+  gap: 2px;
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+  z-index: 99;
+}
+
+.pt-card-btns .pt-atc-btn,
+.pt-card-btns .pt-buy-btn {
+  flex: 1;
+  background: #2D2119;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-size: 23px;
+  font-weight: 600;
+  padding: 14px 10px;
+  transition: background 0.15s;
+  letter-spacing: 0.01em;
+  text-align: center;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.pt-card-btns .pt-atc-btn { border-right: 1.5px solid #3a3a3a; }
+.pt-card-btns .pt-atc-btn:hover,
+.pt-card-btns .pt-buy-btn:hover { background: #333; }
+
+/* CARD BODY */
+.pt-card-body { padding: 14px 4px 10px 4px; }
+.pt-card-title {
+  font-size: 19px;
+  font-weight: 700;
+  color: #111;
+  margin-bottom: 4px;
+  line-height: 1.3;
+}
+.pt-card-desc {
+  font-size: 19px;
+  color: #444;
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+.pt-card-price {
+  font-size: 24px;
+  font-weight: 700;
+  color: #111;
+}
+
+/* TAB PANEL */
+.pt-tab-panel { display: none; }
+.pt-tab-panel.active { display: block; }
+
+/* ── MOBILE ── */
+@media (max-width: 768px) {
+  .feature-text { font-size: 10px; }
+  .feature-icon { width: 32px; height: 32px; }
+  .feature-icon img { object-fit: contain; max-width: 20px; max-height: 20px; }
+
+  /* FIX: pehli tab left se cut na ho */
+  .pt-tabs {
+    gap: 20px;
+    justify-content: flex-start;
+    padding-left: 2px;
+  }
+  .pt-tab-btn { font-size: 16px; }
+
+  .pt-cards-track-wrap {
+    overflow: hidden;
+    flex: 1;
+    touch-action: pan-y;
+    user-select: none;
+  }
+
+  .pt-cards-track {
+    gap: 16px;
+    transition: transform 0.35s cubic-bezier(.4,0,.2,1);
+    cursor: grab;
+  }
+  .pt-cards-track.is-dragging {
+    transition: none;
+    cursor: grabbing;
+  }
+
+  .pt-card {
+    flex: 0 0 calc((100% - 16px) / 2);
+    min-width: 0;
+  }
+
+  .pt-card-img-wrap {
+    min-height: 160px;
+    padding: 14px 14px 0 14px;
+  }
+  .pt-card-img-wrap img,
+  .pt-card-img-wrap svg { max-width: 130px; }
+
+  .pt-card-btns .pt-atc-btn,
+  .pt-card-btns .pt-buy-btn { font-size: 13px; padding: 10px 4px; }
+
+  .pt-card-title { font-size: 16px; }
+  .pt-card-desc  { font-size: 12px; }
+  .pt-card-price { font-size: 16px; }
+  .pt-card-body  { padding: 10px 4px 8px 4px; }
+}
+
+</style>
+
+{%- assign new_collection       = collections[section.settings.new_launches_collection] -%}
+{%- assign dietician_collection = collections[section.settings.dietician_collection] -%}
+
+<div class="pt-section-wrapper" id="pt-section-{{ section.id }}">
+
+  {%- comment -%} ── TABS BAR ── {%- endcomment -%}
+  <div class="pt-tabs" id="pt-tabsBar-{{ section.id }}">
+    <button class="pt-tab-btn active" data-tab="new"       data-section="{{ section.id }}">{{ section.settings.tab1_label | default: 'NEW LAUNCHES' }}</button>
+    <button class="pt-tab-btn"        data-tab="together"  data-section="{{ section.id }}">{{ section.settings.tab2_label | default: 'FREQUENTLY BOUGHT TOGETHER' }}</button>
+    <button class="pt-tab-btn"        data-tab="dietician" data-section="{{ section.id }}">{{ section.settings.tab3_label | default: 'DIETICIAN RECOMMENDED' }}</button>
+  </div>
+
+  {%- comment -%} TAB 1 — NEW LAUNCHES {%- endcomment -%}
+  <div class="pt-tab-panel active" id="pt-tab-new-{{ section.id }}">
+    <div class="pt-slider-outer">
+      <button class="pt-arrow-btn pt-prev" data-tab="new" data-section="{{ section.id }}">&#8249;</button>
+      <div class="pt-cards-track-wrap" data-tab="new" data-section="{{ section.id }}">
+        <div class="pt-cards-track" id="pt-track-new-{{ section.id }}">
+          {%- assign nl_colors = 'orange,blue,green,orange,blue,green,orange,blue,green,orange,blue,green' | split: ',' -%}
+          {%- if new_collection != blank -%}
+            {%- for product in new_collection.products limit: section.settings.new_limit -%}
+              {%- assign ci = forloop.index0 | modulo: 3 -%}
+              {%- assign card_color = nl_colors[ci] -%}
+              {%- assign first_variant = product.first_available_variant -%}
+              <div class="pt-card" data-color="{{ card_color }}">
+                <div class="inner_card_wrapper">
+                  <a href="{{ product.url }}" class="pt-card-img-wrap">
+                    {%- if product.featured_image -%}
+                      <img src="{{ product.featured_image | img_url: '400x' }}" alt="{{ product.title | escape }}" loading="lazy" width="220" height="240">
+                    {%- else -%}
+                      {{ 'product-1' | placeholder_svg_tag: 'pt-placeholder-svg' }}
+                    {%- endif -%}
+                  </a>
+                  <div class="pt-card-btns">
+                    <button class="pt-atc-btn" data-variant-id="{{ first_variant.id }}" {% unless first_variant.available %}disabled{% endunless %}>
+                      {{ section.settings.atc_label | default: 'Add to cart' }}
+                    </button>
+                    <a href="{{ product.url }}?variant={{ first_variant.id }}&buy=1" class="pt-buy-btn">
+                      {{ section.settings.buy_label | default: 'Buy now' }}
+                    </a>
+                  </div>
+                </div>
+                <div class="pt-card-body">
+                  <div class="pt-card-title">{{ product.title }}</div>
+                  <div class="pt-card-desc">{{ product.metafields.custom.short_description | default: product.description | strip_html | truncate: 80 }}</div>
+                  <div class="pt-card-price">{{ product.price | money }}</div>
+                </div>
+              </div>
+            {%- endfor -%}
+          {%- else -%}
+            {%- assign placeholder_colors = 'orange,blue,green' | split: ',' -%}
+            {%- for i in (1..3) -%}
+              <div class="pt-card" data-color="{{ placeholder_colors[forloop.index0] }}">
+                <div class="pt-card-img-wrap">{{ 'product-1' | placeholder_svg_tag: 'pt-placeholder-svg' }}</div>
+                <div class="pt-card-btns">
+                  <button class="pt-atc-btn" disabled>Add to cart</button>
+                  <span class="pt-buy-btn">Buy now</span>
+                </div>
+                <div class="pt-card-body">
+                  <div class="pt-card-title">Select a collection above</div>
+                  <div class="pt-card-desc">Products will appear here</div>
+                  <div class="pt-card-price">Rs. 0.00</div>
+                </div>
+              </div>
+            {%- endfor -%}
+          {%- endif -%}
+        </div>
+      </div>
+      <button class="pt-arrow-btn pt-next" data-tab="new" data-section="{{ section.id }}">&#8250;</button>
+    </div>
+  </div>
+
+  {%- comment -%} TAB 2 — FREQUENTLY BOUGHT TOGETHER {%- endcomment -%}
+  <div class="pt-tab-panel" id="pt-tab-together-{{ section.id }}">
+    <div class="pt-slider-outer">
+      <button class="pt-arrow-btn pt-prev" data-tab="together" data-section="{{ section.id }}">&#8249;</button>
+      <div class="pt-cards-track-wrap" data-tab="together" data-section="{{ section.id }}">
+        <div class="pt-cards-track" id="pt-track-together-{{ section.id }}">
+
+          {%- if product -%}
+            {%- assign fbt_main_variant = product.first_available_variant -%}
+            <div class="pt-card pt-card--main" data-color="{{ section.settings.fbt_main_color | default: 'orange' }}">
+              <div class="inner_card_wrapper">
+                <a href="{{ product.url }}" class="pt-card-img-wrap">
+                  {%- if product.featured_image -%}
+                    <img src="{{ product.featured_image | img_url: '400x' }}" alt="{{ product.title | escape }}" loading="lazy" width="220" height="240">
+                  {%- else -%}
+                    {{ 'product-1' | placeholder_svg_tag: 'pt-placeholder-svg' }}
+                  {%- endif -%}
+                </a>
+                <div class="pt-card-btns">
+                  <button class="pt-atc-btn" data-variant-id="{{ fbt_main_variant.id }}" {% unless fbt_main_variant.available %}disabled{% endunless %}>
+                    {{ section.settings.atc_label | default: 'Add to cart' }}
+                  </button>
+                  <a href="{{ product.url }}?variant={{ fbt_main_variant.id }}&buy=1" class="pt-buy-btn">
+                    {{ section.settings.buy_label | default: 'Buy now' }}
+                  </a>
+                </div>
+              </div>
+              <div class="pt-card-body">
+                <div class="pt-card-title">{{ product.title }}</div>
+                <div class="pt-card-desc">{{ product.metafields.custom.short_description | default: product.description | strip_html | truncate: 80 }}</div>
+                <div class="pt-card-price">{{ product.price | money }}</div>
+              </div>
+            </div>
+          {%- endif -%}
+
+          {%- assign fbt_auto_colors = 'blue,green,orange,blue,green,orange,blue,green' | split: ',' -%}
+          {%- assign fbt_i = 0 -%}
+          {%- for block in section.blocks -%}
+            {%- assign fbt_product = all_products[block.settings.product] -%}
+            {%- assign fbt_color   = block.settings.card_color | default: fbt_auto_colors[fbt_i] -%}
+            {%- assign fbt_i = fbt_i | plus: 1 -%}
+            <div class="pt-card" data-color="{{ fbt_color }}" {{ block.shopify_attributes }}>
+              {%- if fbt_product != blank -%}
+                {%- assign fbt_variant = fbt_product.first_available_variant -%}
+                <div class="inner_card_wrapper">
+                  <a href="{{ fbt_product.url }}" class="pt-card-img-wrap">
+                    {%- if fbt_product.featured_image -%}
+                      <img src="{{ fbt_product.featured_image | img_url: '400x' }}" alt="{{ fbt_product.title | escape }}" loading="lazy" width="220" height="240">
+                    {%- else -%}
+                      {{ 'product-1' | placeholder_svg_tag: 'pt-placeholder-svg' }}
+                    {%- endif -%}
+                  </a>
+                  <div class="pt-card-btns">
+                    <button class="pt-atc-btn" data-variant-id="{{ fbt_variant.id }}" {% unless fbt_variant.available %}disabled{% endunless %}>
+                      {{ section.settings.atc_label | default: 'Add to cart' }}
+                    </button>
+                    <a href="{{ fbt_product.url }}?variant={{ fbt_variant.id }}&buy=1" class="pt-buy-btn">
+                      {{ section.settings.buy_label | default: 'Buy now' }}
+                    </a>
+                  </div>
+                </div>
+                <div class="pt-card-body">
+                  <div class="pt-card-title">{{ fbt_product.title }}</div>
+                  <div class="pt-card-desc">
+                    {%- if block.settings.description != blank -%}{{ block.settings.description }}{%- else -%}{{ fbt_product.metafields.custom.short_description | default: fbt_product.description | strip_html | truncate: 80 }}{%- endif -%}
+                  </div>
+                  <div class="pt-card-price">{{ fbt_product.price | money }}</div>
+                </div>
+              {%- else -%}
+                <div class="pt-card-img-wrap">{{ 'product-1' | placeholder_svg_tag: 'pt-placeholder-svg' }}</div>
+                <div class="pt-card-btns">
+                  <button class="pt-atc-btn" disabled>Add to cart</button>
+                  <span class="pt-buy-btn">Buy now</span>
+                </div>
+                <div class="pt-card-body">
+                  <div class="pt-card-title">{{ block.settings.fallback_title | default: 'Select a product' }}</div>
+                  <div class="pt-card-desc">{{ block.settings.description }}</div>
+                  <div class="pt-card-price">{{ block.settings.fallback_price | default: 'Rs. 0.00' }}</div>
+                </div>
+              {%- endif -%}
+            </div>
+          {%- endfor -%}
+
+        </div>
+      </div>
+      <button class="pt-arrow-btn pt-next" data-tab="together" data-section="{{ section.id }}">&#8250;</button>
+    </div>
+  </div>
+
+  {%- comment -%} TAB 3 — DIETICIAN RECOMMENDED {%- endcomment -%}
+  <div class="pt-tab-panel" id="pt-tab-dietician-{{ section.id }}">
+    <div class="pt-slider-outer">
+      <button class="pt-arrow-btn pt-prev" data-tab="dietician" data-section="{{ section.id }}">&#8249;</button>
+      <div class="pt-cards-track-wrap" data-tab="dietician" data-section="{{ section.id }}">
+        <div class="pt-cards-track" id="pt-track-dietician-{{ section.id }}">
+          {%- assign dc_colors = 'green,orange,blue,green,orange,blue,green,orange,blue,green,orange,blue' | split: ',' -%}
+          {%- if dietician_collection != blank -%}
+            {%- for product in dietician_collection.products limit: section.settings.dietician_limit -%}
+              {%- assign dci = forloop.index0 | modulo: 3 -%}
+              {%- assign dc_color = dc_colors[dci] -%}
+              {%- assign dc_variant = product.first_available_variant -%}
+              <div class="pt-card" data-color="{{ dc_color }}">
+                <div class="inner_card_wrapper">
+                  <a href="{{ product.url }}" class="pt-card-img-wrap">
+                    {%- if product.featured_image -%}
+                      <img src="{{ product.featured_image | img_url: '400x' }}" alt="{{ product.title | escape }}" loading="lazy" width="220" height="240">
+                    {%- else -%}
+                      {{ 'product-1' | placeholder_svg_tag: 'pt-placeholder-svg' }}
+                    {%- endif -%}
+                  </a>
+                  <div class="pt-card-btns">
+                    <button class="pt-atc-btn" data-variant-id="{{ dc_variant.id }}" {% unless dc_variant.available %}disabled{% endunless %}>
+                      {{ section.settings.atc_label | default: 'Add to cart' }}
+                    </button>
+                    <a href="{{ product.url }}?variant={{ dc_variant.id }}&buy=1" class="pt-buy-btn">
+                      {{ section.settings.buy_label | default: 'Buy now' }}
+                    </a>
+                  </div>
+                </div>
+                <div class="pt-card-body">
+                  <div class="pt-card-title">{{ product.title }}</div>
+                  <div class="pt-card-desc">{{ product.metafields.custom.short_description | default: product.description | strip_html | truncate: 80 }}</div>
+                  <div class="pt-card-price">{{ product.price | money }}</div>
+                </div>
+              </div>
+            {%- endfor -%}
+          {%- else -%}
+            {%- assign dc_placeholder_colors = 'green,orange,blue' | split: ',' -%}
+            {%- for i in (1..3) -%}
+              <div class="pt-card" data-color="{{ dc_placeholder_colors[forloop.index0] }}">
+                <div class="pt-card-img-wrap">{{ 'product-1' | placeholder_svg_tag: 'pt-placeholder-svg' }}</div>
+                <div class="pt-card-btns">
+                  <button class="pt-atc-btn" disabled>Add to cart</button>
+                  <span class="pt-buy-btn">Buy now</span>
+                </div>
+                <div class="pt-card-body">
+                  <div class="pt-card-title">Select a collection above</div>
+                  <div class="pt-card-desc">Products will appear here</div>
+                  <div class="pt-card-price">Rs. 0.00</div>
+                </div>
+              </div>
+            {%- endfor -%}
+          {%- endif -%}
+        </div>
+      </div>
+      <button class="pt-arrow-btn pt-next" data-tab="dietician" data-section="{{ section.id }}">&#8250;</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+(function() {
+  var sectionId = '{{ section.id }}';
+
+  function isMobile() { return window.innerWidth <= 768; }
+
+  function getTrack(tab) {
+    return document.getElementById('pt-track-' + tab + '-' + sectionId);
+  }
+  function totalCards(tab) {
+    var t = getTrack(tab);
+    return t ? t.querySelectorAll('.pt-card').length : 0;
+  }
+
+  var state = {
+    new:       { index: 0 },
+    together:  { index: 0 },
+    dietician: { index: 0 }
+  };
+
+  var VISIBLE_DESKTOP = 3;
+  var VISIBLE_MOBILE  = 2;
+  var GAP_DESKTOP     = 24;
+  var GAP_MOBILE      = 16;
+
+  function visibleCount() { return isMobile() ? VISIBLE_MOBILE : VISIBLE_DESKTOP; }
+  function gapSize()      { return isMobile() ? GAP_MOBILE     : GAP_DESKTOP; }
+
+  function applySlide(tab) {
+    var track = getTrack(tab);
+    if (!track) return;
+    var cards = track.querySelectorAll('.pt-card');
+    if (!cards.length) return;
+    var cardW = cards[0].offsetWidth + gapSize();
+    track.style.transform = 'translateX(-' + (state[tab].index * cardW) + 'px)';
+    updateArrows(tab);
+  }
+
+  function goTo(tab, idx) {
+    var max = Math.max(0, totalCards(tab) - visibleCount());
+    state[tab].index = Math.max(0, Math.min(max, idx));
+    applySlide(tab);
+  }
+
+  /* Arrows: sirf tab dikhao jab scroll karne ki zaroorat ho */
+  function updateArrows(tab) {
+    var total   = totalCards(tab);
+    var visible = visibleCount();
+    var max     = Math.max(0, total - visible);
+    var panel   = document.getElementById('pt-tab-' + tab + '-' + sectionId);
+    if (!panel) return;
+    var prevBtn = panel.querySelector('.pt-prev');
+    var nextBtn = panel.querySelector('.pt-next');
+    var needsArrows = total > visible;
+    if (prevBtn) prevBtn.classList.toggle('pt-arrow-hidden', !needsArrows || state[tab].index === 0);
+    if (nextBtn) nextBtn.classList.toggle('pt-arrow-hidden', !needsArrows || state[tab].index >= max);
+  }
+
+  function updateAllArrows() {
+    ['new', 'together', 'dietician'].forEach(updateArrows);
+  }
+
+  /* Arrow click */
+  document.querySelectorAll('#pt-section-' + sectionId + ' .pt-arrow-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var tab = btn.dataset.tab;
+      if (btn.classList.contains('pt-prev')) {
+        goTo(tab, state[tab].index - 1);
+      } else {
+        goTo(tab, state[tab].index + 1);
+      }
+    });
+  });
+
+  /* Touch swipe */
+  document.querySelectorAll('#pt-section-' + sectionId + ' .pt-cards-track-wrap').forEach(function(wrap) {
+    var tab       = wrap.dataset.tab;
+    var track     = wrap.querySelector('.pt-cards-track');
+    var startX    = 0;
+    var startY    = 0;
+    var diffX     = 0;
+    var dragging  = false;
+    var scrollDir = null;
+
+    function cardWidth() {
+      var cards = track.querySelectorAll('.pt-card');
+      return cards.length ? cards[0].offsetWidth + gapSize() : 0;
+    }
+    function baseOffset() { return state[tab].index * cardWidth(); }
+
+    wrap.addEventListener('touchstart', function(e) {
+      startX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
+      diffX = 0; dragging = false; scrollDir = null;
+      track.classList.remove('is-dragging');
+    }, { passive: true });
+
+    wrap.addEventListener('touchmove', function(e) {
+      if (!isMobile()) return;
+      diffX = e.touches[0].clientX - startX;
+      var diffY = e.touches[0].clientY - startY;
+      if (!scrollDir) { scrollDir = Math.abs(diffX) > Math.abs(diffY) ? 'h' : 'v'; }
+      if (scrollDir !== 'h') return;
+      e.preventDefault();
+      dragging = true;
+      track.classList.add('is-dragging');
+      track.style.transform = 'translateX(-' + (baseOffset() - diffX) + 'px)';
+    }, { passive: false });
+
+    wrap.addEventListener('touchend', function() {
+      if (!isMobile() || !dragging) { scrollDir = null; return; }
+      track.classList.remove('is-dragging');
+      var threshold = cardWidth() * 0.25;
+      if (diffX < -threshold)      { goTo(tab, state[tab].index + 1); }
+      else if (diffX > threshold)  { goTo(tab, state[tab].index - 1); }
+      else                         { applySlide(tab); }
+      diffX = 0; dragging = false; scrollDir = null;
+    });
+
+    /* Mouse drag */
+    var mouseDown = false, mouseStartX = 0, mouseDiff = 0;
+    wrap.addEventListener('mousedown', function(e) {
+      if (isMobile()) return;
+      mouseDown = true; mouseStartX = e.clientX; mouseDiff = 0;
+      track.classList.add('is-dragging');
+    });
+    document.addEventListener('mousemove', function(e) {
+      if (!mouseDown) return;
+      mouseDiff = e.clientX - mouseStartX;
+      track.style.transform = 'translateX(-' + (baseOffset() - mouseDiff) + 'px)';
+    });
+    document.addEventListener('mouseup', function() {
+      if (!mouseDown) return;
+      mouseDown = false;
+      track.classList.remove('is-dragging');
+      var cw = cardWidth();
+      if (mouseDiff < -(cw * 0.25))     { goTo(tab, state[tab].index + 1); }
+      else if (mouseDiff > (cw * 0.25)) { goTo(tab, state[tab].index - 1); }
+      else                              { applySlide(tab); }
+      mouseDiff = 0;
+    });
+  });
+
+  /* Tab switching */
+  var tabsBar = document.getElementById('pt-tabsBar-' + sectionId);
+  if (tabsBar) {
+    tabsBar.addEventListener('click', function(e) {
+      var btn = e.target.closest('.pt-tab-btn');
+      if (!btn || btn.dataset.section !== sectionId) return;
+      tabsBar.querySelectorAll('.pt-tab-btn').forEach(function(b) { b.classList.remove('active'); });
+      document.querySelectorAll('#pt-section-' + sectionId + ' .pt-tab-panel').forEach(function(p) { p.classList.remove('active'); });
+      btn.classList.add('active');
+      var panel = document.getElementById('pt-tab-' + btn.dataset.tab + '-' + sectionId);
+      if (panel) panel.classList.add('active');
+      state[btn.dataset.tab].index = 0;
+      applySlide(btn.dataset.tab);
+    });
+  }
+
+  /* Resize */
+  var resizeTimer;
+  window.addEventListener('resize', function() {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function() {
+      ['new', 'together', 'dietician'].forEach(function(tab) {
+        state[tab].index = 0;
+        var track = getTrack(tab);
+        if (track) track.style.transform = '';
+      });
+      updateAllArrows();
+    }, 150);
+  });
+
+  /* Add to cart */
+  document.querySelectorAll('#pt-section-' + sectionId + ' .pt-atc-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var variantId = btn.dataset.variantId;
+      if (!variantId) return;
+      var originalText = btn.textContent.trim();
+      btn.disabled = true; btn.textContent = 'Adding...';
+      fetch('/cart/add.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+        body: JSON.stringify({ id: variantId, quantity: 1 })
+      })
+      .then(function(r) { return r.json(); })
+      .then(function() {
+        btn.textContent = 'Added \u2713';
+        setTimeout(function() { btn.textContent = originalText; btn.disabled = false; }, 1500);
+        document.dispatchEvent(new CustomEvent('cart:refresh'));
+        fetch('/cart.js').then(function(r) { return r.json(); }).then(function(cart) {
+          document.querySelectorAll('[data-cart-count]').forEach(function(el) { el.textContent = cart.item_count; });
+        });
+      })
+      .catch(function() {
+        btn.textContent = 'Error';
+        setTimeout(function() { btn.textContent = originalText; btn.disabled = false; }, 1500);
+      });
+    });
+  });
+
+  /* Init */
+  updateAllArrows();
+
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Product Tabs",
+  "tag": "section",
+  "class": "section-product-tabs",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Tab Labels"
+    },
+    {
+      "type": "text",
+      "id": "tab1_label",
+      "label": "Tab 1 — New Launches",
+      "default": "NEW LAUNCHES"
+    },
+    {
+      "type": "text",
+      "id": "tab2_label",
+      "label": "Tab 2 — Frequently Bought Together",
+      "default": "FREQUENTLY BOUGHT TOGETHER"
+    },
+    {
+      "type": "text",
+      "id": "tab3_label",
+      "label": "Tab 3 — Dietician Recommended",
+      "default": "DIETICIAN RECOMMENDED"
+    },
+    {
+      "type": "header",
+      "content": "New Launches"
+    },
+    {
+      "type": "collection",
+      "id": "new_launches_collection",
+      "label": "New Launches Collection"
+    },
+    {
+      "type": "range",
+      "id": "new_limit",
+      "label": "Max Products to Show",
+      "min": 3,
+      "max": 12,
+      "step": 1,
+      "default": 6
+    },
+    {
+      "type": "header",
+      "content": "Dietician Recommended"
+    },
+    {
+      "type": "collection",
+      "id": "dietician_collection",
+      "label": "Dietician Recommended Collection"
+    },
+    {
+      "type": "range",
+      "id": "dietician_limit",
+      "label": "Max Products to Show",
+      "min": 3,
+      "max": 12,
+      "step": 1,
+      "default": 6
+    },
+    {
+      "type": "header",
+      "content": "Frequently Bought Together"
+    },
+    {
+      "type": "select",
+      "id": "fbt_main_color",
+      "label": "Current Product Card Color",
+      "options": [
+        { "value": "orange", "label": "Orange" },
+        { "value": "blue",   "label": "Blue" },
+        { "value": "green",  "label": "Green" }
+      ],
+      "default": "orange",
+      "info": "Card color for the current page product (shown on product pages only)"
+    },
+    {
+      "type": "header",
+      "content": "Button Labels"
+    },
+    {
+      "type": "text",
+      "id": "atc_label",
+      "label": "Add to Cart Text",
+      "default": "Add to cart"
+    },
+    {
+      "type": "text",
+      "id": "buy_label",
+      "label": "Buy Now Text",
+      "default": "Buy now"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "fbt_product",
+      "name": "Frequently Bought Product",
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Add products to show in the 'Frequently Bought Together' tab alongside the main product."
+        },
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        },
+        {
+          "type": "text",
+          "id": "description",
+          "label": "Custom Description (optional)",
+          "info": "Leave blank to use product description"
+        },
+        {
+          "type": "select",
+          "id": "card_color",
+          "label": "Card Color",
+          "options": [
+            { "value": "orange", "label": "Orange" },
+            { "value": "blue",   "label": "Blue" },
+            { "value": "green",  "label": "Green" }
+          ],
+          "default": "blue"
+        },
+        {
+          "type": "text",
+          "id": "fallback_title",
+          "label": "Fallback Title (if no product selected)",
+          "default": "Product Title"
+        },
+        {
+          "type": "text",
+          "id": "fallback_price",
+          "label": "Fallback Price",
+          "default": "Rs. 0.00"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Tabs",
+      "blocks": [
+        { "type": "fbt_product", "settings": { "card_color": "blue"   } },
+        { "type": "fbt_product", "settings": { "card_color": "green"  } },
+        { "type": "fbt_product", "settings": { "card_color": "orange" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

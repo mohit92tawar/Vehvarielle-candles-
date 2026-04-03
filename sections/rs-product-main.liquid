@@ -1,0 +1,987 @@
+{% comment %}
+  Right Shift - Product Page Section
+  File: sections/rs-product-main.liquid
+  Features: Image gallery, product info, working Add to Cart, accordion panels (metafield-linked),
+            "Perfect match with" related products, tab navigation, pincode checker
+  Note: No retailer boxes. Accordion uses native Shopify metafield picker (richtext setting).
+{% endcomment %}
+
+
+<style>
+/* ── RESET ── */
+.rs-product *, .rs-product *::before, .rs-product *::after {
+  box-sizing: border-box; margin: 0; padding: 0;
+}
+
+/* ── ROOT ── */
+.rs-product {
+  --green:   #1a5c2a;
+  --dark:    #000000;
+  --text:    #3a3a3a;
+  --muted:   #4A2A15;
+  --border:  #e5e0d8;
+  --cream:   #faf8f5;
+  --btn-bg:  #3b2a1e;
+  --btn-txt: #fff;
+  --star:    #d4a820;
+ 
+  color: var(--text);
+  background: #fff;
+  padding: 28px 40px 80px;
+}
+
+/* ── BREADCRUMB ── */
+.rs-product__bread {
+  font-size: 12px; color: var(--muted); margin-bottom: 28px;
+  display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+  text-transform: uppercase; letter-spacing: .08em;
+}
+.rs-product__bread a { color: var(--muted); text-decoration: none; }
+.rs-product__bread a:hover { color: var(--green); }
+
+/* ── MAIN GRID ── */
+.rs-product__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: start;
+}
+
+/* ══════════════ GALLERY ══════════════ */
+.rs-gallery { position: relative; max-width: 718px; }
+
+.rs-gallery__main-wrap {
+  position: relative;
+  border-radius: 4px;
+  overflow: hidden;
+  background: var(--cream);
+  aspect-ratio: 1/1;
+  margin-bottom: 12px;
+  cursor: crosshair;
+}
+.rs-gallery__main-img {
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
+  transition: opacity .25s;
+}
+
+/* zoom btn */
+.rs-gallery__zoom {
+  position: absolute; top: 12px; right: 12px;
+  width: 34px; height: 34px;
+  background: rgba(255,255,255,.9); border-radius: 50%;
+  border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 1px 6px rgba(0,0,0,.12); z-index: 2;
+  transition: background .2s;
+}
+.rs-gallery__zoom:hover { background: var(--btn-bg); color: #fff; }
+.rs-gallery__zoom svg { width: 15px; height: 15px; }
+
+/* lens */
+.rs-zoom-lens {
+  display: none;
+  position: absolute;
+  width: 120px; height: 120px;
+  border: 1.5px solid var(--btn-bg);
+  background: rgba(59,42,30,.08);
+  border-radius: 2px;
+  pointer-events: none;
+  z-index: 3;
+}
+.rs-gallery__main-wrap:hover .rs-zoom-lens { display: block; }
+
+/* zoom result */
+.rs-zoom-result {
+  display: none;
+  position: absolute;
+  left: calc(100% + 16px); top: 0;
+  width: 400px; height: 400px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 8px 32px rgba(0,0,0,.14);
+  z-index: 100;
+  pointer-events: none;
+}
+.rs-zoom-result img {
+  position: absolute;
+  max-width: none; width: auto; height: auto;
+  pointer-events: none;
+}
+@media (max-width: 1140px) {
+  .rs-zoom-result { left: 0; top: calc(100% + 10px); width: 100%; height: 300px; }
+}
+
+/* thumbs */
+.rs-gallery__thumbs-wrap {
+  display: flex; align-items: center; gap: 0;
+}
+.rs-gallery__thumbs {
+  display: flex; gap: 8px; flex: 1;
+  overflow-x: auto; scroll-behavior: smooth;
+  scrollbar-width: none; -ms-overflow-style: none;
+  padding: 2px;
+}
+.rs-gallery__thumbs::-webkit-scrollbar { display: none; }
+.rs-gallery__thumb {
+  flex: 0 0 165px; height: 165px;
+  border-radius: 2px; overflow: hidden; cursor: pointer;
+  border: 1.5px solid transparent;
+  background: var(--cream);
+  transition: border-color .2s;
+}
+.rs-gallery__thumb img { width:100%;height:100%;object-fit:cover;display:block;pointer-events:none; }
+.rs-gallery__thumb.active { border-color: var(--btn-bg); }
+.rs-gallery__thumb:hover { border-color: #a08070; }
+
+.rs-gallery__arrow {
+  width: 28px; height: 28px;
+  background: #fff; border: 1px solid var(--border);
+  border-radius: 50%; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; font-size: 18px; color: #555;
+  transition: background .2s, color .2s; flex-shrink: 0;
+}
+.rs-gallery__arrow:hover { background: var(--btn-bg); color: #fff; border-color: var(--btn-bg); }
+.rs-gallery__arrow.prev { margin-right: 6px; }
+.rs-gallery__arrow.next { margin-left: 6px; }
+
+/* ══════════════ INFO ══════════════ */
+.rs-info { padding-top: 8px; }
+
+/* stars */
+.rs-info__reviews {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 14px;
+}
+.rs-stars { color: var(--star); font-size: .95rem; letter-spacing: 2px; }
+.rs-info__review-link {
+  font-size: 11px; font-weight: 600; color: var(--muted);
+  text-transform: uppercase; letter-spacing: .1em;
+  text-decoration: underline; cursor: pointer; background: none; border: none;
+}
+
+/* title */
+.rs-info__title {
+  font-size: 65px; font-weight: 500;
+  color: var(--muted); line-height: 1.1;
+  margin-bottom: 14px; letter-spacing: -.01em;
+}
+
+/* tagline */
+.rs-info__tagline {
+  font-size: 24px; font-weight: 200;
+  color: #000000; line-height: 1.6;
+  margin-bottom: 22px;
+}
+
+/* price */
+.rs-info__price {
+  font-size: 36px; font-weight: 500;
+  color: var(--muted); margin-bottom: 28px;
+}
+.rs-info__price s { color: var(--muted); font-weight: 300; margin-right: 8px; font-size: 20px; }
+
+/* ADD TO BAG */
+.rs-cart-row {
+  display: flex; align-items: center; gap: 16px;
+  margin-bottom: 32px;
+}
+.rs-btn-cart {
+  flex: 1; max-width: 280px;
+  padding: 16px 28px;
+  background: var(--btn-bg); color: var(--btn-txt);
+  border: none; border-radius: 2px;
+  font-size: 12px; font-weight: 600;
+  letter-spacing: .15em; text-transform: uppercase;
+  cursor: pointer; transition: background .2s, transform .1s;
+  position: relative; overflow: hidden;
+}
+.rs-btn-cart:hover { background: #2a1d12; }
+.rs-btn-cart:active { transform: scale(.98); }
+.rs-btn-cart.loading { opacity: .7; pointer-events: none; }
+.rs-btn-cart.success { background: var(--green); }
+
+.rs-btn-wishlist {
+  font-size: 11px; font-weight: 500; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--text);
+  background: none; border: none; cursor: pointer;
+  text-decoration: underline; white-space: nowrap;
+  transition: color .2s;
+}
+.rs-btn-wishlist:hover { color: var(--green); }
+
+/* cart msg */
+.rs-cart-msg {
+  font-size: 12px; color: var(--green);
+  margin-top: -20px; margin-bottom: 20px;
+  min-height: 18px; font-weight: 500;
+  letter-spacing: .04em;
+}
+
+/* divider */
+.rs-divider { border: none; border-top: 1px solid var(--border); margin: 0; }
+
+/* ── ACCORDION ── */
+.rs-accordion { border-top: 1px solid var(--border); }
+.rs-accordion__item { border-bottom: 1px solid var(--border); }
+.rs-accordion__header {
+  display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 0;
+    cursor: pointer;
+    font-size: 24px;
+    font-weight: 500;
+    text-transform: capitalize;
+    color: var(--dark);
+    background: none;
+    border: none;
+    width: 100%;
+    text-align: left;
+    transition: color .2s;
+}
+.rs-accordion__header:hover { color: var(--green); }
+.rs-accordion__icon {
+  font-size: 22px; font-weight: 300; color: var(--muted);
+  transition: transform .3s;
+  flex-shrink: 0;
+}
+.rs-accordion__item.open .rs-accordion__icon { transform: rotate(45deg); }
+.rs-accordion__body {
+  max-height: 0; overflow: hidden;
+  transition: max-height .35s ease, padding .25s ease;
+  padding: 0 0 0;
+}
+.rs-accordion__item.open .rs-accordion__body {
+  max-height: 600px;
+  padding-bottom: 18px;
+}
+.rs-accordion__content {
+  font-size: 14px; line-height: 1.8; color: #555;
+  font-weight: 300;
+}
+.rs-accordion__content p { margin-bottom: 8px; }
+.rs-accordion__content p:last-child { margin-bottom: 0; }
+.rs-accordion__content ul { padding-left: 16px; }
+.rs-accordion__content li { margin-bottom: 4px; }
+
+/* ── PINCODE ── */
+.rs-pincode-wrap { padding: 16px 0; }
+.rs-info__pincode-trigger {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; color: var(--muted); cursor: pointer;
+  background: none; border: none;
+}
+.rs-info__pincode-trigger svg { width: 14px; height: 14px; flex-shrink: 0; }
+.rs-info__pincode-trigger span { color: var(--green); font-weight: 600; text-decoration: underline; }
+.rs-info__pincode-input-wrap { display: none; align-items: center; gap: 8px; margin-top: 10px; }
+.rs-info__pincode-input-wrap.show { display: flex; }
+.rs-info__pincode-input {
+  padding: 9px 14px; border: 1px solid var(--border);
+  border-radius: 2px; font-size: 13px; width: 140px; outline: none;
+ 
+}
+.rs-info__pincode-input:focus { border-color: var(--green); }
+.rs-info__pincode-check-btn {
+  padding: 9px 18px; background: var(--btn-bg); color: #fff;
+  border: none; border-radius: 2px; font-size: 11px; font-weight: 600;
+  letter-spacing: .1em; text-transform: uppercase; cursor: pointer;
+ 
+}
+.rs-info__pincode-msg { font-size: 12px; color: var(--green); margin-top: 6px; min-height: 16px; }
+
+/* ══════════════ BELOW-GRID ══════════════ */
+.rs-below-grid { margin-top: 64px; }
+
+/* ── TABS ── */
+.rs-tabs { border-bottom: 1px solid var(--border); margin-bottom: 32px; display: flex; gap: 0; }
+.rs-tab-btn {
+  padding: 14px 0;
+    margin-right: 40px;
+    font-size: 24px;
+    font-weight: 500;
+    text-transform: capitalize;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    transition: color .2s, border-color .2s;
+}
+.rs-tab-btn.active { color: var(--dark); border-bottom-color: var(--btn-bg); }
+.rs-tab-btn:hover { color: var(--dark); }
+.rs-tab-panel { display: none; }
+.rs-tab-panel.active { display: block; }
+.rs-tab-panel__content {
+  font-size: 15px; line-height: 1.9; color: #555; font-weight: 300;
+  max-width: 680px;
+}
+.rs-tab-panel__content p { margin-bottom: 14px; }
+
+/* ── PERFECT MATCH ── */
+.rs-perfect-match { margin-top: -180px; width: 45%; }
+.rs-perfect-match__heading {
+  font-size: 28px; font-weight: 400;
+  color: var(--dark); margin-bottom: 20px;
+}
+.rs-match-list { display: flex; flex-direction: column; gap: 0; }
+.rs-match-item {
+  display: flex; align-items: center; gap: 18px;
+  padding: 14px 0; border-bottom: 1px solid var(--border);
+}
+.rs-match-item:first-child { border-top: 1px solid var(--border); }
+.rs-match-img-wrap {
+  width: 80px; height: 80px; flex-shrink: 0;
+  border-radius: 2px; overflow: hidden; background: var(--cream);
+}
+.rs-match-img-wrap img { width:100%;height:100%;object-fit:cover;display:block; }
+.rs-match-info { flex: 1; }
+.rs-match-name {
+  font-size: 15px; font-weight: 500; color: var(--dark);
+  margin-bottom: 4px; display: block; text-decoration: none;
+}
+.rs-match-name:hover { color: var(--green); }
+.rs-match-price { font-size: 14px; color: var(--muted); }
+.rs-match-wishlist {
+  font-size: 10px; font-weight: 600; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--dark);
+  text-decoration: underline; cursor: pointer;
+  background: none; border: none; white-space: nowrap;
+  transition: color .2s;
+}
+.rs-match-wishlist:hover { color: var(--4A2A15); }
+
+/* ── BELOW LAYOUT (tabs left, perfect match right) ── */
+.rs-below-inner {
+  display: flex;
+  gap: 60px;
+}
+
+/* ── ZOOM LIGHTBOX ── */
+.rs-zoom-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,.88); z-index: 9999;
+  align-items: center; justify-content: center; padding: 20px;
+}
+.rs-zoom-overlay.open { display: flex; }
+.rs-zoom-overlay img { max-width: 90vw; max-height: 90vh; border-radius: 2px; object-fit: contain; }
+.rs-zoom-close {
+  position: absolute; top: 20px; right: 24px;
+  background: none; border: none;
+  color: #fff; font-size: 28px; cursor: pointer; line-height: 1;
+}
+
+/* ── VARIANT SELECTOR ── */
+.rs-variants { margin-bottom: 24px; }
+.rs-variants__label {
+  font-size: 11px; font-weight: 600; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 10px; display: block;
+}
+.rs-variant-options { display: flex; flex-wrap: wrap; gap: 8px; }
+.rs-variant-btn {
+  padding: 8px 18px; border: 1px solid var(--border);
+  border-radius: 2px; font-size: 13px;
+  cursor: pointer; background: #fff; color: var(--text);
+  transition: border-color .2s, background .2s, color .2s;
+}
+.rs-variant-btn.active { border-color: var(--btn-bg); background: var(--btn-bg); color: #fff; }
+.rs-variant-btn:hover:not(.active) { border-color: #999; }
+.rs-variant-btn.unavailable { opacity: .4; cursor: not-allowed; text-decoration: line-through; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .rs-product { padding: 16px 20px 48px; }
+  .rs-product__grid { grid-template-columns: 1fr; gap: 32px; }
+  .rs-gallery { max-width: 100%; }
+  .rs-info__title { font-size: 36px; font-weight:600;}
+  .rs-below-inner { grid-template-columns: 1fr; gap: 40px; }
+  .rs-cart-row {
+    display: grid;
+  }
+ 
+}
+@media (max-width: 480px) {
+  .rs-info__title { font-size: 28px; }
+  .rs-gallery__thumb { flex: 0 0 60px; height: 60px; }
+  .rs-btn-cart { max-width: 100%; }
+}
+@media (max-width: 768px) {
+  .rs-tabs-section{
+  display:none;
+}
+.rs-perfect-match {
+    margin-top:0;
+    width: 100%;
+}
+.rs-match-item {
+align-items: stretch;
+}
+.rs-info__price {
+  font-size: 24px;}
+}
+
+</style>
+
+{%- assign product = product -%}
+{%- assign current_variant = product.selected_or_first_available_variant -%}
+
+<div class="rs-product" id="rs-product-{{ section.id }}">
+  <div class="rs-product__inner">
+
+    <!-- BREADCRUMB -->
+    <nav class="rs-product__bread" aria-label="Breadcrumb">
+      <a href="{{ routes.root_url }}">Home</a>
+      <span>›</span>
+      {% if collection %}<a href="{{ collection.url }}">{{ collection.title }}</a><span>›</span>{% endif %}
+      <span>{{ product.title }}</span>
+    </nav>
+
+    <div class="rs-product__grid">
+
+      <!-- ══ GALLERY ══ -->
+      <div class="rs-gallery">
+        <div class="rs-gallery__main-wrap" id="rs-main-wrap-{{ section.id }}"
+             onmouseenter="rsHoverZoomEnter('{{ section.id }}')"
+             onmousemove="rsHoverZoomMove(event,'{{ section.id }}')"
+             onmouseleave="rsHoverZoomLeave('{{ section.id }}')">
+          <button class="rs-gallery__zoom" onclick="rsOpenZoom('{{ section.id }}')" aria-label="Zoom">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"/>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+              <line x1="11" y1="8" x2="11" y2="14"/>
+              <line x1="8" y1="11" x2="14" y2="11"/>
+            </svg>
+          </button>
+          <div class="rs-zoom-lens" id="rs-lens-{{ section.id }}"></div>
+          <img
+            src="{{ product.featured_image | image_url: width: 800 }}"
+            alt="{{ product.title }}"
+            class="rs-gallery__main-img"
+            id="rs-main-img-{{ section.id }}"
+            width="800"
+          >
+        </div>
+        <div class="rs-zoom-result" id="rs-zoom-result-{{ section.id }}">
+          <img src="" alt="" id="rs-zoom-result-img-{{ section.id }}">
+        </div>
+
+        <div class="rs-gallery__thumbs-wrap">
+          <button class="rs-gallery__arrow prev" onclick="rsThumbScroll('{{ section.id }}',-1)" aria-label="Previous">&#8249;</button>
+          <div class="rs-gallery__thumbs" id="rs-thumbs-{{ section.id }}">
+            {% for image in product.images %}
+              <div
+                class="rs-gallery__thumb {% if forloop.first %}active{% endif %}"
+                data-full="{{ image | image_url: width: 800 }}"
+                onclick="rsSetImage('{{ section.id }}', this)"
+                role="button" tabindex="0"
+                aria-label="Image {{ forloop.index }}"
+                onkeydown="if(event.key==='Enter'||event.key===' ')rsSetImage('{{ section.id }}',this)"
+              >
+                <img src="{{ image | image_url: width: 160 }}" alt="{{ product.title }} {{ forloop.index }}" loading="{% if forloop.first %}eager{% else %}lazy{% endif %}">
+              </div>
+            {% endfor %}
+          </div>
+          <button class="rs-gallery__arrow next" onclick="rsThumbScroll('{{ section.id }}',1)" aria-label="Next">&#8250;</button>
+        </div>
+      </div>
+
+      <!-- ══ INFO ══ -->
+      <div class="rs-info">
+
+        <!-- Stars -->
+        <div class="rs-info__reviews">
+          <span class="rs-stars">
+            {% assign rating = product.metafields.reviews.rating.value | default: 5 %}
+            {% for i in (1..5) %}{% if i <= rating %}★{% else %}☆{% endif %}{% endfor %}
+          </span>
+          {% assign review_count = product.metafields.reviews.rating_count.value | default: 0 %}
+          {% if review_count > 0 %}
+            <button class="rs-info__review-link" onclick="document.getElementById('reviews')?.scrollIntoView({behavior:'smooth'})">
+              {{ review_count }} Reviews
+            </button>
+          {% endif %}
+        </div>
+
+        <!-- Title -->
+        <h1 class="rs-info__title">{{ product.title }}</h1>
+
+        <!-- Tagline / Short desc from metafield or first sentence -->
+        {%- assign tagline = product.metafields.custom.tagline.value -%}
+        {% if tagline != blank %}
+          <p class="rs-info__tagline">{{ tagline }}</p>
+        {% elsif product.description != blank %}
+          <p class="rs-info__tagline">{{ product.description | strip_html | truncate: 120 }}</p>
+        {% endif %}
+
+        <!-- Price -->
+        <div class="rs-info__price">
+          {% if product.compare_at_price > product.price %}
+            <s>{{ product.compare_at_price | money }}</s>
+          {% endif %}
+          <span id="rs-price-{{ section.id }}">{{ current_variant.price | money }}</span>
+        </div>
+
+        <!-- VARIANT SELECTOR -->
+        {% if product.variants.size > 1 %}
+          <div class="rs-variants">
+            <span class="rs-variants__label">{{ product.options.first }}</span>
+            <div class="rs-variant-options" id="rs-variants-{{ section.id }}">
+              {% for variant in product.variants %}
+                <button
+                  class="rs-variant-btn {% if variant.id == current_variant.id %}active{% endif %} {% unless variant.available %}unavailable{% endunless %}"
+                  data-variant-id="{{ variant.id }}"
+                  data-price="{{ variant.price | money }}"
+                  data-available="{{ variant.available }}"
+                  onclick="rsSelectVariant('{{ section.id }}', this)"
+                  {% unless variant.available %}disabled{% endunless %}
+                >{{ variant.title }}</button>
+              {% endfor %}
+            </div>
+          </div>
+        {% endif %}
+
+        <!-- ADD TO BAG -->
+        <div class="rs-cart-row">
+          <button
+            class="rs-btn-cart"
+            id="rs-add-to-cart-{{ section.id }}"
+            onclick="rsAddToCart('{{ section.id }}')"
+            data-variant-id="{{ current_variant.id }}"
+            {% unless current_variant.available %}disabled style="opacity:.5;cursor:not-allowed"{% endunless %}
+          >
+            {% if current_variant.available %}Add to Bag{% else %}Out of Stock{% endif %}
+          </button>
+          <button class="rs-btn-wishlist" onclick="rsToggleWishlist('{{ section.id }}', {{ product.id }})">
+            Add to Wishlist
+          </button>
+        </div>
+        <div class="rs-cart-msg" id="rs-cart-msg-{{ section.id }}"></div>
+
+        <!-- ACCORDION BLOCKS -->
+        {%- assign acc_blocks = section.blocks | where: 'type', 'accordion' -%}
+        {% if acc_blocks.size > 0 %}
+          <div class="rs-accordion" id="rs-accordion-{{ section.id }}">
+            {% for block in acc_blocks %}
+              {%- assign acc_content = block.settings.content -%}
+              {% if acc_content != blank %}
+                <div class="rs-accordion__item" {{ block.shopify_attributes }}>
+                  <button class="rs-accordion__header" onclick="rsAccordionToggle(this)">
+                    {{ block.settings.label | default: 'Details' }}
+                    <span class="rs-accordion__icon">+</span>
+                  </button>
+                  <div class="rs-accordion__body">
+                    <div class="rs-accordion__content">{{ acc_content }}</div>
+                  </div>
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        {% endif %}
+
+       
+
+
+      </div><!-- /rs-info -->
+    </div><!-- /rs-product__grid -->
+
+    <!-- ══ BELOW GRID: Tabs + Perfect Match ══ -->
+    <div class="rs-below-grid">
+      <div class="rs-below-inner">
+
+        <!-- TABS -->
+        <div class="rs-tabs-section">
+          <div class="rs-tabs" role="tablist">
+            <button class="rs-tab-btn active" role="tab" onclick="rsTabSwitch(this,'rs-tab-overview-{{ section.id }}','{{ section.id }}')">Product Overview</button>
+            <button class="rs-tab-btn" role="tab" onclick="rsTabSwitch(this,'rs-tab-packaging-{{ section.id }}','{{ section.id }}')">Packaging</button>
+            <button class="rs-tab-btn" role="tab" onclick="rsTabSwitch(this,'rs-tab-shipping-{{ section.id }}','{{ section.id }}')">Shipping &amp; Return</button>
+          </div>
+
+          <div id="rs-tab-overview-{{ section.id }}" class="rs-tab-panel active">
+            <div class="rs-tab-panel__content">
+              {% if section.settings.tab_overview != blank %}
+                {{ section.settings.tab_overview }}
+              {% else %}
+
+{{ product.metafields.custom.product_overview | metafield_tag }}
+
+              {% endif %}
+            </div>
+          </div>
+
+          <div id="rs-tab-packaging-{{ section.id }}" class="rs-tab-panel">
+            <div class="rs-tab-panel__content">
+              {% if section.settings.tab_packaging != blank %}
+{{ product.metafields.custom.packaging | metafield_tag }}
+              {% else %}
+                <p>Packaging details are not yet available for this product.</p>
+              {% endif %}
+            </div>
+          </div>
+
+          <div id="rs-tab-shipping-{{ section.id }}" class="rs-tab-panel">
+            <div class="rs-tab-panel__content">
+              {% if section.settings.tab_shipping != blank %}
+                                                {{ product.metafields.custom.shipping_return | metafield_tag }}
+
+
+              {% else %}
+                <p>Standard delivery in 3–5 business days. Free shipping on orders above ₹499. Returns accepted within 7 days of delivery.</p>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+
+        <!-- PERFECT MATCH WITH -->
+        {%- assign match_blocks = section.blocks | where: 'type', 'perfect_match' -%}
+        {% if match_blocks.size > 0 %}
+          <div class="rs-perfect-match">
+            <h3 class="rs-perfect-match__heading">{{ section.settings.perfect_match_heading | default: 'Perfect match with' }}</h3>
+            <div class="rs-match-list">
+              {% for block in match_blocks %}
+                {%- assign matched_product = all_products[block.settings.product_handle] -%}
+                {% if matched_product %}
+                  <div class="rs-match-item" {{ block.shopify_attributes }}>
+                    <a href="{{ matched_product.url }}" class="rs-match-img-wrap">
+                      <img src="{{ matched_product.featured_image | image_url: width: 160 }}" alt="{{ matched_product.title }}" loading="lazy">
+                    </a>
+                    <div class="rs-match-info">
+                      <a href="{{ matched_product.url }}" class="rs-match-name">{{ matched_product.title }}</a>
+                      <div class="rs-match-price">{{ matched_product.price | money }}</div>
+                    </div>
+                    <button class="rs-match-wishlist" onclick="rsToggleWishlist('match', {{ matched_product.id }})">
+                      Add to Wishlist
+                    </button>
+                  </div>
+                {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+        {% endif %}
+
+      </div>
+    </div>
+
+  </div><!-- /inner -->
+</div><!-- /rs-product -->
+
+<!-- ZOOM LIGHTBOX -->
+<div class="rs-zoom-overlay" id="rs-zoom-{{ section.id }}" onclick="rsCloseZoom('{{ section.id }}')">
+  <button class="rs-zoom-close" onclick="rsCloseZoom('{{ section.id }}')" aria-label="Close">✕</button>
+  <img src="" alt="Zoom" id="rs-zoom-img-{{ section.id }}">
+</div>
+
+<script>
+(function () {
+  var sid = '{{ section.id }}';
+
+  /* ─────────── GALLERY ─────────── */
+  window.rsSetImage = function (id, thumbEl) {
+    var src = thumbEl.getAttribute('data-full');
+    if (!src) return;
+    var mainImg = document.getElementById('rs-main-img-' + id);
+    if (mainImg) {
+      mainImg.style.opacity = '0.4';
+      mainImg.src = src;
+      mainImg.onload = function () { mainImg.style.opacity = '1'; };
+    }
+    var thumbs = document.querySelectorAll('#rs-thumbs-' + id + ' .rs-gallery__thumb');
+    thumbs.forEach(function (t) { t.classList.remove('active'); });
+    thumbEl.classList.add('active');
+    thumbEl.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
+    var zoomImg = document.getElementById('rs-zoom-img-' + id);
+    if (zoomImg) zoomImg.src = src;
+    var resultImg = document.getElementById('rs-zoom-result-img-' + id);
+    if (resultImg) { resultImg.src = ''; resultImg.dataset.src = ''; }
+  };
+
+  window.rsThumbScroll = function (id, dir) {
+    var strip = document.getElementById('rs-thumbs-' + id);
+    if (strip) strip.scrollBy({ left: dir * 180, behavior: 'smooth' });
+  };
+
+  /* ─────────── HOVER ZOOM ─────────── */
+  var _hz = {};
+  window.rsHoverZoomEnter = function (id) {
+    var mainImg  = document.getElementById('rs-main-img-' + id);
+    var result   = document.getElementById('rs-zoom-result-' + id);
+    var resultImg = document.getElementById('rs-zoom-result-img-' + id);
+    if (!mainImg || !result || !resultImg) return;
+    var hiSrc = mainImg.src.replace(/width=\d+/, 'width=1600');
+    if (resultImg.dataset.src !== hiSrc) { resultImg.dataset.src = hiSrc; resultImg.src = hiSrc; }
+    result.style.display = 'block';
+    _hz[id] = true;
+  };
+  window.rsHoverZoomLeave = function (id) {
+    var result = document.getElementById('rs-zoom-result-' + id);
+    var lens   = document.getElementById('rs-lens-' + id);
+    if (result) result.style.display = 'none';
+    if (lens) { lens.style.left = '-9999px'; lens.style.top = '-9999px'; }
+    _hz[id] = false;
+  };
+  window.rsHoverZoomMove = function (e, id) {
+    if (!_hz[id]) return;
+    var wrap      = document.getElementById('rs-main-wrap-' + id);
+    var lens      = document.getElementById('rs-lens-' + id);
+    var result    = document.getElementById('rs-zoom-result-' + id);
+    var resultImg = document.getElementById('rs-zoom-result-img-' + id);
+    if (!wrap || !lens || !result || !resultImg) return;
+    var rect = wrap.getBoundingClientRect();
+    var lensW = lens.offsetWidth || 120, lensH = lens.offsetHeight || 120;
+    var x = e.clientX - rect.left, y = e.clientY - rect.top;
+    var lx = Math.max(lensW/2, Math.min(x, rect.width  - lensW/2)) - lensW/2;
+    var ly = Math.max(lensH/2, Math.min(y, rect.height - lensH/2)) - lensH/2;
+    lens.style.left = lx + 'px'; lens.style.top = ly + 'px';
+    var rw = result.offsetWidth / lensW, rh = result.offsetHeight / lensH;
+    resultImg.style.width  = (rect.width  * rw) + 'px';
+    resultImg.style.height = (rect.height * rh) + 'px';
+    resultImg.style.left   = -(lx * rw) + 'px';
+    resultImg.style.top    = -(ly * rh) + 'px';
+  };
+
+  /* ─────────── LIGHTBOX ─────────── */
+  window.rsOpenZoom = function (id) {
+    document.getElementById('rs-zoom-img-' + id).src = document.getElementById('rs-main-img-' + id).src;
+    document.getElementById('rs-zoom-' + id).classList.add('open');
+    document.body.style.overflow = 'hidden';
+  };
+  window.rsCloseZoom = function (id) {
+    document.getElementById('rs-zoom-' + id).classList.remove('open');
+    document.body.style.overflow = '';
+  };
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') rsCloseZoom(sid); });
+
+  /* ─────────── ADD TO CART ─────────── */
+  window.rsAddToCart = function (id) {
+    var btn = document.getElementById('rs-add-to-cart-' + id);
+    var msg = document.getElementById('rs-cart-msg-' + id);
+    if (!btn) return;
+    var variantId = parseInt(btn.getAttribute('data-variant-id'));
+    if (!variantId) return;
+
+    btn.classList.add('loading');
+    btn.textContent = 'Adding...';
+    if (msg) msg.textContent = '';
+
+    fetch('/cart/add.js', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+      body: JSON.stringify({ id: variantId, quantity: 1 })
+    })
+    .then(function (res) {
+      if (!res.ok) return res.json().then(function(d){ throw new Error(d.description || 'Error adding to cart'); });
+      return res.json();
+    })
+    .then(function () {
+      btn.classList.remove('loading');
+      btn.classList.add('success');
+      btn.textContent = '✓ Added to Bag';
+      if (msg) { msg.style.color = '#1a5c2a'; msg.textContent = 'Item added successfully!'; }
+
+      // Refresh cart count if using Shopify's cart bubble
+      fetch('/cart.js')
+        .then(function(r){ return r.json(); })
+        .then(function(cart){
+          var countEls = document.querySelectorAll('[data-cart-count],[data-cart-item-count],.cart-count,.cart__count');
+          countEls.forEach(function(el){ el.textContent = cart.item_count; });
+        });
+
+      setTimeout(function () {
+        btn.classList.remove('success');
+        btn.textContent = 'Add to Bag';
+        if (msg) msg.textContent = '';
+      }, 3000);
+    })
+    .catch(function (err) {
+      btn.classList.remove('loading');
+      btn.textContent = 'Add to Bag';
+      if (msg) { msg.style.color = '#e53935'; msg.textContent = err.message || 'Could not add to cart. Please try again.'; }
+    });
+  };
+
+  /* ─────────── VARIANT SELECT ─────────── */
+  window.rsSelectVariant = function (id, btnEl) {
+    var container = document.getElementById('rs-variants-' + id);
+    if (container) {
+      container.querySelectorAll('.rs-variant-btn').forEach(function(b){ b.classList.remove('active'); });
+    }
+    btnEl.classList.add('active');
+    var variantId = btnEl.getAttribute('data-variant-id');
+    var price     = btnEl.getAttribute('data-price');
+    var available = btnEl.getAttribute('data-available') === 'true';
+    // Update cart button
+    var cartBtn = document.getElementById('rs-add-to-cart-' + id);
+    if (cartBtn) {
+      cartBtn.setAttribute('data-variant-id', variantId);
+      cartBtn.textContent = available ? 'Add to Bag' : 'Out of Stock';
+      cartBtn.disabled = !available;
+      cartBtn.style.opacity = available ? '1' : '0.5';
+      cartBtn.style.cursor  = available ? 'pointer' : 'not-allowed';
+      cartBtn.classList.remove('success', 'loading');
+    }
+    // Update price display
+    var priceEl = document.getElementById('rs-price-' + id);
+    if (priceEl && price) priceEl.textContent = price;
+    // Update URL
+    if (window.history && window.history.replaceState) {
+      var url = new URL(window.location.href);
+      url.searchParams.set('variant', variantId);
+      window.history.replaceState({}, '', url.toString());
+    }
+  };
+
+  /* ─────────── WISHLIST (localStorage) ─────────── */
+  window.rsToggleWishlist = function (id, productId) {
+    try {
+      var wishlist = JSON.parse(localStorage.getItem('rs_wishlist') || '[]');
+      var idx = wishlist.indexOf(productId);
+      if (idx === -1) {
+        wishlist.push(productId);
+        // Show brief feedback
+        var btn = event && event.target;
+        if (btn) {
+          var orig = btn.textContent;
+          btn.textContent = '♥ Saved';
+          btn.style.color = '#e53935';
+          setTimeout(function(){ btn.textContent = orig; btn.style.color = ''; }, 2000);
+        }
+      } else {
+        wishlist.splice(idx, 1);
+      }
+      localStorage.setItem('rs_wishlist', JSON.stringify(wishlist));
+    } catch(e) {}
+  };
+
+  /* ─────────── ACCORDION ─────────── */
+  window.rsAccordionToggle = function (headerBtn) {
+    var item = headerBtn.closest('.rs-accordion__item');
+    if (!item) return;
+    var isOpen = item.classList.contains('open');
+    // Close all siblings
+    item.closest('.rs-accordion').querySelectorAll('.rs-accordion__item').forEach(function(i){
+      i.classList.remove('open');
+    });
+    if (!isOpen) item.classList.add('open');
+  };
+
+  /* ─────────── TABS ─────────── */
+  window.rsTabSwitch = function (btnEl, panelId, id) {
+    // Deactivate all tabs in this section
+    btnEl.closest('.rs-tabs').querySelectorAll('.rs-tab-btn').forEach(function(b){ b.classList.remove('active'); });
+    btnEl.classList.add('active');
+    // Hide all panels
+    var section = btnEl.closest('.rs-tabs-section');
+    section.querySelectorAll('.rs-tab-panel').forEach(function(p){ p.classList.remove('active'); });
+    var panel = document.getElementById(panelId);
+    if (panel) panel.classList.add('active');
+  };
+
+  /* ─────────── PINCODE ─────────── */
+  window.rsTogglePincode = function (id) {
+    var wrap = document.getElementById('rs-pincode-wrap-' + id);
+    wrap.classList.toggle('show');
+    if (wrap.classList.contains('show')) document.getElementById('rs-pincode-input-' + id).focus();
+  };
+  window.rsPincodeCheck = function (id) {
+    var val = document.getElementById('rs-pincode-input-' + id).value.trim();
+    var msg = document.getElementById('rs-pincode-msg-' + id);
+    if (val.length !== 6) { msg.style.color = '#e53935'; msg.textContent = 'Please enter a valid 6-digit pincode.'; return; }
+    msg.style.color = '#aaa'; msg.textContent = 'Checking...';
+    setTimeout(function () { msg.style.color = '#1a5c2a'; msg.textContent = '✓ Delivery available to ' + val + ' in 3–5 business days.'; }, 900);
+  };
+
+})();
+</script>
+
+{% schema %}
+{
+  "name": "RS - Product Main",
+  "blocks": [
+    {
+      "type": "accordion",
+      "name": "Accordion Panel",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Panel Title",
+          "default": "Product Description",
+          "info": "Yeh title static rahega — jo aap yahan likhenge wahi dikhega"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Content",
+          "info": "Seedha type karo ya database icon (🗄) click karke metafield se link karo"
+        }
+      ]
+    },
+    {
+      "type": "perfect_match",
+      "name": "Perfect Match Product",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product_handle",
+          "label": "Product"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "header",
+      "content": "Tab Content"
+    },
+    {
+      "type": "richtext",
+      "id": "tab_overview",
+      "label": "Product Overview Tab",
+      "info": "Leave blank to use product description"
+    },
+    {
+      "type": "richtext",
+      "id": "tab_packaging",
+      "label": "Packaging Tab"
+    },
+    {
+      "type": "richtext",
+      "id": "tab_shipping",
+      "label": "Shipping & Return Tab"
+    },
+    {
+      "type": "header",
+      "content": "Perfect Match Section"
+    },
+    {
+      "type": "text",
+      "id": "perfect_match_heading",
+      "label": "Section Heading",
+      "default": "Perfect match with"
+    }
+  ],
+  "presets": [
+    {
+      "name": "RS - Product Main",
+      "blocks": [
+        {
+          "type": "accordion",
+          "settings": { "label": "Product Description" }
+        },
+        {
+          "type": "accordion",
+          "settings": { "label": "Characteristics" }
+        },
+        {
+          "type": "accordion",
+          "settings": { "label": "Care" }
+        },
+        {
+          "type": "accordion",
+          "settings": { "label": "Ingredients" }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

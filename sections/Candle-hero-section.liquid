@@ -1,0 +1,357 @@
+{% comment %}
+  Section: Candle Hero with Thumbnail Gallery
+  - Images blocks se aati hain (Add/Remove/Reorder from theme editor)
+  - Desktop: Text left | Thumbnails middle | Main image right
+  - Mobile: Main image top | Thumbs row | Text bottom
+  - Click thumbnail → smooth fade to main image
+{% endcomment %}
+
+<style>
+  .candle-hero {
+    background-color: #FCFBF6;
+    font-family: 'Georgia', serif;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .candle-hero__inner {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    min-height: 520px;
+    max-width: 1440px;
+    margin: 0 auto;
+    align-items: stretch;
+  }
+
+  /* LEFT: Text */
+  .candle-hero__text {
+    grid-column: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 52px 48px 52px 64px;
+  }
+
+  .candle-hero__heading {
+    font-size: 75px;
+    font-weight: 700;
+    line-height: 1.05;
+    color: #492914;
+    letter-spacing: -1.5px;
+    margin: 0 0 auto;
+  }
+
+  .candle-hero__description {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 18px;
+    line-height: 1.65;
+    color: #492914;
+    max-width: 320px;
+    margin: 0;
+    font-weight: 300;
+  }
+
+  /* MIDDLE: Thumbnails */
+  .candle-hero__thumbs {
+    grid-column: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 0px 6px;
+    width: 180px;
+  }
+
+  .candle-hero__thumb {
+    flex: 1;
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+    border-radius: 2px;
+    aspect-ratio: 1 / 1;
+  }
+
+  .candle-hero__thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease, filter 0.3s ease;
+    filter: brightness(0.88);
+  }
+
+  .candle-hero__thumb:hover img,
+  .candle-hero__thumb.is-active img {
+    filter: brightness(1);
+    transform: scale(1.04);
+  }
+
+  .candle-hero__thumb::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 2px solid transparent;
+    border-radius: 2px;
+    transition: border-color 0.25s ease;
+    pointer-events: none;
+  }
+
+  .candle-hero__thumb.is-active::after {
+    border-color: #1e1510;
+  }
+
+  /* RIGHT: Main Image */
+  .candle-hero__main {
+    grid-column: 3;
+    position: relative;
+    overflow: hidden;
+    min-height: 520px;
+  }
+
+  .candle-hero__main-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: opacity;
+  }
+
+  .candle-hero__main-img.is-visible {
+    opacity: 1;
+  }
+
+  /* MOBILE */
+  @media (max-width: 768px) {
+    .candle-hero__inner {
+      display: flex;
+      flex-direction: column;
+      min-height: unset;
+    }
+
+    .candle-hero__main {
+      order: 1;
+      width: 100%;
+      height: 72vw;
+      min-height: 260px;
+      max-height: 420px;
+    }
+
+    .candle-hero__thumbs {
+      order: 2;
+      flex-direction: row;
+      width: 100%;
+      padding: 8px 12px;
+      gap: 8px;
+      height: 88px;
+    }
+
+    .candle-hero__thumb {
+      flex: 1;
+      height: 88px;
+    }
+
+    .candle-hero__text {
+      order: 3;
+      padding: 28px 20px 36px;
+      gap: 36px;
+    }
+
+    .candle-hero__heading {
+      font-size: 36px;
+      letter-spacing: -0.5px;
+    }
+
+    .candle-hero__description {
+      font-size: 16px;
+      max-width: 100%;
+    }
+    .candle-hero__heading br {
+    display: none;
+  }
+  }
+
+  @media (min-width: 769px) and (max-width: 1100px) {
+    .candle-hero__heading { font-size: 54px; }
+    .candle-hero__text { padding: 40px 32px 40px 40px; }
+    .candle-hero__thumbs { width: 140px; }
+  }
+</style>
+
+<section class="candle-hero" id="candle-hero-{{ section.id }}">
+  <div class="candle-hero__inner">
+
+    <!-- LEFT: Text -->
+    <div class="candle-hero__text">
+      <h2 class="candle-hero__heading">
+        {{ section.settings.heading | newline_to_br }}
+      </h2>
+      <p class="candle-hero__description">
+        {{ section.settings.description }}
+      </p>
+    </div>
+
+    <!-- MIDDLE: Thumbnails (blocks se) -->
+    <div class="candle-hero__thumbs" id="thumbs-{{ section.id }}">
+      {% for block in section.blocks %}
+        {% assign thumb_img = block.settings.thumb_image %}
+        <div
+          class="candle-hero__thumb{% if forloop.first %} is-active{% endif %}"
+          data-index="{{ forloop.index }}"
+          role="button"
+          tabindex="0"
+          aria-label="View image {{ forloop.index }}"
+          {{ block.shopify_attributes }}
+        >
+          {% if thumb_img != blank %}
+            <img
+              src="{{ thumb_img | image_url: width: 400 }}"
+              srcset="{{ thumb_img | image_url: width: 200 }} 200w, {{ thumb_img | image_url: width: 400 }} 400w"
+              sizes="180px"
+              alt="{{ thumb_img.alt | default: section.settings.heading }}"
+              loading="lazy"
+              width="200"
+              height="300"
+            >
+          {% else %}
+            <img
+              src="https://placehold.co/200x300/e8e0d0/6b5e4e?text=Thumb+{{ forloop.index }}"
+              alt="Thumbnail {{ forloop.index }}"
+              width="200"
+              height="300"
+            >
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- RIGHT: Main Images (blocks se) -->
+    <div class="candle-hero__main" id="main-{{ section.id }}">
+      {% for block in section.blocks %}
+        {% assign main_img = block.settings.main_image %}
+
+        {% if forloop.first %}
+          {% assign main_class = 'candle-hero__main-img is-visible' %}
+          {% assign main_loading = 'eager' %}
+        {% else %}
+          {% assign main_class = 'candle-hero__main-img' %}
+          {% assign main_loading = 'lazy' %}
+        {% endif %}
+
+        {% if main_img != blank %}
+          <img
+            class="{{ main_class }}"
+            src="{{ main_img | image_url: width: 1200 }}"
+            srcset="{{ main_img | image_url: width: 600 }} 600w, {{ main_img | image_url: width: 800 }} 800w, {{ main_img | image_url: width: 1000 }} 1000w, {{ main_img | image_url: width: 1200 }} 1200w"
+            sizes="(max-width: 768px) 100vw, 50vw"
+            alt="{{ main_img.alt | default: section.settings.heading }}"
+            data-index="{{ forloop.index }}"
+            loading="{{ main_loading }}"
+            width="1200"
+            height="800"
+          >
+        {% else %}
+          <img
+            class="{{ main_class }}"
+            src="https://placehold.co/900x600/ddd5c5/1e1510?text=Main+{{ forloop.index }}"
+            alt="Main image {{ forloop.index }}"
+            data-index="{{ forloop.index }}"
+            loading="{{ main_loading }}"
+            width="900"
+            height="600"
+          >
+        {% endif %}
+      {% endfor %}
+    </div>
+
+  </div>
+</section>
+
+<script>
+(function () {
+  var sectionId = '{{ section.id }}';
+  var thumbsEl  = document.getElementById('thumbs-' + sectionId);
+  var mainEl    = document.getElementById('main-' + sectionId);
+
+  if (!thumbsEl || !mainEl) return;
+
+  var thumbs   = Array.from(thumbsEl.querySelectorAll('.candle-hero__thumb'));
+  var mainImgs = Array.from(mainEl.querySelectorAll('.candle-hero__main-img'));
+
+  function switchTo(index) {
+    thumbs.forEach(function (t) { t.classList.remove('is-active'); });
+    mainImgs.forEach(function (img) { img.classList.remove('is-visible'); });
+
+    var activeThumb = thumbsEl.querySelector('[data-index="' + index + '"]');
+    var activeImg   = mainEl.querySelector('[data-index="' + index + '"]');
+
+    if (activeThumb) activeThumb.classList.add('is-active');
+    if (activeImg)   activeImg.classList.add('is-visible');
+  }
+
+  thumbs.forEach(function (thumb) {
+    thumb.addEventListener('click', function () {
+      switchTo(thumb.getAttribute('data-index'));
+    });
+    thumb.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        switchTo(thumb.getAttribute('data-index'));
+      }
+    });
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Candle Hero Gallery",
+  "tag": "section",
+  "class": "section-candle-hero",
+  "max_blocks": 8,
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Where time\nslows,\nmoments\nsettle."
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "An everyday presence shaped by intention, designed to remain through quiet hours, familiar spaces, and the subtle rhythm of living."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "thumb_image",
+          "label": "Thumbnail Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "main_image",
+          "label": "Main (Large) Image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Candle Hero Gallery",
+      "blocks": [
+        { "type": "slide" },
+        { "type": "slide" },
+        { "type": "slide" },
+        { "type": "slide" }
+      ]
+    }
+  ]
+}
+{% endschema %}

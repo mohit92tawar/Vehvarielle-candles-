@@ -1,0 +1,33 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "section": {
+      "type": "main-blog-post",
+      "settings": {}
+    },
+    "custom_liquid_Wkxr7H": {
+      "type": "custom-liquid",
+      "disabled": true,
+      "name": "t:names.custom_liquid",
+      "settings": {
+        "custom_liquid": "{%- assign faq_list = article.metafields.custom.blog_faq.value -%}\n\n{% if faq_list != blank and faq_list.size > 0 %}\n<div class=\"rs-faq\">\n  <h2 class=\"rs-faq-title\">FAQs</h2>\n  {% for faq in faq_list %}\n  <div class=\"rs-faq-item\" itemscope itemprop=\"mainEntity\" itemtype=\"https://schema.org/Question\">\n    <button class=\"rs-faq-btn\" aria-expanded=\"false\" aria-controls=\"rs-faq-{{ forloop.index }}\" itemprop=\"name\">\n      {{ faq.question.value }}\n      <span class=\"rs-faq-ico\">+</span>\n    </button>\n    <div class=\"rs-faq-panel\" id=\"rs-faq-{{ forloop.index }}\" itemscope itemprop=\"acceptedAnswer\" itemtype=\"https://schema.org/Answer\">\n      <div class=\"rs-faq-panel-inner\" itemprop=\"text\">\n        {{ faq.answer | metafield_tag }}\n      </div>\n    </div>\n  </div>\n  {% endfor %}\n</div>\n{% endif %}\n\n<style>\n:root {\n  --c-dark   : #1C1A14;\n  --c-olive  : #5C6B3A;\n  --c-rust   : #C4612A;\n  --c-muted  : #6B6456;\n  --c-border : #DDD5BE;\n  --c-sandd  : #D4C9A8;\n}\n.rs-faq {\n  margin-top: 52px;\n  padding-top: 40px;\n  border-top: 2px solid var(--c-sandd);\n  max-width: 800px;\n}\n.rs-faq-title {\n  font-size: 45px !important;\n  font-weight: 700;\n  color: var(--c-dark);\n  margin: 0 0 26px;\n  position: relative;\n  padding-bottom: 13px;\n  font-family: 'Paytone One' !important;\n}\n.rs-faq-title::after {\n  content: '';\n  position: absolute;\n  bottom: 0; left: 0;\n  width: 44px; height: 3px;\n  background: var(--c-olive);\n  border-radius: 2px;\n}\n.rs-faq-item {\n  border-bottom: 1px solid var(--c-border);\n}\n.rs-faq-btn {\n  font-family: 'Urbanist' !important;\n  all: unset;\n  width: 100%;\n  cursor: pointer;\n  padding: 18px 0;\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  gap: 16px;\n  font-size: 18px !important;\n  font-weight: 400 !important;\n  color: var(--c-dark);\n  transition: color .2s;\n}\n.rs-faq-btn:hover { color: var(--c-rust); }\n.rs-faq-ico {\n  flex-shrink: 0;\n  width: 30px; height: 30px;\n  border: 1.5px solid var(--c-border);\n  border-radius: 50%;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  font-size: 20px;\n  font-weight: 300;\n  line-height: 1;\n  color: var(--c-olive);\n  transition: transform .3s, background .3s, border-color .3s, color .3s;\n  pointer-events: none;\n}\n.rs-faq-item.rs-open .rs-faq-ico {\n  transform: rotate(45deg);\n  background: var(--c-olive);\n  border-color: var(--c-olive);\n  color: #fff;\n}\n.rs-faq-panel {\n  max-height: 0;\n  overflow: hidden;\n  transition: max-height .38s ease;\n}\n.rs-faq-panel-inner {\n  padding: 0 0 20px;\n  font-size: 18px !important;\n  font-weight: 700 !important;\n  line-height: 1.8;\n  color: var(--c-muted);\n  font-family: 'Urbanist' !important;\n}\n.rs-faq-panel-inner p { margin: 0 0 10px; }\n</style>\n\n<script>\n(function () {\n  document.querySelectorAll('.rs-faq-btn').forEach(function (btn) {\n    btn.addEventListener('click', function () {\n      var item  = btn.closest('.rs-faq-item');\n      var panel = document.getElementById(btn.getAttribute('aria-controls'));\n      var isOpen = item.classList.contains('rs-open');\n\n      document.querySelectorAll('.rs-faq-item').forEach(function (i) {\n        i.classList.remove('rs-open');\n        i.querySelector('.rs-faq-btn').setAttribute('aria-expanded', 'false');\n        var p = i.querySelector('.rs-faq-panel');\n        if (p) p.style.maxHeight = '0';\n      });\n\n      if (!isOpen) {\n        item.classList.add('rs-open');\n        btn.setAttribute('aria-expanded', 'true');\n        panel.style.maxHeight = panel.scrollHeight + 'px';\n      }\n    });\n  });\n})();\n</script>",
+        "color_scheme": "",
+        "section_width": "page-width",
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
+    }
+  },
+  "order": [
+    "section",
+    "custom_liquid_Wkxr7H"
+  ]
+}

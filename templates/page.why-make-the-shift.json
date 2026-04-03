@@ -1,0 +1,166 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "blocks": {
+        "heading": {
+          "type": "text",
+          "name": "Title",
+          "settings": {
+            "text": "<h1>{{ closest.page.title }}</h1>",
+            "width": "100%",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "h2",
+            "font": "var(--font-primary--family)",
+            "font_size": "",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "page-content": {
+          "type": "page-content",
+          "settings": {},
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "heading",
+        "page-content"
+      ],
+      "disabled": true,
+      "settings": {
+        "content_direction": "column",
+        "gap": 32,
+        "color_scheme": "",
+        "padding-block-start": 40,
+        "padding-block-end": 80
+      }
+    },
+    "rs_who_are_we_Knz6ig": {
+      "type": "rs-who-are-we",
+      "name": "RS - Who Are We",
+      "settings": {
+        "heading": "Who are we?",
+        "subtitle": "We are RightShift!",
+        "description": "A new perspective and approach to life as we age. When you cross 40, your body's requirements change and therefore, it gets more difficult to stay healthy especially with our current lifestyle. We're here to guide you on your exciting journey towards a healthier and empowered life by helping you shift to:",
+        "card_image_1": "shopify://shop_images/Better_Food.png",
+        "card_image_2": "shopify://shop_images/Better_Lifestyle_1.png",
+        "card_image_3": "shopify://shop_images/Better_Mindset.png",
+        "bottom_text": "So, let's start focusing on all the exciting things that the future holds for you – the places you are yet to travel, the passions you are yet to explore and the milestones you are yet to achieve. Let's unlock the best years ahead for you."
+      }
+    },
+    "rs_body_age_nGWQdc": {
+      "type": "rs-body-age",
+      "name": "RS - Body As You Age",
+      "settings": {
+        "heading": "What happens to your body as you age?",
+        "description": "As we age, our body gradually undergoes changes in gut health, muscle mass, bones, cognition, and sleep. The following statistics have been put not to scare you but to make you aware of changes one's body goes through with age.",
+        "stat_number_1": "10",
+        "stat_title_1": "Bone mineral  density decline",
+        "stat_text_1": "can happen in individuals every decade after the age of 40, resulting in weakening bones and making them susceptible to fractures.*",
+        "stat_number_2": "40",
+        "stat_title_2": "Loss of  muscle mass",
+        "stat_text_2": "can happen in individuals after the age of 40, affecting strength.**",
+        "stat_number_3": "40",
+        "stat_title_3": "Adults start experiencing digestive issues",
+        "stat_text_3": "like bloating, indigestion, and irregular bowel movements with age.***"
+      }
+    },
+    "rs_right_shift_kxwhcW": {
+      "type": "rs-right-shift",
+      "name": "How To Make The Shift",
+      "settings": {
+        "heading": "How to make the right shift?",
+        "description": "Going forward, we will be your constant companion guiding you to make your health and mindset your everyday priority. No generic solutions here! We walk alongside you, understand your health needs, and offer personalized services like",
+        "service_icon_1": "shopify://shop_images/Layer_1_1.png",
+        "service_label_1": "Personalized Meal Plans",
+        "service_icon_2": "shopify://shop_images/Layer_1_3.svg",
+        "service_label_2": "Know Your Score",
+        "btn_label": "Get Started",
+        "btn_url": ""
+      }
+    },
+    "rs_right_shifters_4AhdnK": {
+      "type": "rs-right-shifters",
+      "blocks": {
+        "shifter_card_wBgy8P": {
+          "type": "shifter_card",
+          "settings": {
+            "image": "shopify://shop_images/5-Archer47_indian_woman_holding_a_bowl_of_salad_smiling_wearing_t_93289617-abfd-46b7-aed5-304e3473a4a8_1.png",
+            "label": "Discover firsthand accounts of future"
+          }
+        },
+        "shifter_card_wjDfbL": {
+          "type": "shifter_card",
+          "settings": {
+            "image": "shopify://shop_images/3_91.png",
+            "label": "Discover firsthand accounts of future"
+          }
+        },
+        "shifter_card_PRbEBL": {
+          "type": "shifter_card",
+          "settings": {
+            "image": "shopify://shop_images/5-Archer47_indian_woman_holding_a_bowl_of_salad_smiling_wearing_t_93289617-abfd-46b7-aed5-304e3473a4a8_1.png",
+            "label": "Discover firsthand accounts of future"
+          }
+        },
+        "shifter_card_tBPLad": {
+          "type": "shifter_card",
+          "settings": {
+            "image": "shopify://shop_images/3_91.png",
+            "label": "Discover firsthand accounts of future"
+          }
+        },
+        "shifter_card_TEMetc": {
+          "type": "shifter_card",
+          "settings": {
+            "image": "shopify://shop_images/5-Archer47_indian_woman_holding_a_bowl_of_salad_smiling_wearing_t_93289617-abfd-46b7-aed5-304e3473a4a8_1.png",
+            "label": "Discover firsthand accounts of future"
+          }
+        }
+      },
+      "block_order": [
+        "shifter_card_wBgy8P",
+        "shifter_card_wjDfbL",
+        "shifter_card_PRbEBL",
+        "shifter_card_tBPLad",
+        "shifter_card_TEMetc"
+      ],
+      "name": "The Right Shifters",
+      "settings": {
+        "heading": "The right shifters",
+        "description": "Read stories from folks who made the Shift happen. They faced challenges with courage and resilience, proving it's never too late to create a brighter, happier and healthier future. Join the inspiring journey!",
+        "btn_label": "View All",
+        "btn_url": ""
+      }
+    }
+  },
+  "order": [
+    "main",
+    "rs_who_are_we_Knz6ig",
+    "rs_body_age_nGWQdc",
+    "rs_right_shift_kxwhcW",
+    "rs_right_shifters_4AhdnK"
+  ]
+}

@@ -1,0 +1,286 @@
+<section class="rs-who" id="rs-who-{{ section.id }}">
+  <div class="rs-who__inner">
+    <h2 class="rs-who__heading">{{ section.settings.heading }}</h2>
+    <p class="rs-who__subtitle">{{ section.settings.subtitle }}</p>
+
+    <p class="rs-who__desc rs-desc-desktop">{{ section.settings.description }}</p>
+    <p class="rs-who__desc rs-desc-mobile">
+      {{ section.settings.description | truncate: 140 }}
+      <a class="rs-readmore" onclick="rsToggle(this)" href="javascript:void(0)"> Read more</a>
+    </p>
+
+    <div class="rs-who__slider-outer">
+      <div class="rs-who__cards" id="rs-cards-{{ section.id }}">
+
+        {% if section.settings.card_image_1 != blank %}
+        <div class="rs-who__card">
+          <img src="{{ section.settings.card_image_1 | image_url: width: 500 }}" alt="{{ section.settings.card_label_1 }}" loading="lazy">
+          {% if section.settings.card_label_1 != blank %}
+          <p class="rs-who__card-label">{{ section.settings.card_label_1 }}</p>
+          {% endif %}
+        </div>
+        {% endif %}
+
+        {% if section.settings.card_image_2 != blank %}
+        <div class="rs-who__card">
+          <img src="{{ section.settings.card_image_2 | image_url: width: 500 }}" alt="{{ section.settings.card_label_2 }}" loading="lazy">
+          {% if section.settings.card_label_2 != blank %}
+          <p class="rs-who__card-label">{{ section.settings.card_label_2 }}</p>
+          {% endif %}
+        </div>
+        {% endif %}
+
+        {% if section.settings.card_image_3 != blank %}
+        <div class="rs-who__card">
+          <img src="{{ section.settings.card_image_3 | image_url: width: 500 }}" alt="{{ section.settings.card_label_3 }}" loading="lazy">
+          {% if section.settings.card_label_3 != blank %}
+          <p class="rs-who__card-label">{{ section.settings.card_label_3 }}</p>
+          {% endif %}
+        </div>
+        {% endif %}
+
+      </div>
+
+      <button class="rs-arrow rs-arrow--prev" id="rs-prev-{{ section.id }}" aria-label="Previous">{{  'icon-chevron-left.svg' | inline_asset_content }}</button>
+      <button class="rs-arrow rs-arrow--next" id="rs-next-{{ section.id }}" aria-label="Next">{{  'icon-chevron-right.svg' | inline_asset_content }}</button>
+    </div>
+
+    <p class="rs-who__bottom">{{ section.settings.bottom_text }}</p>
+  </div>
+</section>
+
+<style>
+/* ===== DESKTOP ===== */
+.rs-who { background: #FFEDD6; padding: 64px 40px; text-align: center; }
+.rs-who__inner { max-width: 1230px; margin: 0 auto; }
+.rs-who__heading { font-size: 45px; font-weight: 700; color: #2D2119; margin-bottom: 8px; }
+.rs-who__subtitle {     font-size: 45px;
+    color: #2D2119;
+    font-family: 'Paytone One';
+    margin-bottom: 14px;
+    margin-top: 10px; line-height: normal; }
+.rs-who__desc { font-size: 20px; color: #333; line-height: 1.8; max-width: 916px; margin: 0 auto 36px; }
+.rs-desc-mobile { display: none; }
+.rs-readmore { color: #2e7d32; font-weight: 700; text-decoration: none; }
+.rs-who__slider-outer { position: relative; }
+.rs-who__cards {
+  display: flex;
+  justify-content: center;
+  gap: 28px;
+  flex-wrap: wrap;
+  margin-bottom: 44px;
+  padding: 15px;
+}
+.rs-who__card {
+  padding: 15px;
+  width: 240px;
+  min-height: 300px;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 6px 20px rgba(0,0,0,.13);
+  background: #2D2119;
+  flex-shrink: 0;
+  position: relative;
+}
+.rs-who__card img {
+  width: 100%;
+  object-fit: inherit;
+  display: block;
+  border-radius: 10px;
+}
+.rs-who__card-label {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: 0;
+  padding: 10px 12px;
+  background: rgba(45, 33, 25, 0.72);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  text-align: center;
+  letter-spacing: 0.01em;
+}
+.rs-who__bottom { font-size: 20px; color: #333; line-height: 1.5; max-width: 900px; margin: 0 auto; }
+.rs-arrow { display: none; }
+
+/* ===== MOBILE ===== */
+@media (max-width: 749px) {
+  .rs-who__subtitle {
+    font-size: 28px;
+    max-width: 300px; margin: 0 auto; line-height: 1.1; }
+  .rs-who__bottom { font-size: 20px; line-height: normal; }
+  .rs-who { padding: 36px 0; }
+  .rs-who__inner { padding: 0 16px; }
+  .rs-who__heading { font-size: 28px; }
+  .rs-desc-desktop { display: none; }
+  .rs-desc-mobile { display: block; font-size: 20px; color: #333; line-height: 1.75; }
+
+  .rs-who__slider-outer {
+    margin-left: -16px;
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 20px;
+  }
+
+  .rs-who__cards {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    gap: 30px;
+    padding: 0px 12px;
+    margin-bottom: 0;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform;
+    cursor: grab;
+  }
+  .rs-who__cards.grabbing { cursor: grabbing; }
+
+  .rs-who__card {
+    flex-shrink: 0;
+    min-height: unset;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #2D2119;
+    box-shadow: 0 6px 20px rgba(0,0,0,.13);
+    min-height: 317px;
+  }
+  .rs-who__card img {
+    width: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+    display: block;
+  }
+  .rs-who__card-label {
+    font-size: 15px;
+    padding: 8px 10px;
+  }
+
+  .rs-arrow svg { width: 34px; height: 34px; }
+
+  /* Arrows */
+  .rs-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: transparent;
+    border: none;
+    font-size: 26px;
+    color: #000;
+    cursor: pointer;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .rs-arrow--prev { left: 0px; }
+  .rs-arrow--next { right: 0px; }
+  .rs-arrow.rs-arrow--hidden { opacity: 0; pointer-events: none; }
+}
+</style>
+
+<script>
+function rsToggle(el) {
+  var section = el.closest('.rs-who');
+  var full = section.querySelector('.rs-desc-desktop');
+  el.parentElement.textContent = full.textContent;
+}
+
+(function() {
+  var sliders = document.querySelectorAll('[id^="rs-cards-"]');
+  sliders.forEach(function(track) {
+    var sectionId = track.id.replace('rs-cards-', '');
+    var prevBtn = document.getElementById('rs-prev-' + sectionId);
+    var nextBtn = document.getElementById('rs-next-' + sectionId);
+    var cards = track.querySelectorAll('.rs-who__card');
+    var current = 0;
+    var total = cards.length;
+    var startX = 0;
+    var isDragging = false;
+
+    function isMobile() { return window.innerWidth <= 749; }
+
+    function updateArrows() {
+      if (!prevBtn || !nextBtn) return;
+      prevBtn.classList.toggle('rs-arrow--hidden', current === 0);
+      nextBtn.classList.toggle('rs-arrow--hidden', current === total - 1);
+    }
+
+    function getStepWidth() {
+      if (!cards[0]) return 0;
+      return cards[0].offsetWidth + 12;
+    }
+
+    function goTo(index) {
+      if (!isMobile()) return;
+      current = Math.max(0, Math.min(index, total - 1));
+      track.style.transform = 'translateX(-' + (current * getStepWidth()) + 'px)';
+      updateArrows();
+    }
+
+    updateArrows();
+
+    if (prevBtn) prevBtn.addEventListener('click', function() { goTo(current - 1); });
+    if (nextBtn) nextBtn.addEventListener('click', function() { goTo(current + 1); });
+
+    track.addEventListener('touchstart', function(e) {
+      if (!isMobile()) return;
+      startX = e.touches[0].clientX;
+    }, { passive: true });
+
+    track.addEventListener('touchend', function(e) {
+      if (!isMobile()) return;
+      var diff = startX - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 40) goTo(diff > 0 ? current + 1 : current - 1);
+    });
+
+    track.addEventListener('mousedown', function(e) {
+      if (!isMobile()) return;
+      isDragging = true;
+      startX = e.clientX;
+      track.classList.add('grabbing');
+    });
+
+    document.addEventListener('mouseup', function(e) {
+      if (!isDragging) return;
+      isDragging = false;
+      track.classList.remove('grabbing');
+      var diff = startX - e.clientX;
+      if (Math.abs(diff) > 40) goTo(diff > 0 ? current + 1 : current - 1);
+    });
+
+    window.addEventListener('resize', function() {
+      if (!isMobile()) track.style.transform = '';
+      else goTo(current);
+    });
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "RS - Who Are We",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Who are we?" },
+    { "type": "text", "id": "subtitle", "label": "Subtitle", "default": "We are RightShift!" },
+    { "type": "textarea", "id": "description", "label": "Description", "default": "A new perspective and approach to life as we age. When you cross 40, your body's requirements change and therefore, it gets more difficult to stay healthy especially with our current lifestyle. We're here to guide you on your exciting journey towards a healthier and empowered life by helping you shift to:" },
+    { "type": "header", "content": "Card 1" },
+    { "type": "image_picker", "id": "card_image_1", "label": "Card 1 Image" },
+    { "type": "text", "id": "card_label_1", "label": "Card 1 Label", "default": "The Right Food" },
+    { "type": "header", "content": "Card 2" },
+    { "type": "image_picker", "id": "card_image_2", "label": "Card 2 Image" },
+    { "type": "text", "id": "card_label_2", "label": "Card 2 Label", "default": "The Right LifeStyle" },
+    { "type": "header", "content": "Card 3" },
+    { "type": "image_picker", "id": "card_image_3", "label": "Card 3 Image" },
+    { "type": "text", "id": "card_label_3", "label": "Card 3 Label", "default": "The Right MindSet" },
+    { "type": "textarea", "id": "bottom_text", "label": "Bottom Text", "default": "So, let's start focusing on all the exciting things that the future holds for you – the places you are yet to travel, the passions you are yet to explore and the milestones you are yet to achieve. Let's unlock the best years ahead for you." }
+  ],
+  "presets": [{ "name": "RS - Who Are We" }]
+}
+{% endschema %}

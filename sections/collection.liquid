@@ -1,0 +1,525 @@
+{% comment %}
+  Collection Template - PLP Page
+  Place in: templates/collection.liquid
+  CSS:  assets/collection-plp.css
+  JS:   assets/collection-plp.js
+{% endcomment %}
+
+{{ 'collection-plp.css' | asset_url | stylesheet_tag }}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+
+{%- assign current_collection = collection -%}
+
+<!-- ── Schema-driven CSS variables ── -->
+<style>
+  :root {
+    --plp-gold:      {{ section.settings.color_accent }};
+    --plp-text-dark: {{ section.settings.color_text }};
+    --plp-cream:     {{ section.settings.color_bg }};
+    --plp-warm-white:{{ section.settings.color_card_bg }};
+  }
+
+  
+</style>
+
+<!-- ── HERO TAGLINE ── -->
+{%- if section.settings.show_hero_tagline -%}
+<section class="plp-hero-tagline">
+  {%- if section.settings.hero_tagline != blank -%}
+    <p>{{ section.settings.hero_tagline }}</p>
+  {%- elsif collection.description != blank -%}
+    <p>{{ collection.description }}</p>
+  {%- else -%}
+    <p>With thoughtful craftsmanship at its heart, each candle<br>
+    transforms everyday moments into rituals of<br>
+    grace and beauty.</p>
+  {%- endif -%}
+</section>
+{%- endif -%}
+
+<!-- ── PLP MAIN LAYOUT ── -->
+<div class="plp-wrapper">
+
+  <!-- ════════════════════════════
+       SIDEBAR FILTERS
+  ════════════════════════════ -->
+  <aside class="plp-sidebar" id="plpSidebar">
+
+    <div class="sidebar-header">
+      <span class="sidebar-title">{{ section.settings.filter_heading | default: 'Filter' }}</span>
+      <button class="sidebar-close" id="sidebarClose" aria-label="Close filters">&#10005;</button>
+    </div>
+
+    <form id="filterForm" method="GET" action="{{ collection.url }}">
+
+      <!-- Preserve sort if set -->
+      {%- if request.params.sort_by -%}
+        <input type="hidden" name="sort_by" value="{{ request.params.sort_by }}">
+      {%- endif -%}
+
+      <!-- ── FILTER: Tags (Scent Family) ── -->
+      {%- assign scent_tags = '' -%}
+      {%- assign burn_tags  = '' -%}
+      {%- assign type_tags  = '' -%}
+
+      {%- for tag in collection.all_tags -%}
+        {%- if tag contains 'scent_' -%}
+          {%- assign scent_tags = scent_tags | append: tag | append: '|' -%}
+        {%- elsif tag contains 'burn_' -%}
+          {%- assign burn_tags = burn_tags | append: tag | append: '|' -%}
+        {%- elsif tag contains 'type_' -%}
+          {%- assign type_tags = type_tags | append: tag | append: '|' -%}
+        {%- endif -%}
+      {%- endfor -%}
+
+      <!-- Scent Family -->
+      {%- if section.settings.show_scent_filter -%}
+      {%- if scent_tags != '' -%}
+      <div class="filter-group">
+        <div class="filter-group-title">{{ section.settings.scent_label | default: 'Scent Family' }}</div>
+        {%- assign scent_arr = scent_tags | split: '|' -%}
+        {%- for tag in scent_arr -%}
+          {%- if tag != '' -%}
+            {%- assign tag_label = tag | replace: 'scent_', '' | replace: '_', ' ' | capitalize -%}
+            <div class="filter-item">
+              <input type="checkbox"
+                     name="filter.p.tag"
+                     id="tag-{{ tag | handle }}"
+                     value="{{ tag }}"
+                     {% if current_tags contains tag %}checked{% endif %}>
+              <label for="tag-{{ tag | handle }}">{{ tag_label }}</label>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+      <div class="filter-divider"></div>
+      {%- else -%}
+      <!-- Fallback static scent filters -->
+      <div class="filter-group">
+        <div class="filter-group-title">{{ section.settings.scent_label | default: 'Scent Family' }}</div>
+        {%- assign default_scents = 'Floral,Woody,Fresh & Citrus,Oriental,Gourmand' | split: ',' -%}
+        {%- for scent in default_scents -%}
+          {%- assign scent_handle = scent | handle -%}
+          <div class="filter-item">
+            <input type="checkbox"
+                   name="filter.p.tag"
+                   id="scent-{{ scent_handle }}"
+                   value="{{ scent_handle }}"
+                   {% if current_tags contains scent_handle %}checked{% endif %}>
+            <label for="scent-{{ scent_handle }}">{{ scent }}</label>
+          </div>
+        {%- endfor -%}
+      </div>
+      <div class="filter-divider"></div>
+      {%- endif -%}
+      {%- endif -%}
+
+      <!-- Burn Time -->
+      {%- if section.settings.show_burn_filter -%}
+      <div class="filter-group">
+        <div class="filter-group-title">{{ section.settings.burn_label | default: 'Burn Time' }}</div>
+        {%- assign burn_options = 'Up to 30 hrs,30 – 50 hrs,50+ hrs' | split: ',' -%}
+        {%- assign burn_values  = 'burn_30,burn_30_50,burn_50plus' | split: ',' -%}
+        {%- for i in (0..2) -%}
+          <div class="filter-item">
+            <input type="checkbox"
+                   name="filter.p.tag"
+                   id="{{ burn_values[i] }}"
+                   value="{{ burn_values[i] }}"
+                   {% if current_tags contains burn_values[i] %}checked{% endif %}>
+            <label for="{{ burn_values[i] }}">{{ burn_options[i] }}</label>
+          </div>
+        {%- endfor -%}
+      </div>
+      <div class="filter-divider"></div>
+      {%- endif -%}
+
+      <!-- Price Range -->
+      {%- if section.settings.show_price_filter -%}
+      <div class="filter-group">
+        <div class="filter-group-title">{{ section.settings.price_label | default: 'Price Range' }}</div>
+        <div class="price-range">
+          <div class="price-row">
+            <input class="price-input"
+                   type="number"
+                   name="filter.v.price.gte"
+                   placeholder="{{ section.settings.price_currency_symbol }}Min"
+                   value="{{ request.params['filter.v.price.gte'] }}">
+            <input class="price-input"
+                   type="number"
+                   name="filter.v.price.lte"
+                   placeholder="{{ section.settings.price_currency_symbol }}Max"
+                   value="{{ request.params['filter.v.price.lte'] }}">
+          </div>
+          <button type="submit" class="filter-apply-btn">{{ section.settings.apply_btn_text | default: 'Apply' }}</button>
+        </div>
+      </div>
+      <div class="filter-divider"></div>
+      {%- endif -%}
+
+      <!-- Collection Type -->
+      {%- if section.settings.show_collection_filter -%}
+      <div class="filter-group">
+        <div class="filter-group-title">{{ section.settings.collection_label | default: 'Collection' }}</div>
+        {%- assign coll_options = 'Classic,Limited Edition,Gift Sets' | split: ',' -%}
+        {%- assign coll_values  = 'classic,limited-edition,gift-sets' | split: ',' -%}
+        {%- for i in (0..2) -%}
+          <div class="filter-item">
+            <input type="checkbox"
+                   name="filter.p.tag"
+                   id="coll-{{ coll_values[i] }}"
+                   value="{{ coll_values[i] }}"
+                   {% if current_tags contains coll_values[i] %}checked{% endif %}>
+            <label for="coll-{{ coll_values[i] }}">{{ coll_options[i] }}</label>
+          </div>
+        {%- endfor -%}
+      </div>
+      {%- endif -%}
+
+    </form>
+  </aside>
+
+  <!-- MOBILE FILTER OVERLAY -->
+  <div class="filter-overlay" id="filterOverlay"></div>
+
+  <!-- ════════════════════════════
+       MAIN CONTENT
+  ════════════════════════════ -->
+  <div class="plp-main">
+
+    <!-- Section Header -->
+    <div class="section-header">
+      <div class="section-header-left">
+        <h1 class="section-heading">{{ collection.title }}</h1>
+        <button class="mobile-filter-btn" id="mobileFilterBtn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="20" y2="12"/>
+            <line x1="12" y1="18" x2="20" y2="18"/>
+          </svg>
+          Filter
+        </button>
+      </div>
+
+      <div class="section-header-right">
+        <p class="section-desc">{{ collection.description | strip_html | truncate: 120 }}</p>
+        {%- if section.settings.show_sort -%}
+        <div class="sort-wrap">
+          <label class="sort-label" for="sortSelect">{{ section.settings.sort_label | default: 'Sort:' }}</label>
+          <select class="sort-select" id="sortSelect" name="sort_by">
+            <option value="manual"          {% if request.params.sort_by == 'manual' %}selected{% endif %}>Featured</option>
+            <option value="best-selling"    {% if request.params.sort_by == 'best-selling' %}selected{% endif %}>Best Selling</option>
+            <option value="price-ascending" {% if request.params.sort_by == 'price-ascending' %}selected{% endif %}>Price: Low–High</option>
+            <option value="price-descending"{% if request.params.sort_by == 'price-descending' %}selected{% endif %}>Price: High–Low</option>
+            <option value="created-descending"{% if request.params.sort_by == 'created-descending' %}selected{% endif %}>Newest</option>
+          </select>
+        </div>
+        {%- endif -%}
+      </div>
+    </div>
+
+    <!-- Product Count -->
+    {%- if section.settings.show_product_count -%}
+    <p class="product-count">{{ collection.products_count }} products</p>
+    {%- endif -%}
+
+    <!-- ── SLIDER WRAPPER ── -->
+    <div class="slider-outer" data-cards-per-view="{{ section.settings.products_per_row }}">
+      <button class="slider-btn slider-prev" id="prevBtn" aria-label="Previous">&#8249;</button>
+
+      <div class="slider-viewport" id="sliderViewport">
+        <div class="slider-track" id="sliderTrack">
+
+          {%- paginate collection.products by section.settings.products_per_page -%}
+          {%- for product in collection.products -%}
+            {%- assign product_image = product.featured_image -%}
+            <div class="product-card">
+              <a href="{{ product.url }}" class="card-img-link" aria-label="{{ product.title }}">
+                <div class="card-img-wrap">
+                  {%- if product_image -%}
+                    <img
+                      src="{{ product_image | image_url: width: 400 }}"
+                      alt="{{ product_image.alt | default: product.title | escape }}"
+                      width="400"
+                      height="400"
+                      loading="lazy">
+                  {%- else -%}
+                    {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                  {%- endif -%}
+                  {%- if product.compare_at_price > product.price -%}
+                    <span class="card-badge">{{ section.settings.sale_badge_text | default: 'Sale' }}</span>
+                  {%- endif -%}
+                </div>
+              </a>
+
+              <div class="card-body">
+                <!-- Stars -->
+                {%- if section.settings.show_stars -%}
+                <div class="stars" aria-label="5 out of 5 stars">
+                  {%- for i in (1..5) -%}
+                    <svg class="star" viewBox="0 0 20 20" aria-hidden="true">
+                      <polygon points="10,1 12.9,7 19.5,7.6 14.5,12 16.2,18.5 10,15 3.8,18.5 5.5,12 0.5,7.6 7.1,7"/>
+                    </svg>
+                  {%- endfor -%}
+                </div>
+                {%- endif -%}
+
+                <!-- Title -->
+                <a href="{{ product.url }}" class="card-name">{{ product.title | upcase }}</a>
+
+                <!-- Price -->
+                <div class="card-price">
+                  {%- if product.compare_at_price > product.price -%}
+                    <s class="compare-price">{{ product.compare_at_price | money }}</s>
+                  {%- endif -%}
+                  <span>{{ product.price | money }}</span>
+                </div>
+
+                <!-- Add to Cart / Buy Now -->
+                {%- if product.available -%}
+                  {%- if product.variants.size == 1 -%}
+                    <form action="/cart/add" method="post" class="card-form">
+                      <input type="hidden" name="id" value="{{ product.variants.first.id }}">
+                      <button type="submit" class="card-btn">{{ section.settings.btn_text | default: 'Buy Now' }}</button>
+                    </form>
+                  {%- else -%}
+                    <a href="{{ product.url }}" class="card-btn">{{ section.settings.btn_text | default: 'Buy Now' }}</a>
+                  {%- endif -%}
+                {%- else -%}
+                  <button class="card-btn card-btn--soldout" disabled>{{ section.settings.soldout_text | default: 'Sold Out' }}</button>
+                {%- endif -%}
+              </div>
+            </div>
+          {%- else -%}
+            <p class="no-products">{{ section.settings.no_products_text | default: 'No products found matching your filters.' }}</p>
+          {%- endfor -%}
+          {%- endpaginate -%}
+
+        </div><!-- /slider-track -->
+      </div><!-- /slider-viewport -->
+
+      <button class="slider-btn slider-next" id="nextBtn" aria-label="Next">&#8250;</button>
+    </div><!-- /slider-outer -->
+
+    <!-- Dots -->
+   <div class="slider-progress-wrap" id="sliderProgressWrap">
+  <div class="slider-progress-track">
+    <div class="slider-progress-bar" id="sliderProgressBar"></div>
+  </div>
+</div>
+
+  </div><!-- /plp-main -->
+</div><!-- /plp-wrapper -->
+
+{{ 'collection-plp.js' | asset_url | script_tag }}
+
+{% schema %}
+{
+  "name": "Collection PLP",
+  "tag": "section",
+  "class": "section-collection-plp",
+  "settings": [
+
+    {
+      "type": "header",
+      "content": "🎨 Colors"
+    },
+    {
+      "type": "color",
+      "id": "color_accent",
+      "label": "Accent / Gold color",
+      "default": "#c9a96e"
+    },
+    {
+      "type": "color",
+      "id": "color_text",
+      "label": "Primary text color",
+      "default": "#2a2520"
+    },
+    {
+      "type": "color",
+      "id": "color_bg",
+      "label": "Page background color",
+      "default": "#faf8f4"
+    },
+    {
+      "type": "color",
+      "id": "color_card_bg",
+      "label": "Card background color",
+      "default": "#f5f1eb"
+    },
+
+    {
+      "type": "header",
+      "content": "📝 Hero Tagline"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_hero_tagline",
+      "label": "Show hero tagline",
+      "default": true
+    },
+    {
+      "type": "textarea",
+      "id": "hero_tagline",
+      "label": "Tagline text",
+      "info": "Leave blank to use the collection description.",
+      "placeholder": "With thoughtful craftsmanship at its heart…"
+    },
+
+    {
+      "type": "header",
+      "content": "🃏 Product Cards"
+    },
+    {
+      "type": "range",
+      "id": "products_per_row",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "label": "Products per row (desktop)",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "min": 4,
+      "max": 48,
+      "step": 4,
+      "label": "Products per page",
+      "default": 16
+    },
+    {
+      "type": "checkbox",
+      "id": "show_stars",
+      "label": "Show star ratings",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "btn_text",
+      "label": "Button text",
+      "default": "Buy Now"
+    },
+    {
+      "type": "text",
+      "id": "soldout_text",
+      "label": "Sold out button text",
+      "default": "Sold Out"
+    },
+    {
+      "type": "text",
+      "id": "sale_badge_text",
+      "label": "Sale badge text",
+      "default": "Sale"
+    },
+    {
+      "type": "text",
+      "id": "no_products_text",
+      "label": "No products message",
+      "default": "No products found matching your filters."
+    },
+
+    {
+      "type": "header",
+      "content": "🔢 Sort & Count"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_sort",
+      "label": "Show sort dropdown",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "sort_label",
+      "label": "Sort label",
+      "default": "Sort:"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_product_count",
+      "label": "Show product count",
+      "default": true
+    },
+
+    {
+      "type": "header",
+      "content": "🔎 Sidebar Filters"
+    },
+    {
+      "type": "text",
+      "id": "filter_heading",
+      "label": "Filter sidebar heading",
+      "default": "Filter"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_scent_filter",
+      "label": "Show Scent Family filter",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "scent_label",
+      "label": "Scent Family label",
+      "default": "Scent Family"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_burn_filter",
+      "label": "Show Burn Time filter",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "burn_label",
+      "label": "Burn Time label",
+      "default": "Burn Time"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_price_filter",
+      "label": "Show Price Range filter",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "price_label",
+      "label": "Price Range label",
+      "default": "Price Range"
+    },
+    {
+      "type": "text",
+      "id": "price_currency_symbol",
+      "label": "Currency symbol for placeholder",
+      "default": "₹"
+    },
+    {
+      "type": "text",
+      "id": "apply_btn_text",
+      "label": "Price filter apply button text",
+      "default": "Apply"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_collection_filter",
+      "label": "Show Collection filter",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "collection_label",
+      "label": "Collection filter label",
+      "default": "Collection"
+    }
+
+  ],
+  "presets": [
+    {
+      "name": "Collection PLP",
+      "category": "Collection"
+    }
+  ]
+}
+{% endschema %}

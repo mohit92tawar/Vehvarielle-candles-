@@ -1,0 +1,132 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "blocks": {
+        "heading": {
+          "type": "text",
+          "name": "Title",
+          "settings": {
+            "text": "<h1>{{ closest.page.title }}</h1>",
+            "width": "100%",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "h2",
+            "font": "var(--font-primary--family)",
+            "font_size": "",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "page-content": {
+          "type": "page-content",
+          "settings": {},
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "heading",
+        "page-content"
+      ],
+      "disabled": true,
+      "settings": {
+        "content_direction": "column",
+        "gap": 32,
+        "color_scheme": "",
+        "padding-block-start": 40,
+        "padding-block-end": 80
+      }
+    },
+    "rs_meal_plan_hero_HW3Rcw": {
+      "type": "rs-meal-plan-hero",
+      "name": "RS - Meal Plan Hero",
+      "settings": {
+        "bg_image": "shopify://shop_images/meal-plan-desktop.webp",
+        "title": "Meal plan curator",
+        "description": "<p>Teaming up with TGHC – The Good Health Clinic, we bring science-led, easy-to-follow meal plans for various health goals. TGHC's nutrition experts have crafted nutrient-packed, delicious food recommendations for you.</p><p>Fill in the below questions to create your customised meal plan.</p>"
+      }
+    },
+    "free_consult_form_section_tDgcga": {
+      "type": "free-consult-form-section",
+      "blocks": {
+        "concern_f8En8X": {
+          "type": "concern",
+          "settings": {
+            "image": "shopify://shop_images/health.svg",
+            "label": "My Concern"
+          }
+        },
+        "concern_jxP4w9": {
+          "type": "concern",
+          "settings": {
+            "image": "shopify://shop_images/Layer_1_2.svg",
+            "label": "Improve Digestive Health"
+          }
+        },
+        "concern_ApAXaq": {
+          "type": "concern",
+          "settings": {
+            "image": "shopify://shop_images/Layer_1_1.svg",
+            "label": "Improve Energy Levels"
+          }
+        },
+        "concern_6gVHrC": {
+          "type": "concern",
+          "settings": {
+            "image": "shopify://shop_images/Group_1.svg",
+            "label": "Increase Muscle Mass"
+          }
+        },
+        "concern_eNeCAk": {
+          "type": "concern",
+          "settings": {
+            "image": "shopify://shop_images/Weight_1.png",
+            "label": "Lose weight & improve metabolic health"
+          }
+        },
+        "concern_rijiXh": {
+          "type": "concern",
+          "settings": {
+            "image": "shopify://shop_images/Layer_1.svg",
+            "label": "Improve women’s  health"
+          }
+        }
+      },
+      "block_order": [
+        "concern_f8En8X",
+        "concern_jxP4w9",
+        "concern_ApAXaq",
+        "concern_6gVHrC",
+        "concern_eNeCAk",
+        "concern_rijiXh"
+      ],
+      "name": "Free Consultation Form",
+      "settings": {}
+    }
+  },
+  "order": [
+    "main",
+    "rs_meal_plan_hero_HW3Rcw",
+    "free_consult_form_section_tDgcga"
+  ]
+}

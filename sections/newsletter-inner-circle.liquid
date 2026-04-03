@@ -1,0 +1,329 @@
+{% comment %}
+  Section: Newsletter Inner Circle
+{% endcomment %}
+
+<section id="newsletter-{{ section.id }}">
+  <div class="nl-inner">
+
+    {% if section.settings.heading != blank %}
+      <h2 class="nl-heading">{{ section.settings.heading }}</h2>
+    {% endif %}
+
+    {% if section.settings.description != blank %}
+      <p class="nl-desc">{{ section.settings.description }}</p>
+    {% endif %}
+
+    {% form 'contact' %}
+      <input type="hidden" name="contact[tags]" value="newsletter">
+      <input type="hidden" name="contact[body]" value="Newsletter signup">
+
+      {% if form.posted_successfully? %}
+        <p class="nl-success">{{ section.settings.success_msg }}</p>
+      {% else %}
+        <div class="nl-row">
+          <input
+            class="nl-input"
+            type="email"
+            name="contact[email]"
+            id="nl-email-{{ section.id }}"
+            placeholder="{{ section.settings.placeholder }}"
+            autocomplete="email"
+            required
+            aria-label="{{ section.settings.placeholder }}"
+          >
+          <button type="submit" class="nl-btn">
+            {{ section.settings.btn_label }}
+          </button>
+        </div>
+        {% if form.errors %}
+          <p class="nl-error">{{ form.errors.translated_fields['email'] | capitalize }} {{ form.errors.messages['email'] }}</p>
+        {% endif %}
+      {% endif %}
+    {% endform %}
+
+  </div>
+</section>
+
+<style>
+  #newsletter-{{ section.id }} {
+    --nl-bg:          {{ section.settings.bg_color }};
+    --nl-heading-c:   {{ section.settings.heading_color }};
+    --nl-desc-c:      {{ section.settings.desc_color }};
+    --nl-input-bg:    {{ section.settings.input_bg }};
+    --nl-input-bdr:   {{ section.settings.input_border }};
+    --nl-input-c:     {{ section.settings.input_text_color }};
+    --nl-btn-bg:      {{ section.settings.btn_bg }};
+    --nl-btn-c:       {{ section.settings.btn_color }};
+    --nl-pt:          {{ section.settings.pt }}px;
+    --nl-pb:          {{ section.settings.pb }}px;
+  }
+
+  #newsletter-{{ section.id }} {
+    background-color: var(--nl-bg);
+    padding: var(--nl-pt) 24px var(--nl-pb);
+  }
+
+  #newsletter-{{ section.id }} .nl-inner {
+    max-width: 620px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  #newsletter-{{ section.id }} .nl-heading {
+    font-size: 55px;
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.5px;
+    color: var(--nl-heading-c);
+    margin: 0 0 20px;
+  }
+
+  #newsletter-{{ section.id }} .nl-desc {
+    font-size: 18px;
+    {% comment %} line-height: 1.65; {% endcomment %}
+    color: var(--nl-desc-c);
+    margin: 0 0 32px;
+    max-width: 664px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Form row */
+  #newsletter-{{ section.id }} .nl-form {
+    width: 100%;
+  }
+
+  #newsletter-{{ section.id }} .nl-row {
+    display: flex;
+    align-items: stretch;
+    width: 100%;
+    height: 56px;
+    gap: 12px;
+  }
+
+  #newsletter-{{ section.id }} .nl-input {
+    flex: 1 1 auto;
+    height: 100%;
+    padding: 0 20px;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--nl-input-c);
+    background: var(--nl-input-bg);
+    border: 1px solid var(--nl-input-bdr);
+    outline: none;
+    border-radius: 0;
+    -webkit-appearance: none;
+    appearance: none;
+    transition: border-color 0.2s;
+  }
+
+  #newsletter-{{ section.id }} .nl-input::placeholder {
+    color: var(--nl-input-c);
+    opacity: 0.6;
+  }
+
+  #newsletter-{{ section.id }} .nl-input:focus {
+    border-color: var(--nl-btn-bg);
+  }
+
+  #newsletter-{{ section.id }} .nl-btn {
+    flex: 0 0 auto;
+    height: 100%;
+    padding: 0 80px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--nl-btn-c);
+    background: var(--nl-btn-bg);
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    white-space: nowrap;
+    border-radius: 0;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  #newsletter-{{ section.id }} .nl-btn:hover {
+    opacity: 0.85;
+  }
+
+  /* Success / Error */
+  #newsletter-{{ section.id }} .nl-success {
+    font-size: 15px;
+    color: var(--nl-heading-c);
+    margin: 0;
+    padding: 16px 0;
+  }
+
+  #newsletter-{{ section.id }} .nl-error {
+    font-size: 13px;
+    color: #c0392b;
+    margin: 8px 0 0;
+    text-align: left;
+  }
+
+  /* ── Responsive ── */
+  @media screen and (max-width: 768px) {
+    section#newsletter-template--20811504386226__newsletter_inner_circle_pJm97H {
+    padding: 40px 20px;
+}
+    #newsletter-{{ section.id }} .nl-heading {
+      font-size: 36px;
+    }
+    #newsletter-{{ section.id }} .nl-desc {
+      font-size: 16px;
+    }
+  }
+
+  @media screen and (max-width: 520px) {
+    #newsletter-{{ section.id }} .nl-heading {
+      font-size: 28px;
+    }
+    #newsletter-{{ section.id }} .nl-desc {
+      font-size: 12px;
+      margin-bottom: 24px;
+    }
+    #newsletter-{{ section.id }} .nl-row {
+      flex-direction: column;
+      height: auto;
+      gap: 12px;
+    }
+    #newsletter-{{ section.id }} .nl-input {
+      height: 52px;
+      border-right: 1px solid var(--nl-input-bdr);
+    }
+    #newsletter-{{ section.id }} .nl-btn {
+      height: 52px;
+      width: 100%;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Newsletter Inner Circle",
+  "tag": "section",
+  "class": "section-newsletter",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Join the Véhvarielle inner circle"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Be the first to discover our latest creations, exclusive collections, and member-only invitations. Subscribe to our newsletter and step into a world where elegance is eternal and every detail is curated for the discerning soul."
+    },
+    {
+      "type": "text",
+      "id": "placeholder",
+      "label": "Input Placeholder",
+      "default": "EMAIL"
+    },
+    {
+      "type": "text",
+      "id": "btn_label",
+      "label": "Button Label",
+      "default": "SIGN UP"
+    },
+    {
+      "type": "text",
+      "id": "success_msg",
+      "label": "Success Message",
+      "default": "Thank you for subscribing!"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background",
+      "default": "#f0ece3"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#3b1f0e"
+    },
+    {
+      "type": "color",
+      "id": "desc_color",
+      "label": "Description Color",
+      "default": "#3b1f0e"
+    },
+    {
+      "type": "color",
+      "id": "input_bg",
+      "label": "Input Background",
+      "default": "#f0ece3"
+    },
+    {
+      "type": "color",
+      "id": "input_border",
+      "label": "Input Border",
+      "default": "#3b1f0e"
+    },
+    {
+      "type": "color",
+      "id": "input_text_color",
+      "label": "Input Text / Placeholder",
+      "default": "#3b1f0e"
+    },
+    {
+      "type": "color",
+      "id": "btn_bg",
+      "label": "Button Background",
+      "default": "#3b1f0e"
+    },
+    {
+      "type": "color",
+      "id": "btn_color",
+      "label": "Button Text",
+      "default": "#f0ece3"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "pt",
+      "label": "Padding Top",
+      "min": 20,
+      "max": 160,
+      "step": 4,
+      "default": 80,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "pb",
+      "label": "Padding Bottom",
+      "min": 20,
+      "max": 160,
+      "step": 4,
+      "default": 80,
+      "unit": "px"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Newsletter Inner Circle"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,241 @@
+{% comment %}
+  Right Shift - Meal Plan Curator Hero Banner
+  File: sections/rs-meal-plan-hero.liquid
+{% endcomment %}
+
+<style>
+.rs-meal-hero {
+  position: relative;
+  width: 100%;
+  min-height: 637px;
+  background: #1a1a1a;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+.rs-meal-hero__bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center right;
+  display: block;
+  z-index: 0;
+}
+
+.rs-meal-hero__content {
+  position: relative;
+  z-index: 2;
+  padding: 48px 56px;
+  max-width: 520px;
+  left: 16%;
+}
+
+.rs-meal-hero__title {
+  font-size: 2.2rem;
+  font-weight: 900;
+  color: #ffffff;
+  margin-bottom: 16px;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.rs-meal-hero__text {
+  font-size: 0.95rem;
+  color: #e8e8e8;
+  line-height: 1.75;
+  max-width: 420px;
+}
+
+.rs-meal-hero__text p + p {
+  margin-top: 12px;
+}
+
+.rs-meal-hero__placeholder {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #1a0f00 0%, #3d2200 40%, #1a0f00 100%);
+  z-index: 0;
+}
+
+/* ── INFO STRIP ── */
+.rs-meal-info-strip {
+  width: 100%;
+  background: #fdf3e3;
+  padding: 24px 40px;
+}
+
+.rs-meal-info-strip__text {
+  font-size: 16px;
+  color: #2c1a00;
+  line-height: 1.75;
+  max-width: 1225px;
+  font-weight: 900;
+  margin: 0 auto;
+  
+}
+
+.rs-meal-info-strip__text p + p {
+  margin-top: 12px;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  .rs-meal-hero {
+    min-height: 517px;
+    align-items: flex-end;
+  }
+  .rs-meal-hero__bg--desktop {
+    display: none;
+  }
+  .rs-meal-hero__bg--mobile {
+    display: block;
+    object-position: center center;
+  }
+  .rs-meal-hero__content {
+    padding: 28px 20px;
+    max-width: 100%;
+    left: 0;
+  }
+  .rs-meal-hero__title {
+    font-size: 1.6rem;
+  }
+  .rs-meal-hero__text {
+    font-size: 0.88rem;
+    max-width: 100%;
+  }
+  .rs-meal-info-strip {
+    padding: 20px 16px;
+  }
+  .rs-meal-info-strip__text {
+    font-size: 0.88rem;
+  }
+}
+
+@media (min-width: 769px) {
+  .rs-meal-hero__bg--mobile {
+    display: none;
+  }
+  .rs-meal-hero__bg--desktop {
+    display: block;
+  }
+}
+
+@media (max-width: 480px) {
+  .rs-meal-hero {
+    min-height: 517px;
+  }
+  .rs-meal-hero__title {
+    font-size: 1.4rem;
+  }
+}
+</style>
+
+<div class="rs-meal-hero">
+
+  {% if section.settings.bg_image != blank %}
+    <img
+      src="{{ section.settings.bg_image | image_url: width: 1600 }}"
+      alt="{{ section.settings.title }}"
+      class="rs-meal-hero__bg rs-meal-hero__bg--desktop"
+      loading="eager"
+      width="1600"
+    >
+  {% endif %}
+
+  {% if section.settings.bg_image_mobile != blank %}
+    <img
+      src="{{ section.settings.bg_image_mobile | image_url: width: 800 }}"
+      alt="{{ section.settings.title }}"
+      class="rs-meal-hero__bg rs-meal-hero__bg--mobile"
+      loading="eager"
+      width="800"
+    >
+  {% elsif section.settings.bg_image != blank %}
+    <img
+      src="{{ section.settings.bg_image | image_url: width: 800 }}"
+      alt="{{ section.settings.title }}"
+      class="rs-meal-hero__bg rs-meal-hero__bg--mobile"
+      loading="eager"
+      width="800"
+    >
+  {% else %}
+    <div class="rs-meal-hero__placeholder"></div>
+    <svg style="position:absolute;right:60px;top:50%;transform:translateY(-50%);z-index:1;opacity:.35;" width="300" height="200" viewBox="0 0 300 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="200" cy="80" r="60" fill="#c0410a" opacity=".6"/>
+      <circle cx="250" cy="140" r="40" fill="#e07b00" opacity=".5"/>
+      <circle cx="160" cy="150" r="30" fill="#8b4513" opacity=".4"/>
+    </svg>
+  {% endif %}
+
+</div>
+
+{% comment %} ── INFO STRIP - Show/Hide via admin toggle ── {% endcomment %}
+{% if section.settings.show_info_strip %}
+  <div class="rs-meal-info-strip">
+    <div class="rs-meal-info-strip__text">
+      {% if section.settings.info_strip_text != blank %}
+        {{ section.settings.info_strip_text }}
+      {% else %}
+        <p>Teaming up with TGHC – The Good Health Clinic, we bring science-led, easy-to-follow meal plans for various health goals. TGHC's nutrition experts have crafted nutrient-packed, delicious food recommendations for you.</p>
+        <p>Fill in the below questions to create your customised meal plan.</p>
+      {% endif %}
+    </div>
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "RS - Meal Plan Hero",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "bg_image",
+      "label": "Background Image (Desktop)",
+      "info": "Recommended: 1600x640px. Desktop pe dikhegi."
+    },
+    {
+      "type": "image_picker",
+      "id": "bg_image_mobile",
+      "label": "Background Image (Mobile)",
+      "info": "Recommended: 800x480px. Mobile pe dikhegi. Agar khaali rakho toh desktop wali use hogi."
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Meal plan curator"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description Text",
+      "default": "<p>Teaming up with TGHC – The Good Health Clinic, we bring science-led, easy-to-follow meal plans for various health goals. TGHC's nutrition experts have crafted nutrient-packed, delicious food recommendations for you.</p><p>Fill in the below questions to create your customised meal plan.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Info Strip (Banner ke niche)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_info_strip",
+      "label": "Info Strip dikhao",
+      "default": true,
+      "info": "Enable karo toh beige text strip banner ke niche dikhegi"
+    },
+    {
+      "type": "richtext",
+      "id": "info_strip_text",
+      "label": "Info Strip Text",
+      "default": "<p>Teaming up with TGHC – The Good Health Clinic, we bring science-led, easy-to-follow meal plans for various health goals. TGHC's nutrition experts have crafted nutrient-packed, delicious food recommendations for you.</p><p>Fill in the below questions to create your customised meal plan.</p>"
+    }
+  ],
+  "presets": [
+    {
+      "name": "RS - Meal Plan Hero"
+    }
+  ]
+}
+{% endschema %}

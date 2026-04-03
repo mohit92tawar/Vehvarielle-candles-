@@ -1,0 +1,241 @@
+{% schema %}
+{
+  "name": "Right Talk Section",
+  "settings": [
+    { "type": "text", "id": "top_heading", "label": "Top Heading", "default": "The right talk" },
+    { "type": "textarea", "id": "top_text", "label": "Top Description" },
+    { "type": "text", "id": "top_btn_text", "label": "Top Button Text", "default": "Learn More" },
+    { "type": "url", "id": "top_btn_link", "label": "Top Button Link" },
+    { "type": "image_picker", "id": "banner_desktop", "label": "Banner Desktop" },
+    { "type": "image_picker", "id": "banner_mobile", "label": "Banner Mobile" },
+    { "type": "image_picker", "id": "bottom_left_image", "label": "Bottom Left Image" },
+    { "type": "textarea", "id": "bottom_text", "label": "Bottom Description" },
+    { "type": "textarea", "id": "bottom_text_mobile", "label": "Bottom Description" },
+    { "type": "text", "id": "bottom_btn_text", "label": "Bottom Button Text", "default": "Join The Club" },
+    { "type": "url", "id": "bottom_btn_link", "label": "Bottom Button Link" }
+  ],
+  "presets": [
+    { "name": "Right Talk Section" }
+  ]
+}
+{% endschema %}
+
+<section class="rt-wrapper">
+
+  <!-- FULL WIDTH BANNER -->
+  <div class="rt-banner">
+    <div class="rt-container">
+      <div class="rt-left">
+        <h2>{{ section.settings.top_heading }}</h2>
+        <p>{{ section.settings.top_text }}</p>
+
+        {% if section.settings.top_btn_text != blank %}
+          <a href="{{ section.settings.top_btn_link }}" class="rt-btn green">
+            {{ section.settings.top_btn_text }}
+          </a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <!-- BOTTOM CARD -->
+  <div class="rt-bottom">
+    <div class="rt-container">
+      <div class="rt-bottom-card">
+
+        <div class="rt-bottom-image">
+          {% if section.settings.bottom_left_image %}
+            <img src="{{ section.settings.bottom_left_image | image_url: width: 1200 }}" alt="">
+          {% endif %}
+        </div>
+
+        <div class="rt-bottom-content">
+          <p class="desk_des">{{ section.settings.bottom_text }}</p>
+          <p class="mobile_des">{{ section.settings.bottom_text_mobile }}</p>
+
+          {% if section.settings.bottom_btn_text != blank %}
+            <a href="{{ section.settings.bottom_btn_link }}" class="rt-btn dark">
+              {{ section.settings.bottom_btn_text }}
+            </a>
+          {% endif %}
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<style>
+
+.desk_des { display: block; }
+.mobile_des { display: none; }
+
+.rt-wrapper {
+  overflow: hidden;
+  background: #FFEDD6;
+}
+
+/* 1440 container */
+{% comment %} .rt-container {
+  max-width: 1230px;
+  margin: 0 auto;
+  padding: 0 40px;
+} {% endcomment %}
+
+/* FULL WIDTH BANNER */
+.rt-banner {
+  width: 100%;
+    display: inline-flex;
+    min-height: 595px;
+    padding: 40px 0;
+    background-color: #1f6b34;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: right center;
+    align-items: center;
+    padding: 0px 120px;
+}
+
+/* Desktop image */
+{% if section.settings.banner_desktop %}
+.rt-banner {
+  background-image: url('{{ section.settings.banner_desktop | image_url: width: 2400 }}');
+}
+{% endif %}
+
+.rt-left {
+  max-width: 520px;
+  color: #fff;
+}
+
+.rt-left h2 {
+  font-size: 45px;
+  margin-bottom: 20px;
+}
+
+.rt-left p {
+  font-size: 20px;
+  line-height: 1.6;
+  margin-bottom: 45px;
+  max-width: 400px;  
+}
+
+/* Buttons */
+.rt-btn {
+display: inline-block;
+    padding: 9px 36px;
+    border-radius: 40px;
+    font-weight: 600;
+    text-decoration: none;
+    max-width: 250px;
+    min-width: 250px;
+    text-align: center;
+    font-size: 24px;
+    font-family: 'Urbanist';
+}
+
+.rt-btn.green {
+  background: #098040;
+  color: #fff;
+}
+
+.rt-btn.dark {
+  background: #3a2416;
+  color: #fff;
+}
+
+/* BOTTOM CARD */
+.rt-bottom {
+  margin-top: -100px;
+  padding-bottom: 120px;
+}
+
+.rt-bottom-card {
+  display: flex;
+  border-radius: 24px;
+  overflow: hidden;
+  background: #f2c94c;
+  max-height: 413px;
+}
+
+.rt-bottom-image {
+  width: 50%;
+}
+
+.rt-bottom-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.rt-bottom-content {
+  width: 50%;
+  padding: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.rt-bottom-content p {
+  font-size: 18px;
+  line-height: 1.6;
+  margin-bottom: 25px;
+}
+.rt-bottom { display: none; }
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .rt-container { margin: 0 auto; }
+  .rt-bottom-content { align-items: center; }
+  .rt-btn { min-width: auto;
+    font-size: 16px; max-width: 200px; }
+    .rt-bottom-image img { max-height: 200px; }
+    .rt-left p { font-size: 16px; max-width: 400px; margin: 0 auto;  margin-bottom: 8px; padding: 0px 20px; }
+.desk_des { display: none; }
+.mobile_des { display: block; }
+    .rt-bottom-content p {
+  font-size: 16px;
+  line-height: 1.2;
+  margin-bottom: 25px;
+}
+
+  {% if section.settings.banner_mobile %}
+  .rt-banner {
+    background-image: url('{{ section.settings.banner_mobile | image_url: width: 1200 }}');
+    background-position: center top; height: 700px;
+  }
+  {% endif %}
+
+  .rt-banner {
+    padding: 36px 0; align-items: start;
+  }
+
+  .rt-left {
+    text-align: center;
+    margin: 0 auto;
+  }
+
+  .rt-left h2 {
+    font-size: 28px;
+  }
+
+  .rt-bottom {
+    margin-top: -60px;
+  }
+
+  .rt-bottom-card {
+    flex-direction: column;
+  }
+
+  .rt-bottom-image,
+  .rt-bottom-content {
+    width: 100%;
+  }
+
+  .rt-bottom-content {
+    padding: 30px;
+    text-align: center;
+  }
+}
+</style>

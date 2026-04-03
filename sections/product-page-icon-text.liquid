@@ -1,0 +1,101 @@
+<section class="features-bar">
+  <div class="features-container">
+    {% for block in section.blocks %}
+      <div class="feature-item">
+        {% if block.settings.icon != blank %}
+          <div class="feature-icon">
+            <img src="{{ block.settings.icon | image_url: width: 100 }}" alt="{{ block.settings.title }}">
+          </div>
+        {% endif %}
+        <div class="feature-text">
+          {{ block.settings.title }}
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</section>
+
+<style>
+.features-bar{
+  background: #2D2119;
+  padding:33px 10px;
+}
+
+.features-container{
+  max-width:900px;
+  margin:auto;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:20px;
+  flex-wrap:wrap;
+}
+
+.feature-item{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.feature-icon{
+  width:95px;
+  height:95px;
+  background:#FFD54B;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.feature-icon img{
+ object-fit: none;
+}
+
+.feature-text{
+  color:white;
+  font-size: 20px;
+  font-weight:500;
+}
+
+@media(max-width:768px){
+  .features-container{
+    justify-content:center;
+  }
+}
+</style>
+
+{% schema %}
+{
+  "name": "Features Bar",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Icon"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Feature text"
+        }
+      ]
+    }
+  ],
+  "presets":[
+    {
+      "name":"Features Bar",
+      "blocks":[
+        {"type":"feature"},
+        {"type":"feature"},
+        {"type":"feature"}
+      ]
+    }
+  ]
+}
+{% endschema %}
