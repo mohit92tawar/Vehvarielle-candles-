@@ -19,29 +19,10 @@
             "product": "bloom-no-5",
             "product_button_text": "Shop now"
           }
-        },
-        "slide_GCtJjL": {
-          "type": "slide",
-          "disabled": true,
-          "settings": {
-            "image": "shopify://shop_images/Group_1321317200.png",
-            "product": "",
-            "product_button_text": "Shop now"
-          }
-        },
-        "slide_LQmkaE": {
-          "type": "slide",
-          "disabled": true,
-          "settings": {
-            "product": "",
-            "product_button_text": "Shop now"
-          }
         }
       },
       "block_order": [
-        "slide_PnkjwU",
-        "slide_GCtJjL",
-        "slide_LQmkaE"
+        "slide_PnkjwU"
       ],
       "name": "Health Hero Slider",
       "settings": {
@@ -95,7 +76,6 @@
               "name": "t:names.icon",
               "settings": {
                 "icon": "price_tag",
-                "image_upload": "shopify://shop_images/Layer_1_3.png",
                 "width": 170,
                 "link": "",
                 "open_in_new_tab": false
@@ -114,7 +94,6 @@
       "name": "t:names.hero_marquee",
       "settings": {
         "media_type_1": "image",
-        "image_1": "shopify://shop_images/Rectangle_2279.png",
         "media_type_2": "image",
         "stack_media_on_mobile": false,
         "custom_mobile_media": false,
@@ -211,31 +190,19 @@
       "blocks": {
         "slide_tnztti": {
           "type": "slide",
-          "settings": {
-            "thumb_image": "shopify://shop_images/Rectangle_2226.png",
-            "main_image": "shopify://shop_images/Rectangle_2226_2.png"
-          }
+          "settings": {}
         },
         "slide_rNwRFe": {
           "type": "slide",
-          "settings": {
-            "thumb_image": "shopify://shop_images/Rectangle_2304.png",
-            "main_image": "shopify://shop_images/Rectangle_2226.png"
-          }
+          "settings": {}
         },
         "slide_nTLKNM": {
           "type": "slide",
-          "settings": {
-            "thumb_image": "shopify://shop_images/Rectangle_2303.png",
-            "main_image": "shopify://shop_images/Rectangle_2226_2.png"
-          }
+          "settings": {}
         },
         "slide_AB7j8x": {
           "type": "slide",
-          "settings": {
-            "thumb_image": "shopify://shop_images/Rectangle_2226_2.png",
-            "main_image": "shopify://shop_images/Rectangle_2226.png"
-          }
+          "settings": {}
         }
       },
       "block_order": [
@@ -256,7 +223,6 @@
         "care_item_4CwAAz": {
           "type": "care_item",
           "settings": {
-            "icon_image": "shopify://shop_images/Layer_1_6.svg",
             "icon_svg": "",
             "text": "Trim the wick to ¼ inch before each use to prevent smoke and uneven burning."
           }
@@ -264,7 +230,6 @@
         "care_item_h4jRPf": {
           "type": "care_item",
           "settings": {
-            "icon_image": "shopify://shop_images/Layer_1_7.svg",
             "icon_svg": "",
             "text": "Place away from drafts to maintain a steady flame and reduce soot."
           }
@@ -272,7 +237,6 @@
         "care_item_7EPnNc": {
           "type": "care_item",
           "settings": {
-            "icon_image": "shopify://shop_images/Layer_1_8.svg",
             "icon_svg": "",
             "text": "On the first burn, allow the wax to melt fully across the surface."
           }
@@ -280,7 +244,6 @@
         "care_item_tqMTTD": {
           "type": "care_item",
           "settings": {
-            "icon_image": "shopify://shop_images/Layer_1_9.svg",
             "icon_svg": "",
             "text": "Store in a cool, dry place away from direct sunlight when not in use."
           }
@@ -312,7 +275,6 @@
           "type": "image",
           "name": "t:names.image",
           "settings": {
-            "image": "shopify://shop_images/Group_1321317203.png",
             "link": "",
             "image_ratio": "adapt",
             "width": "fill",
@@ -403,7 +365,6 @@
       "type": "candale-hero-section",
       "name": "Candle Hero Split",
       "settings": {
-        "main_image": "shopify://shop_images/Rectangle_2326.png",
         "product_image": "shopify://shop_images/BLOOM.png",
         "heading": "The hour learns to pause.",
         "heading_size": 72,
