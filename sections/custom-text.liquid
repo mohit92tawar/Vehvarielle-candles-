@@ -1,0 +1,63 @@
+<section class="luminous-text-section">
+  <div class="luminous-container">
+    <p class="luminous-text">
+      Driven by purposeful design, each candle is a luminous moment, perfecting
+      your surroundings with effortless beauty and subtle complexity.
+    </p>
+  </div>
+</section>
+
+<style>
+.luminous-text-section {
+  background-color: #f5f3ef;
+  padding: 80px 20px;
+  text-align: center;
+}
+
+.luminous-container {
+  max-width: 780px;
+  margin: 0 auto;
+}
+
+.luminous-text {
+  font-size: 20px;
+  line-height: 1.8;
+  color: #5a3e2b;
+  font-weight: 400;
+}
+
+/* Tablet */
+@media screen and (max-width: 768px) {
+  .luminous-text-section {
+    padding: 60px 20px;
+  }
+
+  .luminous-text {
+    font-size: 18px;
+  }
+}
+
+/* Mobile */
+@media screen and (max-width: 480px) {
+  .luminous-text-section {
+    padding: 50px 15px;
+  }
+
+  .luminous-text {
+    font-size: 16px;
+    line-height: 1.6;
+  }
+}
+</style>
+
+{% schema %}
+{
+  "name": "Luminous Text Static",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Luminous Text Static"
+    }
+  ]
+}
+{% endschema %}
