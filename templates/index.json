@@ -17,6 +17,8 @@
           "settings": {
             "image": "shopify://shop_images/Group_1321317193.png",
             "mobile_image": "shopify://shop_images/images_2.jpg",
+            "subheading": "",
+            "description": "The scent of rain-kissed petals and soft skin. Tuberose is a dewy floral, elegant, creamy, and quietly radiant.",
             "product": "bloom-no-5",
             "product_button_text": "Shop now"
           }
@@ -25,6 +27,8 @@
           "type": "slide",
           "settings": {
             "image": "shopify://shop_images/Group_1321317183.png",
+            "subheading": "New Arrival",
+            "description": "The scent of rain-kissed petals and soft skin.",
             "product": "tuberose-copy-1",
             "product_button_text": "Shop now"
           }
@@ -33,6 +37,8 @@
           "type": "slide",
           "settings": {
             "image": "shopify://shop_images/Group_1321317193.png",
+            "subheading": "New Arrival",
+            "description": "The scent of rain-kissed petals and soft skin.",
             "product": "tuberose-test-copy",
             "product_button_text": "Shop now"
           }
@@ -62,15 +68,9 @@
         "dot_active_color": "#ffffff",
         "overlay_style": "left_fade",
         "overlay_opacity": 1,
-        "text_area_width": 50,
-        "content_alignment": "center",
-        "content_spacing": 40,
-        "padding_vertical": 100,
-        "padding_horizontal": 40,
-        "heading_size": 50,
-        "heading_color": "#fceed9",
         "subheading_size": 20,
         "description_size": 16,
+        "heading_color": "#fceed9",
         "text_color": "#f5f5f5",
         "text_shadow": "medium"
       }
