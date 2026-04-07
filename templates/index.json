@@ -170,7 +170,6 @@
       "block_order": [
         "text_NxVXwH"
       ],
-      "disabled": true,
       "name": "t:names.custom_section",
       "settings": {
         "content_direction": "column",
@@ -202,6 +201,7 @@
     },
     "custom_text_6JP93D": {
       "type": "custom-text",
+      "disabled": true,
       "name": "Luminous Text Static",
       "settings": {
         "text": "<p>Driven by purposeful design, each candle is a luminous moment, perfecting your surroundings with effortless beauty and subtle complexity.</p>",
