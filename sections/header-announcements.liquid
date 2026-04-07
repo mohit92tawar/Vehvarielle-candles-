@@ -5,22 +5,20 @@
 >
   <div class="announcement-bar__marquee-wrapper">
     <div class="announcement-bar__marquee" id="marquee-track" style="--marquee-speed: {{ section.settings.speed }}s;">
-      <div class="announcement-bar__original">
+      <div class="marquee-set marquee-set--original">
         {% content_for 'blocks' %}
       </div>
+      <div class="marquee-set marquee-set--clone" aria-hidden="true"></div>
     </div>
   </div>
 </aside>
 
 <script>
   (function () {
-    const track = document.getElementById('marquee-track');
-    if (!track) return;
-    const original = track.querySelector('.announcement-bar__original');
-    if (!original) return;
-    const clone = original.cloneNode(true);
-    clone.setAttribute('aria-hidden', 'true');
-    track.appendChild(clone);
+    const original = document.querySelector('.marquee-set--original');
+    const clone = document.querySelector('.marquee-set--clone');
+    if (!original || !clone) return;
+    clone.innerHTML = original.innerHTML;
   })();
 </script>
 
@@ -34,8 +32,6 @@
   .announcement-bar__marquee-wrapper {
     overflow: hidden;
     width: 100%;
-    display: flex;
-    align-items: center;
   }
 
   .announcement-bar__marquee {
@@ -47,36 +43,42 @@
     cursor: default;
   }
 
-  .announcement-bar__original {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
+  /* Override theme's grid stacking for marquee */
+  .marquee-set {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
     align-items: center;
+    grid: unset !important;
   }
 
-  .announcement-bar__marquee [aria-hidden='true'] {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    align-items: center;
+  .marquee-set .announcement-bar__slides {
+    display: flex !important;
+    flex-direction: row !important;
+    grid: unset !important;
+    width: auto !important;
+    max-width: none !important;
+    margin: 0 !important;
   }
 
-  .announcement-bar__marquee .announcement-bar__slide {
-    white-space: nowrap;
-    padding-inline: 3rem;
+  .marquee-set .announcement-bar__slide {
+    grid-area: unset !important;
     opacity: 1 !important;
     visibility: visible !important;
     position: relative !important;
-    grid-area: unset !important;
+    white-space: nowrap;
+    padding-inline: 2.5rem;
+  }
+
+  .marquee-set .announcement-bar__slide::after {
+    content: '✦';
+    margin-left: 2.5rem;
+    opacity: 0.5;
   }
 
   @keyframes marquee-scroll {
-    0% {
-      transform: translateX(0);
-    }
-    100% {
-      transform: translateX(-50%);
-    }
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
   }
 {% endstylesheet %}
 
