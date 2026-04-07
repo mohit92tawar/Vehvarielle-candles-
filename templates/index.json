@@ -199,6 +199,11 @@
         "padding-block-end": 0
       }
     },
+    "custom_text_6JP93D": {
+      "type": "custom-text",
+      "name": "Luminous Text Static",
+      "settings": {}
+    },
     "candle_hero_section_9kLYpq": {
       "type": "Candle-hero-section",
       "blocks": {
@@ -550,6 +555,7 @@
     "health_hero_slider_UAF93e",
     "hero_trjgLy",
     "section_ptiVWE",
+    "custom_text_6JP93D",
     "candle_hero_section_9kLYpq",
     "care_notes_section_dq4q3e",
     "section_ViMdni",

@@ -1,62 +1,165 @@
-<section class="luminous-text-section">
-  <div class="luminous-container">
-    <p class="luminous-text">
-      Driven by purposeful design, each candle is a luminous moment, perfecting
-      your surroundings with effortless beauty and subtle complexity.
-    </p>
+<section 
+  class="luminous-text-section"
+  style="
+    background-color: {{ section.settings.bg_color }};
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  "
+>
+  <div 
+    class="luminous-container 
+    {% if section.settings.width == 'fit' %}page-width{% endif %}"
+    style="max-width: {{ section.settings.max_width }}px;"
+  >
+    <div 
+      class="luminous-text"
+      style="
+        color: {{ section.settings.text_color }};
+        font-size: {{ section.settings.font_size }}px;
+        line-height: {{ section.settings.line_height }};
+        font-weight: {{ section.settings.font_weight }};
+        text-align: {{ section.settings.alignment }};
+      "
+    >
+      {{ section.settings.text }}
+    </div>
   </div>
 </section>
 
 <style>
 .luminous-text-section {
-  background-color: #f5f3ef;
-  padding: 80px 20px;
-  text-align: center;
+  width: 100%;
 }
 
 .luminous-container {
-  max-width: 780px;
   margin: 0 auto;
 }
 
-.luminous-text {
-  font-size: 20px;
-  line-height: 1.8;
-  color: #5a3e2b;
-  font-weight: 400;
-}
-
-/* Tablet */
+/* Mobile responsiveness */
 @media screen and (max-width: 768px) {
-  .luminous-text-section {
-    padding: 60px 20px;
-  }
-
   .luminous-text {
-    font-size: 18px;
-  }
-}
-
-/* Mobile */
-@media screen and (max-width: 480px) {
-  .luminous-text-section {
-    padding: 50px 15px;
-  }
-
-  .luminous-text {
-    font-size: 16px;
-    line-height: 1.6;
+    font-size: calc({{ section.settings.font_size }}px - 4px);
   }
 }
 </style>
 
 {% schema %}
 {
-  "name": "Luminous Text Static",
-  "settings": [],
+  "name": "Luminous Text Advanced",
+  "settings": [
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text",
+      "default": "<p>Driven by purposeful design, each candle is a luminous moment, perfecting your surroundings with effortless beauty and subtle complexity.</p>"
+    },
+
+    {
+      "type": "select",
+      "id": "width",
+      "label": "Width",
+      "options": [
+        { "value": "fit", "label": "Fit" },
+        { "value": "full", "label": "Full Width" }
+      ],
+      "default": "fit"
+    },
+
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Max Width",
+      "min": 400,
+      "max": 1200,
+      "step": 20,
+      "default": 800
+    },
+
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "Text Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center"
+    },
+
+    {
+      "type": "range",
+      "id": "font_size",
+      "label": "Font Size",
+      "min": 12,
+      "max": 60,
+      "step": 1,
+      "default": 20
+    },
+
+    {
+      "type": "select",
+      "id": "font_weight",
+      "label": "Font Weight",
+      "options": [
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Regular" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi Bold" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "400"
+    },
+
+    {
+      "type": "select",
+      "id": "line_height",
+      "label": "Line Height",
+      "options": [
+        { "value": "1.4", "label": "Tight" },
+        { "value": "1.6", "label": "Normal" },
+        { "value": "1.8", "label": "Relaxed" }
+      ],
+      "default": "1.8"
+    },
+
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#5a3e2b"
+    },
+
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#f5f3ef"
+    },
+
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "default": 80
+    },
+
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "default": 80
+    }
+  ],
   "presets": [
     {
-      "name": "Luminous Text Static"
+      "name": "Luminous Text Advanced"
     }
   ]
 }
