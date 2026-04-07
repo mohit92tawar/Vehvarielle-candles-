@@ -7,9 +7,7 @@
   "
 >
   <div 
-    class="luminous-container 
-    {% if section.settings.width == 'fit' %}page-width{% endif %}"
-    style="max-width: {{ section.settings.max_width }}px;"
+    class="luminous-container {% if section.settings.width == 'fit' %}page-width{% endif %}"
   >
     <div 
       class="luminous-text"
@@ -19,6 +17,7 @@
         line-height: {{ section.settings.line_height }};
         font-weight: {{ section.settings.font_weight }};
         text-align: {{ section.settings.alignment }};
+        max-width: {{ section.settings.max_width }}px;
       "
     >
       {{ section.settings.text }}
@@ -33,12 +32,30 @@
 
 .luminous-container {
   margin: 0 auto;
+  display: flex;
+  justify-content: center; /* FIX: perfect center */
 }
 
-/* Mobile responsiveness */
+.luminous-text {
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* ✅ MOBILE FIX */
 @media screen and (max-width: 768px) {
   .luminous-text {
+    max-width: 90% !important;  /* FIX: side spacing */
     font-size: calc({{ section.settings.font_size }}px - 4px);
+    line-height: 1.6;
+    text-align: center !important; /* FORCE CENTER */
+  }
+}
+
+/* EXTRA SMALL DEVICES */
+@media screen and (max-width: 480px) {
+  .luminous-text {
+    max-width: 92% !important;
+    font-size: calc({{ section.settings.font_size }}px - 6px);
   }
 }
 </style>
