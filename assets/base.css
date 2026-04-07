@@ -4954,3 +4954,9 @@ product-recommendations:has([data-has-recommendations='false']) {
   width:309px;
  }
 }
+
+@media (max-width: 768px) {
+    body {
+         padding-top: 0px;
+    }
+}
