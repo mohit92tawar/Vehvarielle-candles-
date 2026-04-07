@@ -14,9 +14,6 @@
   {% liquid
     assign autoplay = true
     assign show_arrows = false
-    if section.blocks.size > 1
-      assign show_arrows = true
-    endif
   %}
 
   <announcement-bar-component
@@ -25,9 +22,6 @@
       autoplay="{{ section.settings.speed }}" aria-live="polite"
     {% endif %}
   >
-    {% if show_arrows %}
-      {% render 'slideshow-arrows', icon_style: 'chevron' %}
-    {% endif %}
 
     <div class="announcement-bar__slides">
       {% content_for 'blocks' %}
@@ -56,7 +50,7 @@
   .announcement-bar__slides {
     display: grid;
     grid: [stack] auto / [stack] auto;
-    width: calc(100% - var(--button-size) * 2);
+    width: 100%;
     max-width: 680px;
     margin-inline: auto;
     cursor: default;
