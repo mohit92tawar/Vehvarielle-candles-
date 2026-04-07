@@ -2,6 +2,7 @@
 
 {% style %}
 .health-slider-nav-{{ custom_health_slider }} svg { width: 34px; height: 34px; }
+
   .health-slider-{{ custom_health_slider }} {
     position: relative;
     width: {{ section.settings.desktop_width_percent }}%;
@@ -9,7 +10,6 @@
     display: block;
     overflow: hidden;
     border-radius: {{ section.settings.border_radius }}px;
-    display: none;
   }
 
   .health-slider-wrapper-{{ custom_health_slider }} {
@@ -20,32 +20,34 @@
   }
 
   .health-slider-track-{{ custom_health_slider }} {
-    display: flex;
+    position: relative;
     width: 100%;
     height: 100%;
-    position: relative;
   }
 
+  /* FIX 1: Slides ab properly hide/show honge */
   .health-slider-slide-{{ custom_health_slider }} {
-    width: 100%;
-    /* position: absolute;
+    position: absolute;
     top: 0; left: 0;
     width: 100%; height: 100%;
     opacity: 0;
-    transition: opacity {{ section.settings.transition_speed }}s ease-in-out; */
+    transition: opacity {{ section.settings.transition_speed }}s ease-in-out;
+    pointer-events: none;
   }
 
   .health-slider-slide-{{ custom_health_slider }}.active {
     opacity: 1;
     z-index: 1;
+    pointer-events: auto;
   }
 
+  /* FIX 2: Image ab full cover hogi */
   .health-slider-image-{{ custom_health_slider }} {
-    /* position: absolute;
+    position: absolute;
     top: 0; left: 0;
     width: 100%; height: 100%;
     object-fit: cover;
-    object-position: {{ section.settings.image_position }}; */
+    object-position: {{ section.settings.image_position }};
   }
 
   .health-slider-mobile-image-{{ custom_health_slider }} {
@@ -72,6 +74,7 @@
     opacity: 0.15;
   }
 
+  /* FIX 3: Content layer — left text + right product card dono ek saath */
   .health-slider-content-{{ custom_health_slider }} {
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
@@ -79,13 +82,46 @@
     padding: 46px 66px;
     display: flex;
     align-items: flex-end;
-    justify-content: flex-end;
+    justify-content: space-between;
+    gap: 20px;
   }
 
-  /* ===== PRODUCT CARD ===== */
+  /* ===== LEFT BOTTOM TEXT ===== */
+  .hs-slide-text-{{ custom_health_slider }} {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-width: 45%;
+    flex: 1;
+  }
+
+  .hs-slide-subheading-{{ custom_health_slider }} {
+    font-size: {{ section.settings.subheading_size }}px;
+    font-weight: 600;
+    color: {{ section.settings.heading_color }};
+    margin: 0;
+    line-height: 1.2;
+    {% if section.settings.text_shadow == 'subtle' %}text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    {% elsif section.settings.text_shadow == 'medium' %}text-shadow: 0 2px 6px rgba(0,0,0,0.5);
+    {% elsif section.settings.text_shadow == 'strong' %}text-shadow: 0 3px 10px rgba(0,0,0,0.7);
+    {% endif %}
+  }
+
+  .hs-slide-description-{{ custom_health_slider }} {
+    font-size: {{ section.settings.description_size }}px;
+    font-weight: 400;
+    color: {{ section.settings.text_color }};
+    margin: 0;
+    line-height: 1.5;
+    {% if section.settings.text_shadow == 'subtle' %}text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    {% elsif section.settings.text_shadow == 'medium' %}text-shadow: 0 2px 6px rgba(0,0,0,0.5);
+    {% elsif section.settings.text_shadow == 'strong' %}text-shadow: 0 3px 10px rgba(0,0,0,0.7);
+    {% endif %}
+  }
+
+  /* ===== PRODUCT CARD (right side) ===== */
   .hs-product-card-{{ custom_health_slider }} {
-     /* background: radial-gradient(ellipse at center, #c7c2b9 0%, #e9e7e2 100%); */
-     background: #f4ebeb00;
+    background: #f4ebeb00;
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-radius: 30px;
@@ -95,20 +131,18 @@
     flex-direction: column;
     gap: 25px;
     width: 404px;
-    /* min-width: 394px;
-    max-width: 394px; */
     height: 423px;
     box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.08),
-              inset 0 -2px 4px rgba(255, 255, 255, 0.6);
+                inset 0 -2px 4px rgba(255, 255, 255, 0.6);
     text-decoration: none;
     cursor: pointer;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     pointer-events: auto;
     box-sizing: border-box;
+    flex-shrink: 0;
   }
 
   .hs-product-card-{{ custom_health_slider }}:hover {
-    /* transform: translateY(-4px); */
     box-shadow: 0 18px 48px rgba(0,0,0,0.18);
   }
 
@@ -116,7 +150,6 @@
     pointer-events: none;
   }
 
-  /* Top row: title+price left, button right */
   .hs-product-card-top-{{ custom_health_slider }} {
     display: flex;
     align-items: center;
@@ -147,9 +180,8 @@
   .hs-product-card-price-{{ custom_health_slider }} {
     font-size: 20px;
     font-weight: 500;
-    color: #444;
+    color: #4A2A15;
     margin: 0;
-     color: #4A2A15;
   }
 
   .hs-product-card-btn-{{ custom_health_slider }} {
@@ -167,7 +199,6 @@
     flex-shrink: 0;
   }
 
-  /* Product image area */
   .hs-product-card-img-wrap-{{ custom_health_slider }} {
     width: 100%;
     flex: 1;
@@ -192,7 +223,7 @@
     display: block;
   }
 
-  /* Nav Arrows */
+  /* ===== NAV ARROWS ===== */
   .health-slider-nav-{{ custom_health_slider }} {
     position: absolute;
     top: 50%;
@@ -209,7 +240,6 @@
     justify-content: center;
     cursor: pointer;
     transition: all 0.3s ease;
-    display: none;
   }
 
   .health-slider-nav-{{ custom_health_slider }}:hover {
@@ -220,7 +250,7 @@
   .health-slider-nav-prev-{{ custom_health_slider }} { left: {{ section.settings.nav_offset }}px; }
   .health-slider-nav-next-{{ custom_health_slider }} { right: {{ section.settings.nav_offset }}px; }
 
-  /* Dots */
+  /* ===== DOTS ===== */
   .health-slider-dots-{{ custom_health_slider }} {
     position: absolute;
     bottom: 17px;
@@ -282,12 +312,11 @@
     .health-slider-slide-{{ custom_health_slider }}.has-mobile-image .health-slider-mobile-image-{{ custom_health_slider }} { display: block; }
 
     .health-slider-content-{{ custom_health_slider }} {
-      padding: 27px;
-       align-items: flex-end;
-      justify-content: flex-end;
-     /* align-items:center;
-      justify-content:center;  */
-       padding-bottom: 60px; 
+      padding: 20px;
+      padding-bottom: 50px;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 10px;
     }
 
     .health-slider-nav-{{ custom_health_slider }} {
@@ -298,12 +327,22 @@
     .health-slider-nav-prev-{{ custom_health_slider }} { left: 10px; }
     .health-slider-nav-next-{{ custom_health_slider }} { right: 10px; }
 
+    /* Mobile: left text */
+    .hs-slide-text-{{ custom_health_slider }} {
+      max-width: 45%;
+      gap: 4px;
+    }
+
+    .hs-slide-subheading-{{ custom_health_slider }} { font-size: 14px; }
+    .hs-slide-description-{{ custom_health_slider }} { font-size: 11px; }
+
+    /* Mobile: product card */
     .hs-product-card-{{ custom_health_slider }} {
-      width: 180px;
-      min-width: 180px;
-      max-width: 180px;
+      width: 160px;
+      min-width: 160px;
+      max-width: 160px;
       height: auto;
-      min-height: 200px;
+      min-height: 190px;
       padding: 12px;
       gap: 8px;
       border-radius: 20px;
@@ -313,7 +352,7 @@
     .hs-product-card-price-{{ custom_health_slider }} { font-size: 11px; }
     .hs-product-card-btn-{{ custom_health_slider }} { font-size: 10px; padding: 5px 10px; }
     .hs-product-card-img-wrap-{{ custom_health_slider }} { min-height: 90px; padding: 8px; }
-    .hs-product-card-img-{{ custom_health_slider }} { max-height: 100px; }
+    .hs-product-card-img-{{ custom_health_slider }} { max-height: 90px; }
   }
 {% endstyle %}
 
@@ -333,6 +372,8 @@
         {% assign slide_mobile_image = block.settings.mobile_image %}
         {% assign slide_product      = block.settings.product %}
         {% assign slide_btn_text     = block.settings.product_button_text %}
+        {% assign slide_subheading   = block.settings.subheading %}
+        {% assign slide_description  = block.settings.description %}
 
         {% if slide_image != blank %}
           {% assign has_slides = true %}
@@ -346,6 +387,7 @@
                data-slide="{{ forloop.index0 }}"
                {{ block.shopify_attributes }}>
 
+            <!-- Desktop Image -->
             <img
               src="{{ slide_image | image_url: width: 2000 }}"
               alt="{{ slide_image.alt | escape }}"
@@ -355,6 +397,7 @@
               class="health-slider-image-{{ custom_health_slider }}"
             >
 
+            <!-- Mobile Image -->
             {% if slide_mobile_image != blank %}
               <img
                 src="{{ slide_mobile_image | image_url: width: 1200 }}"
@@ -366,10 +409,24 @@
               >
             {% endif %}
 
-            <div class="health-slider-overlay-{{ custom_health_slider }}"></div>
-
+            <!-- Content: Left text + Right product card -->
             <div class="health-slider-content-{{ custom_health_slider }}">
 
+              <!-- LEFT BOTTOM TEXT -->
+              {% if slide_subheading != blank or slide_description != blank %}
+                <div class="hs-slide-text-{{ custom_health_slider }}">
+                  {% if slide_subheading != blank %}
+                    <p class="hs-slide-subheading-{{ custom_health_slider }}">{{ slide_subheading }}</p>
+                  {% endif %}
+                  {% if slide_description != blank %}
+                    <p class="hs-slide-description-{{ custom_health_slider }}">{{ slide_description }}</p>
+                  {% endif %}
+                </div>
+              {% else %}
+                <div></div>
+              {% endif %}
+
+              <!-- RIGHT: PRODUCT CARD -->
               {% if slide_product != blank %}
                 {% assign prod_img   = slide_product.featured_image %}
                 {% assign prod_price = slide_product.price | money %}
@@ -447,7 +504,6 @@
       }
 
       connectedCallback() {
-        this.style.display = 'block';
         this.slides = this.querySelectorAll('.health-slider-slide-{{ custom_health_slider }}');
         this.totalSlides = this.slides.length;
         if (this.totalSlides <= 1) return;
@@ -545,22 +601,11 @@
         { "value": "none", "label": "None" }
       ], "default": "left_fade" },
     { "type": "range", "id": "overlay_opacity", "label": "Overlay opacity", "min": 0, "max": 1, "step": 0.1, "default": 1 },
-    { "type": "header", "content": "Content layout" },
-    { "type": "range", "id": "text_area_width", "label": "Text area width", "min": 30, "max": 70, "step": 5, "unit": "%", "default": 50 },
-    { "type": "select", "id": "content_alignment", "label": "Content alignment", "options": [
-        { "value": "flex-start", "label": "Top" },
-        { "value": "center", "label": "Center" },
-        { "value": "flex-end", "label": "Bottom" }
-      ], "default": "center" },
-    { "type": "range", "id": "content_spacing", "label": "Content spacing", "min": 10, "max": 40, "step": 5, "unit": "px", "default": 20 },
-    { "type": "range", "id": "padding_vertical", "label": "Vertical padding", "min": 20, "max": 100, "step": 10, "unit": "px", "default": 60 },
-    { "type": "range", "id": "padding_horizontal", "label": "Horizontal padding", "min": 20, "max": 100, "step": 10, "unit": "px", "default": 40 },
     { "type": "header", "content": "Typography" },
-    { "type": "range", "id": "heading_size", "label": "Heading size", "min": 24, "max": 72, "step": 2, "unit": "px", "default": 50 },
-    { "type": "color", "id": "heading_color", "label": "Heading color", "default": "#ffffff" },
-    { "type": "range", "id": "subheading_size", "label": "Subheading size", "min": 14, "max": 32, "step": 2, "unit": "px", "default": 20 },
+    { "type": "range", "id": "subheading_size", "label": "Subheading size", "min": 14, "max": 40, "step": 2, "unit": "px", "default": 20 },
     { "type": "range", "id": "description_size", "label": "Description size", "min": 12, "max": 24, "step": 2, "unit": "px", "default": 16 },
-    { "type": "color", "id": "text_color", "label": "Text color", "default": "#f5f5f5" },
+    { "type": "color", "id": "heading_color", "label": "Heading / Subheading color", "default": "#ffffff" },
+    { "type": "color", "id": "text_color", "label": "Description text color", "default": "#f5f5f5" },
     { "type": "select", "id": "text_shadow", "label": "Text shadow", "options": [
         { "value": "none", "label": "None" },
         { "value": "subtle", "label": "Subtle" },
@@ -575,6 +620,9 @@
       "settings": [
         { "type": "image_picker", "id": "image", "label": "Desktop Image" },
         { "type": "image_picker", "id": "mobile_image", "label": "Mobile Image" },
+        { "type": "header", "content": "Left Bottom Text" },
+        { "type": "text", "id": "subheading", "label": "Subheading", "default": "New Arrival" },
+        { "type": "textarea", "id": "description", "label": "Description", "default": "The scent of rain-kissed petals and soft skin." },
         { "type": "header", "content": "Product Card" },
         { "type": "product", "id": "product", "label": "Select Product" },
         { "type": "text", "id": "product_button_text", "label": "Button Text", "default": "Shop now" }
