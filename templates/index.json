@@ -170,6 +170,7 @@
       "block_order": [
         "text_NxVXwH"
       ],
+      "disabled": true,
       "name": "t:names.custom_section",
       "settings": {
         "content_direction": "column",
@@ -202,7 +203,19 @@
     "custom_text_6JP93D": {
       "type": "custom-text",
       "name": "Luminous Text Static",
-      "settings": {}
+      "settings": {
+        "text": "<p>Driven by purposeful design, each candle is a luminous moment, perfecting your surroundings with effortless beauty and subtle complexity.</p>",
+        "width": "fit",
+        "max_width": 800,
+        "alignment": "center",
+        "font_size": 20,
+        "font_weight": "400",
+        "line_height": "1.8",
+        "text_color": "#492914",
+        "bg_color": "#ffffff",
+        "padding_top": 80,
+        "padding_bottom": 80
+      }
     },
     "candle_hero_section_9kLYpq": {
       "type": "Candle-hero-section",
