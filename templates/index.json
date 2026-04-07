@@ -27,8 +27,8 @@
           "type": "slide",
           "settings": {
             "image": "shopify://shop_images/Group_1321317183.png",
-            "subheading": "New Arrival",
-            "description": "The scent of rain-kissed petals and soft skin.",
+            "subheading": "",
+            "description": "The scent of rain-kissed petals and soft skin. Tuberose is a dewy floral, elegant, creamy, and quietly radiant.",
             "product": "tuberose-copy-1",
             "product_button_text": "Shop now"
           }
@@ -37,8 +37,8 @@
           "type": "slide",
           "settings": {
             "image": "shopify://shop_images/Group_1321317193.png",
-            "subheading": "New Arrival",
-            "description": "The scent of rain-kissed petals and soft skin.",
+            "subheading": "",
+            "description": "The scent of rain-kissed petals and soft skin. Tuberose is a dewy floral, elegant, creamy, and quietly radiant.",
             "product": "tuberose-test-copy",
             "product_button_text": "Shop now"
           }
@@ -54,20 +54,13 @@
         "desktop_width_percent": 100,
         "border_radius": 0,
         "image_position": "center",
-        "autoplay": true,
         "autoplay_speed": 5,
         "transition_speed": 0.5,
-        "show_navigation": true,
         "show_dots": true,
-        "nav_button_size": 40,
-        "nav_offset": 15,
-        "nav_icon_color": "#000000",
         "dot_size": 14,
         "dots_spacing": 8,
         "dot_color": "#ffffff",
         "dot_active_color": "#ffffff",
-        "overlay_style": "left_fade",
-        "overlay_opacity": 1,
         "subheading_size": 20,
         "description_size": 16,
         "heading_color": "#fceed9",
