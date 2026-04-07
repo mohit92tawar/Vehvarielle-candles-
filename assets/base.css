@@ -4954,16 +4954,3 @@ product-recommendations:has([data-has-recommendations='false']) {
   width:309px;
  }
 }
-@media (max-width: 749px) {
-  .section-wrapper {
-    display: flex;
-    justify-content: center;
-  }
-
-  #Ad1VVTDUxU25LM09yd__text_NxVXwH p {
-    max-width: 300px;
-    margin: 0 auto;
-    text-align: center !important;
-    line-height: 1.6;
-  }
-}
