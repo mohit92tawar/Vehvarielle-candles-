@@ -393,7 +393,7 @@ p:empty {
   .page-width-normal,
   .page-width-narrow,
   .page-width-content {
-    --page-margin: 40px;
+    /* --page-margin: 40px; */
   }
 }
 
@@ -4953,10 +4953,4 @@ product-recommendations:has([data-has-recommendations='false']) {
   font-size:18px;
   width:309px;
  }
-}
-
-@media (max-width: 768px) {
-    body {
-         padding-top: 0px;
-    }
 }
