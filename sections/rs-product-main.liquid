@@ -321,9 +321,9 @@
 
 /* ── PERFECT MATCH ── */
 .rs-perfect-match {
-     margin-top: -260px;
+     {% comment %} margin-top: -260px;
     margin-left: 105px;
-    width: 40%;
+    width: 40%; {% endcomment %}
     }
 .rs-perfect-match__heading {
   font-size: 28px; font-weight: 400;
@@ -423,7 +423,32 @@ align-items: stretch;
 .rs-info__price {
   font-size: 24px;}
 }
+/* ================= DESKTOP PERFECT FIX ================= */
+@media (min-width: 901px) {
 
+  .rs-below-inner {
+    display: grid;
+    grid-template-columns: 65% 35%;
+    gap: 60px;
+    align-items: start;
+  }
+
+  .rs-tabs-section {
+    width: 100%;
+  }
+
+  .rs-perfect-match {
+    width: 100%;
+    margin: 0;
+    position: sticky;
+    top: 40px;
+  }
+
+  .rs-tab-panel__content {
+    max-width: 100%;
+  }
+
+}
 </style>
 
 {%- assign product = product -%}
