@@ -24,7 +24,7 @@
   --btn-bg:  #3b2a1e;
   --btn-txt: #fff;
   --star:    #d4a820;
-
+ 
   color: var(--text);
   background: #fff;
   padding: 28px 40px 80px;
@@ -228,19 +228,19 @@
 .rs-accordion__item { border-bottom: 1px solid var(--border); }
 .rs-accordion__header {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 18px 0;
-  cursor: pointer;
-  font-size: 24px;
-  font-weight: 500;
-  text-transform: capitalize;
-  color: var(--dark);
-  background: none;
-  border: none;
-  width: 100%;
-  text-align: left;
-  transition: color .2s;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 0;
+    cursor: pointer;
+    font-size: 24px;
+    font-weight: 500;
+    text-transform: capitalize;
+    color: var(--dark);
+    background: none;
+    border: none;
+    width: 100%;
+    text-align: left;
+    transition: color .2s;
 }
 .rs-accordion__header:hover { color: var(--green); }
 .rs-accordion__icon {
@@ -281,12 +281,14 @@
 .rs-info__pincode-input {
   padding: 9px 14px; border: 1px solid var(--border);
   border-radius: 2px; font-size: 13px; width: 140px; outline: none;
+ 
 }
 .rs-info__pincode-input:focus { border-color: var(--green); }
 .rs-info__pincode-check-btn {
   padding: 9px 18px; background: var(--btn-bg); color: #fff;
   border: none; border-radius: 2px; font-size: 11px; font-weight: 600;
   letter-spacing: .1em; text-transform: uppercase; cursor: pointer;
+ 
 }
 .rs-info__pincode-msg { font-size: 12px; color: var(--green); margin-top: 6px; min-height: 16px; }
 
@@ -297,15 +299,15 @@
 .rs-tabs { border-bottom: 1px solid var(--border); margin-bottom: 32px; display: flex; gap: 0; }
 .rs-tab-btn {
   padding: 14px 0;
-  margin-right: 40px;
-  font-size: 24px;
-  font-weight: 500;
-  text-transform: capitalize;
-  background: none;
-  border: none;
-  border-bottom: 2px solid transparent;
-  cursor: pointer;
-  transition: color .2s, border-color .2s;
+    margin-right: 40px;
+    font-size: 24px;
+    font-weight: 500;
+    text-transform: capitalize;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    transition: color .2s, border-color .2s;
 }
 .rs-tab-btn.active { color: var(--dark); border-bottom-color: var(--btn-bg); }
 .rs-tab-btn:hover { color: var(--dark); }
@@ -319,10 +321,10 @@
 
 /* ── PERFECT MATCH ── */
 .rs-perfect-match {
-  margin-top: -260px;
-  margin-left: 105px;
-  width: 40%;
-}
+     margin-top: -260px;
+    margin-left: 105px;
+    width: 40%;
+    }
 .rs-perfect-match__heading {
   font-size: 28px; font-weight: 400;
   color: var(--dark); margin-bottom: 20px;
@@ -352,7 +354,7 @@
   background: none; border: none; white-space: nowrap;
   transition: color .2s;
 }
-.rs-match-wishlist:hover { color: var(--green); }
+.rs-match-wishlist:hover { color: var(--4A2A15); }
 
 /* ── BELOW LAYOUT (tabs left, perfect match right) ── */
 .rs-below-inner {
@@ -395,25 +397,32 @@
 @media (max-width: 900px) {
   .rs-product { padding: 16px 20px 48px; }
   .rs-product__grid { grid-template-columns: 1fr; gap: 32px; }
-  .rs-gallery { max-width: 100%; overflow: hidden; }
-  .rs-info__title { font-size: 36px; font-weight: 600; }
+  .rs-gallery { max-width: 100%; overflow: hidden;}
+  .rs-info__title { font-size: 36px; font-weight:600;}
   .rs-below-inner { grid-template-columns: 1fr; gap: 40px; }
-  .rs-cart-row { display: grid; }
-}
+  .rs-cart-row {display: grid;}
+ }
 @media (max-width: 480px) {
   .rs-info__title { font-size: 28px; }
   .rs-gallery__thumb { flex: 0 0 60px; height: 60px; }
   .rs-btn-cart { max-width: 100%; }
 }
 @media (max-width: 768px) {
-  .rs-tabs-section { display: none; }
-  .rs-perfect-match {
-    margin-top: 0 !important;
-    margin-left: 0 !important;
-    width: 100% !important;
-  }
-  .rs-match-item { align-items: stretch; }
-  .rs-info__price { font-size: 24px; }
+  .rs-tabs-section{
+  display:none;
+}
+
+   .rs-perfect-match {
+  margin-top: 0 !important;
+  margin-left: 0 !important;
+  width: 100% !important;
+}
+.rs-match-item {
+align-items: stretch;
+}
+.rs-info__price {
+  font-size: 24px;}
+}
 }
 </style>
 
@@ -573,27 +582,8 @@
           </div>
         {% endif %}
 
-        <!-- PINCODE CHECKER -->
-        <div class="rs-pincode-wrap">
-          <button class="rs-info__pincode-trigger" onclick="rsTogglePincode('{{ section.id }}')">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-              <circle cx="12" cy="10" r="3"/>
-            </svg>
-            Check delivery — <span>Enter pincode</span>
-          </button>
-          <div class="rs-info__pincode-input-wrap" id="rs-pincode-wrap-{{ section.id }}">
-            <input
-              class="rs-info__pincode-input"
-              id="rs-pincode-input-{{ section.id }}"
-              type="text" maxlength="6" inputmode="numeric"
-              placeholder="Enter 6-digit pincode"
-              onkeydown="if(event.key==='Enter')rsPincodeCheck('{{ section.id }}')"
-            >
-            <button class="rs-info__pincode-check-btn" onclick="rsPincodeCheck('{{ section.id }}')">Check</button>
-          </div>
-          <div class="rs-info__pincode-msg" id="rs-pincode-msg-{{ section.id }}"></div>
-        </div>
+       
+
 
       </div><!-- /rs-info -->
     </div><!-- /rs-product__grid -->
@@ -615,7 +605,9 @@
               {% if section.settings.tab_overview != blank %}
                 {{ section.settings.tab_overview }}
               {% else %}
-                {{ product.metafields.custom.product_overview | metafield_tag }}
+
+{{ product.metafields.custom.product_overview | metafield_tag }}
+
               {% endif %}
             </div>
           </div>
@@ -623,9 +615,9 @@
           <div id="rs-tab-packaging-{{ section.id }}" class="rs-tab-panel">
             <div class="rs-tab-panel__content">
               {% if section.settings.tab_packaging != blank %}
-                {{ section.settings.tab_packaging }}
+{{ product.metafields.custom.packaging | metafield_tag }}
               {% else %}
-                {{ product.metafields.custom.packaging | metafield_tag }}
+                <p>Packaging details are not yet available for this product.</p>
               {% endif %}
             </div>
           </div>
@@ -633,9 +625,11 @@
           <div id="rs-tab-shipping-{{ section.id }}" class="rs-tab-panel">
             <div class="rs-tab-panel__content">
               {% if section.settings.tab_shipping != blank %}
-                {{ section.settings.tab_shipping }}
+                                                {{ product.metafields.custom.shipping_return | metafield_tag }}
+
+
               {% else %}
-                {{ product.metafields.custom.shipping_return | metafield_tag }}
+                <p>Standard delivery in 3–5 business days. Free shipping on orders above ₹499. Returns accepted within 7 days of delivery.</p>
               {% endif %}
             </div>
           </div>
@@ -676,7 +670,7 @@
 
 <!-- ZOOM LIGHTBOX -->
 <div class="rs-zoom-overlay" id="rs-zoom-{{ section.id }}" onclick="rsCloseZoom('{{ section.id }}')">
-  <button class="rs-zoom-close" onclick="rsCloseZoom('{{ section.id }}')" aria-label="Close">&#10005;</button>
+  <button class="rs-zoom-close" onclick="rsCloseZoom('{{ section.id }}')" aria-label="Close">✕</button>
   <img src="" alt="Zoom" id="rs-zoom-img-{{ section.id }}">
 </div>
 
@@ -712,8 +706,8 @@
   /* ─────────── HOVER ZOOM ─────────── */
   var _hz = {};
   window.rsHoverZoomEnter = function (id) {
-    var mainImg   = document.getElementById('rs-main-img-' + id);
-    var result    = document.getElementById('rs-zoom-result-' + id);
+    var mainImg  = document.getElementById('rs-main-img-' + id);
+    var result   = document.getElementById('rs-zoom-result-' + id);
     var resultImg = document.getElementById('rs-zoom-result-img-' + id);
     if (!mainImg || !result || !resultImg) return;
     var hiSrc = mainImg.src.replace(/width=\d+/, 'width=1600');
@@ -761,69 +755,101 @@
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') rsCloseZoom(sid); });
 
   /* ─────────── ADD TO CART ─────────── */
-  window.rsAddToCart = function (id) {
-    var btn = document.getElementById('rs-add-to-cart-' + id);
-    var msg = document.getElementById('rs-cart-msg-' + id);
-    if (!btn || btn.disabled) return;
+window.rsAddToCart = function (id) {
 
-    var variantId = parseInt(btn.getAttribute('data-variant-id'));
-    if (!variantId) return;
+  var btn = document.getElementById('rs-add-to-cart-' + id);
+  var msg = document.getElementById('rs-cart-msg-' + id);
 
-    var originalText = btn.textContent;
-    btn.classList.add('loading');
-    btn.textContent = 'Adding...';
-    if (msg) { msg.textContent = ''; msg.className = 'rs-cart-msg'; }
+  if (!btn || btn.disabled) return;
 
-    fetch('/cart/add.js', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
-      body: JSON.stringify({ id: variantId, quantity: 1 })
+  // 🔥 correct variant (button से लो)
+  var variantId = parseInt(btn.getAttribute('data-variant-id'));
+  if (!variantId) return;
+
+  var originalText = btn.textContent;
+
+  btn.classList.add('loading');
+  btn.textContent = 'Adding...';
+
+  if (msg) {
+    msg.textContent = '';
+    msg.className = 'rs-cart-msg';
+  }
+
+  fetch('/cart/add.js', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Requested-With': 'XMLHttpRequest'
+    },
+    body: JSON.stringify({
+      id: variantId,
+      quantity: 1
     })
-    .then(function (res) {
-      if (!res.ok) {
-        return res.json().then(function (d) { throw new Error(d.description || 'Error adding to cart'); });
-      }
-      return res.json();
-    })
-    .then(function () {
-      btn.classList.remove('loading');
-      btn.classList.add('success');
-      btn.textContent = '✓ Added';
-      if (msg) { msg.textContent = 'Item added to cart'; msg.classList.add('success'); }
-      document.dispatchEvent(new CustomEvent('cart:updated'));
-      setTimeout(function () {
-        btn.classList.remove('success');
-        btn.textContent = originalText;
-      }, 2000);
-    })
-    .catch(function (err) {
-      btn.classList.remove('loading');
+  })
+  .then(function (res) {
+    if (!res.ok) {
+      return res.json().then(function(d){
+        throw new Error(d.description || 'Error adding to cart');
+      });
+    }
+    return res.json();
+  })
+  .then(function () {
+
+    btn.classList.remove('loading');
+    btn.classList.add('success');
+    btn.textContent = '✓ Added';
+
+    if (msg) {
+      msg.textContent = 'Item added to cart';
+      msg.classList.add('success');
+    }
+
+    document.dispatchEvent(new CustomEvent('cart:updated'));
+
+    setTimeout(function () {
+      btn.classList.remove('success');
       btn.textContent = originalText;
-      if (msg) { msg.textContent = err.message || 'Error adding to cart'; msg.classList.add('error'); }
-    });
-  };
+    }, 2000);
+
+  })
+  .catch(function (err) {
+
+    btn.classList.remove('loading');
+    btn.textContent = originalText;
+
+    if (msg) {
+      msg.textContent = err.message || 'Error adding to cart';
+      msg.classList.add('error');
+    }
+  });
+};
 
   /* ─────────── VARIANT SELECT ─────────── */
   window.rsSelectVariant = function (id, btnEl) {
     var container = document.getElementById('rs-variants-' + id);
     if (container) {
-      container.querySelectorAll('.rs-variant-btn').forEach(function (b) { b.classList.remove('active'); });
+      container.querySelectorAll('.rs-variant-btn').forEach(function(b){ b.classList.remove('active'); });
     }
     btnEl.classList.add('active');
     var variantId = btnEl.getAttribute('data-variant-id');
     var price     = btnEl.getAttribute('data-price');
     var available = btnEl.getAttribute('data-available') === 'true';
-    var cartBtn   = document.getElementById('rs-add-to-cart-' + id);
+    // Update cart button
+    var cartBtn = document.getElementById('rs-add-to-cart-' + id);
     if (cartBtn) {
       cartBtn.setAttribute('data-variant-id', variantId);
-      cartBtn.textContent    = available ? 'Add to Bag' : 'Out of Stock';
-      cartBtn.disabled       = !available;
-      cartBtn.style.opacity  = available ? '1' : '0.5';
-      cartBtn.style.cursor   = available ? 'pointer' : 'not-allowed';
+      cartBtn.textContent = available ? 'Add to Bag' : 'Out of Stock';
+      cartBtn.disabled = !available;
+      cartBtn.style.opacity = available ? '1' : '0.5';
+      cartBtn.style.cursor  = available ? 'pointer' : 'not-allowed';
       cartBtn.classList.remove('success', 'loading');
     }
+    // Update price display
     var priceEl = document.getElementById('rs-price-' + id);
     if (priceEl && price) priceEl.textContent = price;
+    // Update URL
     if (window.history && window.history.replaceState) {
       var url = new URL(window.location.href);
       url.searchParams.set('variant', variantId);
@@ -838,18 +864,19 @@
       var idx = wishlist.indexOf(productId);
       if (idx === -1) {
         wishlist.push(productId);
+        // Show brief feedback
         var btn = event && event.target;
         if (btn) {
           var orig = btn.textContent;
           btn.textContent = '♥ Saved';
           btn.style.color = '#e53935';
-          setTimeout(function () { btn.textContent = orig; btn.style.color = ''; }, 2000);
+          setTimeout(function(){ btn.textContent = orig; btn.style.color = ''; }, 2000);
         }
       } else {
         wishlist.splice(idx, 1);
       }
       localStorage.setItem('rs_wishlist', JSON.stringify(wishlist));
-    } catch (e) {}
+    } catch(e) {}
   };
 
   /* ─────────── ACCORDION ─────────── */
@@ -857,7 +884,8 @@
     var item = headerBtn.closest('.rs-accordion__item');
     if (!item) return;
     var isOpen = item.classList.contains('open');
-    item.closest('.rs-accordion').querySelectorAll('.rs-accordion__item').forEach(function (i) {
+    // Close all siblings
+    item.closest('.rs-accordion').querySelectorAll('.rs-accordion__item').forEach(function(i){
       i.classList.remove('open');
     });
     if (!isOpen) item.classList.add('open');
@@ -865,10 +893,12 @@
 
   /* ─────────── TABS ─────────── */
   window.rsTabSwitch = function (btnEl, panelId, id) {
-    btnEl.closest('.rs-tabs').querySelectorAll('.rs-tab-btn').forEach(function (b) { b.classList.remove('active'); });
+    // Deactivate all tabs in this section
+    btnEl.closest('.rs-tabs').querySelectorAll('.rs-tab-btn').forEach(function(b){ b.classList.remove('active'); });
     btnEl.classList.add('active');
+    // Hide all panels
     var section = btnEl.closest('.rs-tabs-section');
-    section.querySelectorAll('.rs-tab-panel').forEach(function (p) { p.classList.remove('active'); });
+    section.querySelectorAll('.rs-tab-panel').forEach(function(p){ p.classList.remove('active'); });
     var panel = document.getElementById(panelId);
     if (panel) panel.classList.add('active');
   };
@@ -882,16 +912,9 @@
   window.rsPincodeCheck = function (id) {
     var val = document.getElementById('rs-pincode-input-' + id).value.trim();
     var msg = document.getElementById('rs-pincode-msg-' + id);
-    if (val.length !== 6) {
-      msg.style.color = '#e53935';
-      msg.textContent = 'Please enter a valid 6-digit pincode.';
-      return;
-    }
+    if (val.length !== 6) { msg.style.color = '#e53935'; msg.textContent = 'Please enter a valid 6-digit pincode.'; return; }
     msg.style.color = '#aaa'; msg.textContent = 'Checking...';
-    setTimeout(function () {
-      msg.style.color = '#1a5c2a';
-      msg.textContent = '✓ Delivery available to ' + val + ' in 3–5 business days.';
-    }, 900);
+    setTimeout(function () { msg.style.color = '#1a5c2a'; msg.textContent = '✓ Delivery available to ' + val + ' in 3–5 business days.'; }, 900);
   };
 
 })();
@@ -941,19 +964,17 @@
       "type": "richtext",
       "id": "tab_overview",
       "label": "Product Overview Tab",
-      "info": "Leave blank to use product metafield (custom.product_overview)"
+      "info": "Leave blank to use product description"
     },
     {
       "type": "richtext",
       "id": "tab_packaging",
-      "label": "Packaging Tab",
-      "info": "Leave blank to use product metafield (custom.packaging)"
+      "label": "Packaging Tab"
     },
     {
       "type": "richtext",
       "id": "tab_shipping",
-      "label": "Shipping & Return Tab",
-      "info": "Leave blank to use product metafield (custom.shipping_return)"
+      "label": "Shipping & Return Tab"
     },
     {
       "type": "header",
