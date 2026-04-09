@@ -759,87 +759,53 @@ align-items: stretch;
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') rsCloseZoom(sid); });
 
   /* ─────────── ADD TO CART ─────────── */
- window.rsAddToCart = function (id) {
+  window.rsAddToCart = function (id) {
+    var btn = document.getElementById('rs-add-to-cart-' + id);
+    var msg = document.getElementById('rs-cart-msg-' + id);
+    if (!btn) return;
+    var variantId = parseInt(btn.getAttribute('data-variant-id'));
+    if (!variantId) return;
 
-  var btn = document.getElementById('rs-atc-' + id); // FIXED ID
-  var msg = document.getElementById('rs-cart-msg-' + id);
-  var qtyInput = document.getElementById('rs-qty-' + id);
+    btn.classList.add('loading');
+    btn.textContent = 'Adding...';
+    if (msg) msg.textContent = '';
 
-  if (!btn || btn.disabled) return;
-
-  var quantity = parseInt(qtyInput?.value) || 1;
-
-  // IMPORTANT → correct variant लेना
-  var variantId = _currentVariantId; // 🔥 FIX
-
-  if (!variantId) return;
-
-  // UI loading state
-  btn.classList.add('loading');
-  var originalText = btn.textContent;
-  btn.textContent = 'Adding...';
-
-  if (msg) {
-    msg.textContent = '';
-    msg.className = 'rs-cart-msg';
-  }
-
-  fetch('/cart/add.js', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'X-Requested-With': 'XMLHttpRequest'
-    },
-    body: JSON.stringify({
-      id: variantId,
-      quantity: quantity
+    fetch('/cart/add.js', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+      body: JSON.stringify({ id: variantId, quantity: 1 })
     })
-  })
-  .then(function (res) {
-    if (!res.ok) {
-      return res.json().then(function(d){
-        throw new Error(d.description || 'Error adding to cart');
-      });
-    }
-    return res.json();
-  })
-  .then(function () {
+    .then(function (res) {
+      if (!res.ok) return res.json().then(function(d){ throw new Error(d.description || 'Error adding to cart'); });
+      return res.json();
+    })
+    .then(function () {
+      btn.classList.remove('loading');
+      btn.classList.add('success');
+      btn.textContent = '✓ Added to Bag';
+      if (msg) { msg.style.color = '#1a5c2a'; msg.textContent = 'Item added successfully!'; }
 
-    // SUCCESS UI
-    btn.classList.remove('loading');
-    btn.classList.add('success');
-    btn.textContent = '✓ Added';
+      // Refresh cart count if using Shopify's cart bubble
+      fetch('/cart.js')
+        .then(function(r){ return r.json(); })
+        .then(function(cart){
+          var countEls = document.querySelectorAll('[data-cart-count],[data-cart-item-count],.cart-count,.cart__count');
+          countEls.forEach(function(el){ el.textContent = cart.item_count; });
+        });
 
-    if (msg) {
-      msg.textContent = 'Item added to cart';
-      msg.classList.add('success');
-    }
+      setTimeout(function () {
+        btn.classList.remove('success');
+        btn.textContent = 'Add to Bag';
+        if (msg) msg.textContent = '';
+      }, 3000);
+    })
+    .catch(function (err) {
+      btn.classList.remove('loading');
+      btn.textContent = 'Add to Bag';
+      if (msg) { msg.style.color = '#e53935'; msg.textContent = err.message || 'Could not add to cart. Please try again.'; }
+    });
+  };
 
-    // 🔥 BEST WAY → cart update event (slider जैसा)
-    document.dispatchEvent(new CustomEvent('cart:updated'));
-
-    setTimeout(function () {
-      btn.classList.remove('success');
-      btn.textContent = originalText;
-      btn.disabled = false;
-      if (msg) {
-        msg.textContent = '';
-        msg.className = 'rs-cart-msg';
-      }
-    }, 2000);
-
-  })
-  .catch(function (err) {
-
-    btn.classList.remove('loading');
-    btn.textContent = originalText;
-
-    if (msg) {
-      msg.textContent = err.message || 'Error adding to cart';
-      msg.classList.add('error');
-    }
-  });
-};
   /* ─────────── VARIANT SELECT ─────────── */
   window.rsSelectVariant = function (id, btnEl) {
     var container = document.getElementById('rs-variants-' + id);
