@@ -424,10 +424,43 @@
   display:none;
 }
 
-   .rs-perfect-match {
-  margin-top: 0 !important;
-  margin-left: 0 !important;
-  width: 100% !important;
+   @media (max-width: 768px) {
+
+  html, body {
+    overflow-x: hidden;
+  }
+
+  .rs-product {
+    padding: 16px;
+  }
+
+  .rs-product__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .rs-below-inner {
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .rs-tabs-section {
+    display: none;
+  }
+
+  .rs-perfect-match {
+    width: 100%;
+    margin: 0;
+  }
+
+  /* THUMB FIX */
+  .rs-gallery__thumb {
+    flex: 0 0 70px;
+    height: 70px;
+  }
+
+  .rs-gallery__thumbs {
+    overflow-x: auto;
+  }
 }
 }
 .rs-match-item {
