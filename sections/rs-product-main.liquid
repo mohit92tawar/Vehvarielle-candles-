@@ -756,7 +756,7 @@ align-items: stretch;
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') rsCloseZoom(sid); });
 
   /* ─────────── ADD TO CART ─────────── */
-  window.rsAddToCart = function (id) {
+window.rsAddToCart = function (id) {
   var btn = document.getElementById('rs-add-to-cart-' + id);
   var msg = document.getElementById('rs-cart-msg-' + id);
 
@@ -800,13 +800,16 @@ align-items: stretch;
       msg.textContent = 'Item added successfully!';
     }
 
-    // 🔥 INSTANT CART COUNT UPDATE
+    // 🔥 STEP 1: INSTANT FEEL (+1 immediately)
     var countEls = document.querySelectorAll('[data-cart-count],[data-cart-item-count],.cart-count,.cart__count');
 
     countEls.forEach(function(el){
       var current = parseInt(el.textContent) || 0;
       el.textContent = current + 1;
     });
+
+    // 🔥 STEP 2: REAL COUNT SYNC (correct value)
+    rsUpdateCartCount();
 
     setTimeout(function () {
       btn.classList.remove('success');
@@ -825,6 +828,7 @@ align-items: stretch;
     }
   });
 };
+
   /* ─────────── VARIANT SELECT ─────────── */
   window.rsSelectVariant = function (id, btnEl) {
     var container = document.getElementById('rs-variants-' + id);
