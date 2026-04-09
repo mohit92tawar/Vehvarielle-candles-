@@ -320,11 +320,11 @@
 .rs-tab-panel__content p { margin-bottom: 14px; }
 
 /* ── PERFECT MATCH ── */
-.rs-perfect-match {
+{% comment %} .rs-perfect-match {
      margin-top: -260px;
     margin-left: 105px;
     width: 40%;
-    }
+    } {% endcomment %}
 .rs-perfect-match__heading {
   font-size: 28px; font-weight: 400;
   color: var(--dark); margin-bottom: 20px;
@@ -423,7 +423,10 @@
     position: sticky;
     top: 40px;
   }
-
+.rs-below-grid {
+    margin-top: 40px;
+  }
+}
 }
 @media (max-width: 480px) {
   .rs-info__title { font-size: 28px; }
