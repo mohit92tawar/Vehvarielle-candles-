@@ -400,10 +400,30 @@
   .rs-gallery { max-width: 100%; overflow: hidden;}
   .rs-info__title { font-size: 36px; font-weight:600;}
   .rs-below-inner { grid-template-columns: 1fr; gap: 40px; }
-  .rs-cart-row {
-    display: grid;
+  .rs-cart-row {display: grid;}
+ }
+ /* DESKTOP FIX */
+@media (min-width: 901px) {
+
+  .rs-below-inner {
+    display: flex;
+    align-items: flex-start;
+    gap: 60px;
   }
- 
+
+  .rs-tabs-section {
+    flex: 0 0 65%;
+    max-width: 65%;
+  }
+
+  .rs-perfect-match {
+    flex: 0 0 35%;
+    max-width: 35%;
+    margin: 0 !important;
+    position: sticky;
+    top: 40px;
+  }
+
 }
 @media (max-width: 480px) {
   .rs-info__title { font-size: 28px; }
