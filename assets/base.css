@@ -4953,4 +4953,7 @@ product-recommendations:has([data-has-recommendations='false']) {
   font-size:18px;
   width:309px;
  }
+ body.page-width-narrow.card-hover-effect-none {
+    padding: 0px;
+}
 }
