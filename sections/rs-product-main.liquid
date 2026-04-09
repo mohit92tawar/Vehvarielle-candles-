@@ -759,73 +759,52 @@ align-items: stretch;
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') rsCloseZoom(sid); });
 
   /* ─────────── ADD TO CART ─────────── */
- window.rsAddToCart = function (sid) {
-  var btn = document.getElementById('rs-atc-' + sid);
-  var qtyInput = document.getElementById('rs-qty-' + sid);
-  var msgEl = document.getElementById('rs-cart-msg-' + sid);
+  window.rsAddToCart = function (id) {
+    var btn = document.getElementById('rs-add-to-cart-' + id);
+    var msg = document.getElementById('rs-cart-msg-' + id);
+    if (!btn) return;
+    var variantId = parseInt(btn.getAttribute('data-variant-id'));
+    if (!variantId) return;
 
-  if (!btn || btn.disabled) return;
+    btn.classList.add('loading');
+    btn.textContent = 'Adding...';
+    if (msg) msg.textContent = '';
 
-  var qty = parseInt(qtyInput.value) || 1;
-
-  // UI state
-  var originalText = btn.textContent;
-  btn.textContent = 'Adding...';
-  btn.disabled = true;
-
-  // Clear message
-  msgEl.className = 'rs-cart-msg';
-  msgEl.textContent = '';
-
-  fetch('/cart/add.js', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      id: _currentVariantId, // already defined in your script
-      quantity: qty
+    fetch('/cart/add.js', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+      body: JSON.stringify({ id: variantId, quantity: 1 })
     })
-  })
-  .then(function (res) {
-    if (!res.ok) throw new Error('Error adding to cart');
-    return res.json();
-  })
-  .then(function (data) {
+    .then(function (res) {
+      if (!res.ok) return res.json().then(function(d){ throw new Error(d.description || 'Error adding to cart'); });
+      return res.json();
+    })
+    .then(function () {
+      btn.classList.remove('loading');
+      btn.classList.add('success');
+      btn.textContent = '✓ Added to Bag';
+      if (msg) { msg.style.color = '#1a5c2a'; msg.textContent = 'Item added successfully!'; }
 
-    // SUCCESS UI
-    btn.textContent = 'Added ✓';
+      // Refresh cart count if using Shopify's cart bubble
+      fetch('/cart.js')
+        .then(function(r){ return r.json(); })
+        .then(function(cart){
+          var countEls = document.querySelectorAll('[data-cart-count],[data-cart-item-count],.cart-count,.cart__count');
+          countEls.forEach(function(el){ el.textContent = cart.item_count; });
+        });
 
-    msgEl.textContent = 'Product added to cart';
-    msgEl.classList.add('success');
-
-    // IMPORTANT → header cart update
-    document.dispatchEvent(new CustomEvent('cart:updated'));
-
-    setTimeout(function () {
-      btn.textContent = originalText;
-      btn.disabled = false;
-      msgEl.className = 'rs-cart-msg';
-      msgEl.textContent = '';
-    }, 1500);
-
-  })
-  .catch(function (err) {
-
-    // ERROR UI
-    console.error(err);
-
-    btn.textContent = 'Error';
-
-    msgEl.textContent = 'Something went wrong!';
-    msgEl.classList.add('error');
-
-    setTimeout(function () {
-      btn.textContent = originalText;
-      btn.disabled = false;
-    }, 1500);
-  });
-};
+      setTimeout(function () {
+        btn.classList.remove('success');
+        btn.textContent = 'Add to Bag';
+        if (msg) msg.textContent = '';
+      }, 3000);
+    })
+    .catch(function (err) {
+      btn.classList.remove('loading');
+      btn.textContent = 'Add to Bag';
+      if (msg) { msg.style.color = '#e53935'; msg.textContent = err.message || 'Could not add to cart. Please try again.'; }
+    });
+  };
 
   /* ─────────── VARIANT SELECT ─────────── */
   window.rsSelectVariant = function (id, btnEl) {
