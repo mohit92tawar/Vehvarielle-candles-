@@ -418,8 +418,21 @@
   width: 100% !important;
 }
 .rs-match-item {
-align-items: stretch;
-}
+    display: flex;
+    align-items: center !important;
+    gap: 12px;
+  }
+
+  .rs-match-item img {
+    width: 70px;
+    flex-shrink: 0;
+  }
+
+  .rs-match-item > div {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
 .rs-info__price {
   font-size: 24px;
 }
