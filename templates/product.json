@@ -76,9 +76,9 @@
         "accordion_DEBbxR"
       ],
       "settings": {
-        "tab_overview": "",
-        "tab_packaging": "",
-        "tab_shipping": "",
+        "tab_overview": "{{ product.metafields.custom.product_overview | metafield_tag }}",
+        "tab_packaging": "{{ product.metafields.custom.packaging | metafield_tag }}",
+        "tab_shipping": "{{ product.metafields.custom.shipping_return | metafield_tag }}",
         "perfect_match_heading": "Perfect match with"
       }
     },
