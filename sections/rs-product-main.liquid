@@ -421,10 +421,21 @@
 align-items: stretch;
 }
 .rs-info__price {
-  font-size: 24px;}
+  font-size: 24px;
+}
 }
 /* ================= DESKTOP PERFECT FIX ================= */
+/* ===== FIX ALIGNMENT FROM TOP ===== */
 @media (min-width: 901px) {
+
+  .rs-product__grid {
+    align-items: start;
+  }
+
+  /* MAIN FIX */
+  .rs-below-grid {
+    margin-top: 40px;   /* पहले 64px था */
+  }
 
   .rs-below-inner {
     display: grid;
@@ -433,19 +444,11 @@ align-items: stretch;
     align-items: start;
   }
 
-  .rs-tabs-section {
-    width: 100%;
-  }
-
   .rs-perfect-match {
+    margin: 0 !important;
     width: 100%;
-    margin: 0;
     position: sticky;
-    top: 40px;
-  }
-
-  .rs-tab-panel__content {
-    max-width: 100%;
+    top: 30px;
   }
 
 }
