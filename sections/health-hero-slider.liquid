@@ -324,39 +324,7 @@
     .hs-product-card-img-{{ custom_health_slider }} { max-height: 90px; }
   }
 
-  @media (max-width: 900px) {
-  .rs-header__inner {
-    grid-template-columns: auto 1fr auto;
-    padding: 0 20px;
-  }
-  .rs-header__nav { display: none; }
-  .rs-header__hamburger { display: flex; }
-
-  /* Logo center */
-  .rs-header__logo-wrap {
-    grid-column: 1;
-  }
-  .rs-header__nav {
-    grid-column: 2;
-  }
-  .rs-header__icons {
-    grid-column: 3;
-    gap: 2px;
-  }
-
-  /* Globe, Search, Account hide karo */
-  .rs-header__icons .rs-header__icon-btn,
-  .rs-account-wrap {
-    display: none !important;
-  }
-
-  /* Sirf cart dikhao */
-  .rs-header__cart-btn {
-    display: flex !important;
-  }
-
-  .rs-cart-drawer { width: 100vw; }
-}
+  
 {% endstyle %}
 
 <health-slider-hero-{{ custom_health_slider }}
