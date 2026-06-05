@@ -113,7 +113,7 @@
   padding: 14px 48px 6px;
   gap: 20px;
   height: 92px;
-  background:none;
+  background: #f8f9fa;
   position: relative;
 }
 
@@ -501,7 +501,7 @@
 
     <a href="{{ routes.root_url }}" class="rs-header__logo" aria-label="{{ shop.name }}">
       {% if section.settings.logo != blank %}
-        <img src="{{ section.settings.logo | image_url: width: 300 }}" alt="{{ shop.name }}" class="rs-header__logo-img">
+        <img src="{{ section.settings.logo | image_url: width: 3000 }}" alt="{{ shop.name }}" class="rs-header__logo-img">
       {% else %}
         <div class="rs-header__logo-text">{{ shop.name }}</div>
       {% endif %}
