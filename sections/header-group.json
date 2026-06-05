@@ -71,6 +71,7 @@
     },
     "custom_header_TMjW4F": {
       "type": "custom-header",
+      "disabled": true,
       "name": "RS - Header",
       "settings": {
         "logo": "shopify://shop_images/LOGO-01_1_1.png",
@@ -115,9 +116,8 @@
           "blocks": {}
         }
       },
-      "disabled": true,
       "settings": {
-        "logo_position": "left",
+        "logo_position": "center",
         "menu_position": "left",
         "menu_row": "top",
         "customer_account_menu": "customer-account-main-menu",
