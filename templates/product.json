@@ -40,7 +40,7 @@
           "type": "accordion",
           "settings": {
             "label": "Product Description",
-            "content": "<p>{{ product.vendor }}</p>"
+            "content": "<p>{{ product.vendor }}hello this new new product</p>"
           }
         },
         "accordion_VHmeag": {
