@@ -366,7 +366,7 @@
       "type": "blog-section",
       "name": "Blog section",
       "settings": {
-        "blog": "news",
+        "blog": "art-of-living",
         "articles_to_show": 3,
         "section_title": "Our blogs",
         "section_subtitle": "For moments of uncertainty, these writings offer quiet guidance on care, timing, and practices best understood early.",

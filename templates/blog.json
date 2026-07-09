@@ -156,7 +156,7 @@
       "disabled": true,
       "name": "Right Talk Blog Carousel",
       "settings": {
-        "blog": "news",
+        "blog": "art-of-living",
         "post_limit": 6,
         "default_label": "BLOG",
         "show_read_more": true,
